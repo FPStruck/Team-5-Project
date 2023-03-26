@@ -87,13 +87,12 @@ public class RSA_DSA{
         RSAString = bytesToString(encrypted);
         System.out.println(RSAString);
         
+        KeyPair keyPair	= Generate_RSA_KeyPair(); // create a key pair
         
-		KeyPair keyPair	= Generate_RSA_KeyPair(); // create a key pair
-	
-		// create a signature
-		byte[] signature = Create_Digital_Signature(input.getBytes(), keyPair.getPrivate());
-	
-		//System.out.println("Signature Value:\n " + DatatypeConverter.printHexBinary(signature)); // not working in branch but works locally
+        // create a signature
+        byte[] signature = Create_Digital_Signature(input.getBytes(), keyPair.getPrivate());
+        
+        //System.out.println("Signature Value:\n " + DatatypeConverter.printHexBinary(signature)); // not working in branch but works locally
 	
 		System.out.println("Verification: " + Verify_Digital_Signature(input.getBytes(),signature, keyPair.getPublic()));
 		
