@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -33,10 +34,13 @@ public class UI {
 	
 	@FXML private GridPane maingrid;
 	@FXML private AnchorPane anchor;
+	@FXML private TextField Row;
+	@FXML private TextField Col;
 	@FXML private Text actionGrabberCreator;
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
-		
+	@FXML private Button adder;
+
 	public void switchToCreateUser(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -90,6 +94,7 @@ public class UI {
 		}
 	}
 	
+	
 @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
 		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("")) {
@@ -107,12 +112,24 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 		}
 	}
-	
+
 	@FXML protected void handleAddButton(ActionEvent event) {
-			int column = 0;
-			for(int row = 0; row < 4; row++) {
+			String R = Row.getText();
+			String C = Col.getText();
+			int column = count;
+			int row;
+			for(row = 0; row < 4; row++) {
 				maingrid.add(new TextField(), row, column);
 			}
-			
+			if(column == 10) {
+				System.out.println("no");
+			} else {
+			countinc();
+			}
+	}
+	
+	int count = 0;
+	public int countinc() {
+		return count += 1;
 	}
 }
