@@ -4,11 +4,13 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.application.Application;
@@ -82,9 +84,14 @@ public class UI {
 	}
 	
 	public boolean loginSuccessful() {
-		actionGrabber.setText("Login Successful");
-		actionGrabber.setFill(Color.GREEN);
-		return true;
+		String userLog = userGrabber.getText();
+		String passLog = passGrabber.getText();
+		boolean credentialsMatch = checkCredentialsInFile(userLog, passLog);
+		if(credentialsMatch) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
@@ -106,12 +113,14 @@ public class UI {
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
+			} else if (loginSuccessful() == false) {
+				actionGrabber.setText("No Credentials Found");
 			}
 		}
 	}
 	
 	
-@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
+     @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
 		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Username and Password cannot be empty");
@@ -126,6 +135,9 @@ public class UI {
 		else {
 			actionGrabberCreator.setText("User Creation Successful");
 			actionGrabberCreator.setFill(Color.GREEN);
+			String userCreate = userGrabberCreator.getText();
+			String passCreate = passGrabberCreator.getText();
+			saveCredentialsToFile(userCreate, passCreate);
 		}
 	}
 
@@ -166,7 +178,7 @@ public class UI {
 		    row.add("");
 		}
 		
-		// These are for the edittext field labels at the top of each column
+		// These are for the edit text field labels at the top of each column
 		newColumn.setEditable(true);
 		newColumn.setResizable(true);
 	    newColumn.setGraphic(htf);
@@ -194,12 +206,19 @@ public class UI {
 	}
 	
 	@FXML protected void handleRemoveButton(ActionEvent event) {
-		int rowNum = maintable.getItems().size();
+		maintable.getItems().removeAll(maintable.getSelectionModel().getSelectedItem());
+	}
+	
+	@FXML protected void handleColumnRemoval(ActionEvent event) {
+		ObservableList<TableColumn> columns = maintable.getColumns();
 		
-		if(rowNum > 0) {
-			maintable.getItems().remove(rowNum - 1);
+		if(columns.isEmpty()) {
+			System.out.println("No columns present. Try adding a column"); 
 		}
 		
+		TableColumn mostRecentColumn = columns.get(columns.size() - 1);
+		
+		maintable.getColumns().remove(mostRecentColumn);
 	}
 	
 	@FXML protected void handleSearchDeletion(ActionEvent event) {
@@ -247,6 +266,39 @@ public class UI {
 	        e.printStackTrace();
 	    }
 		
+	}
+	
+	private void saveCredentialsToFile(String username, String password) {
+		try {
+			String directory = System.getProperty("user.home");
+			String filePath = directory + "/Documents/credentials.txt";
+			FileWriter writer = new FileWriter(filePath, true);
+			writer.write(username + ":" + password + "\n");
+			writer.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean checkCredentialsInFile(String username, String password) {
+		try {
+			String directory = System.getProperty("user.home");
+			String filePath = directory + "/Documents/credentials.txt";
+			File file = new File(filePath);
+			Scanner scan = new Scanner(file);
+			while(scan.hasNextLine()) {
+				String data = scan.nextLine();
+				String[] part = data.split(":");
+				if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
+				scan.close();
+				return true;
+				} 
+			}
+			scan.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

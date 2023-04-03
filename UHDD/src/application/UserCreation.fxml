@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -9,7 +10,6 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UI">
    <children>
       <TextField fx:id="userGrabberCreator" layoutX="226.0" layoutY="162.0" promptText="enter new username" />
-      <TextField fx:id="passGrabberCreator" layoutX="226.0" layoutY="200.0" promptText="enter new password" />
       <Text layoutX="155.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" wrappingWidth="70.552734375">
          <font>
             <Font size="15.0" />
@@ -41,5 +41,6 @@
          </font>
       </Button>
       <Text fx:id="actionGrabberCreator" fill="#f51414" layoutX="180.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
+      <PasswordField fx:id="passGrabberCreator" layoutX="226.0" layoutY="199.0" promptText="enter new password" />
    </children>
 </AnchorPane>

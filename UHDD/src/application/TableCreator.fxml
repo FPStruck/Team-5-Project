@@ -28,7 +28,7 @@
       <TextField fx:id="searchRef1" layoutX="19.0" layoutY="365.0" prefHeight="25.0" prefWidth="107.0" promptText="Search reference" />
       <Text layoutX="185.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Item 2" />
       <Text layoutX="36.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Item 1" />
-      <Button fx:id="saver" layoutX="516.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleSave" text="Save">
+      <Button fx:id="saver" layoutX="516.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleSave" text="Save">
          <font>
             <Font size="13.0" />
          </font>
@@ -40,6 +40,11 @@
          </font>
       </Button>
       <Button fx:id="searchRemover" layoutX="291.0" layoutY="357.0" mnemonicParsing="false" onAction="#handleSearchDeletion" prefHeight="33.0" prefWidth="107.0" text="Search remove">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="addColumn1" layoutX="482.0" layoutY="246.0" mnemonicParsing="false" onAction="#handleColumnRemoval" text="Remove Column">
          <font>
             <Font size="13.0" />
          </font>
