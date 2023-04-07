@@ -49,5 +49,6 @@
             <Font size="13.0" />
          </font>
       </Button>
+      <Button fx:id="mySQL" layoutX="477.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchToMySQL" text="MySQL" />
    </children>
 </AnchorPane>

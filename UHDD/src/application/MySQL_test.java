@@ -229,7 +229,7 @@ public class MySQL_test extends Application{
 	}
 
 	public static void main(String[] args) {
-		Application.launch(args);
+		Application.launch();
 	}
 		
 }

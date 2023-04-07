@@ -104,7 +104,7 @@ public class RSA_DSA{
     
     // Methods below
     // Bytes to string
-    private static String bytesToString(byte[] encrypted){
+    public static String bytesToString(byte[] encrypted){
         String test = "";
         for (byte b : encrypted){
             test += Byte.toString(b);

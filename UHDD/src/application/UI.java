@@ -58,6 +58,11 @@ public class UI {
 	@FXML private TextField passGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
+	
+	//Toby's changes
+	static byte[] encryptedPassword; // for the encryption
+	static byte[] decryptedPassword; // for the decryption
+	static RSA_DSA rsa;
 
 	public void switchToCreateUser(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
@@ -81,6 +86,16 @@ public class UI {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	public void switchToMySQL(ActionEvent event) throws Exception {
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		MySQL_test mySQL_test = new MySQL_test();
+		mySQL_test.start(stage);
 	}
 	
 	public boolean loginSuccessful() {
@@ -137,6 +152,11 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
+			// Toby's added
+//			rsa = new RSA_DSA(); // create a new object
+//			encryptedPassword = rsa.encrypt(passCreate.getBytes());
+//			System.out.println("Encrypting Bytes: " + RSA_DSA.bytesToString(encryptedPassword));
+//			System.out.println("String in Bytes: " + passCreate.getBytes()); // check the byte value is working
 			saveCredentialsToFile(userCreate, passCreate);
 		}
 	}
@@ -289,7 +309,18 @@ public class UI {
 			while(scan.hasNextLine()) {
 				String data = scan.nextLine();
 				String[] part = data.split(":");
-				if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
+		
+//				// Toby's changes
+//				System.out.println("Password entered: " +  part[1]);
+//				decryptedPassword = rsa.decrypt(part[1].getBytes());
+//				//System.out.println("Part1: " + part[1].getBytes());
+//				//String passwordChecker = RSA_DSA.bytesToString(decryptedPassword);
+//				System.out.println("Decrypting Bytes: " + RSA_DSA.bytesToString(decryptedPassword));
+//				String result = RSA_DSA.bytesToString(decryptedPassword);
+//				System.out.println("Decrypted String: " + new String(decryptedPassword));
+//			    System.out.println("Decrypted String result: " + result);
+				
+			    if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
 				scan.close();
 				return true;
 				} 
