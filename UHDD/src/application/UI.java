@@ -63,6 +63,7 @@ public class UI {
 	static byte[] encryptedPassword; // for the encryption
 	static byte[] decryptedPassword; // for the decryption
 	static RSA_DSA rsa;
+	static byte[] tempByteArray;
 
 	public void switchToCreateUser(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
@@ -152,11 +153,20 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
+			
 			// Toby's added
 //			rsa = new RSA_DSA(); // create a new object
+//			System.out.println("N:" + rsa.getN());
+//			System.out.println("D:" + rsa.getD());
+//			System.out.println("E:" + rsa.getE());
+//			
 //			encryptedPassword = rsa.encrypt(passCreate.getBytes());
-//			System.out.println("Encrypting Bytes: " + RSA_DSA.bytesToString(encryptedPassword));
-//			System.out.println("String in Bytes: " + passCreate.getBytes()); // check the byte value is working
+//			System.out.println("Encrypting BytesToString: " + RSA_DSA.bytesToString(encryptedPassword));
+//			System.out.println("PassCreate: " + passCreate); // check the byte value is working
+//			System.out.println("String in Bytes: " + RSA_DSA.bytesToString(passCreate.getBytes())); // check the byte value is working
+//			System.out.println("PassCreate getBytes: " + passCreate.getBytes()); // check the byte value is working
+			
+			
 			saveCredentialsToFile(userCreate, passCreate);
 		}
 	}
@@ -310,15 +320,30 @@ public class UI {
 				String data = scan.nextLine();
 				String[] part = data.split(":");
 		
-//				// Toby's changes
+				// Toby's changes
+//				System.out.println("****************************************************************************");
 //				System.out.println("Password entered: " +  part[1]);
-//				decryptedPassword = rsa.decrypt(part[1].getBytes());
-//				//System.out.println("Part1: " + part[1].getBytes());
+//				tempByteArray = part[1].getBytes();
+//				System.out.println("tempByteArray String: " + new String(tempByteArray));
+//				decryptedPassword = rsa.decrypt(encryptedPassword);
+////				decryptedPassword = rsa.decrypt(part[1].getBytes());
+////				System.out.println("Part1 plain: " + part[1]);
+////				System.out.println("Part1 bytes: " + part[1].getBytes());
+//				
 //				//String passwordChecker = RSA_DSA.bytesToString(decryptedPassword);
 //				System.out.println("Decrypting Bytes: " + RSA_DSA.bytesToString(decryptedPassword));
-//				String result = RSA_DSA.bytesToString(decryptedPassword);
 //				System.out.println("Decrypted String: " + new String(decryptedPassword));
+//				
+//				String result = RSA_DSA.bytesToString(decryptedPassword);
 //			    System.out.println("Decrypted String result: " + result);
+//			    System.out.println("Decrypted String result in bytes: " + result.getBytes());
+//			    
+//			    System.out.println("N:" + rsa.getN());
+//			    System.out.println("D:" + rsa.getD());
+//			    System.out.println("E:" + rsa.getE());
+//				
+//				System.out.println("Decrypting Bytes: " + RSA_DSA.bytesToString(decryptedPassword));
+//			    System.out.println("Decrypted String: " + new String(decryptedPassword));
 				
 			    if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
 				scan.close();

@@ -87,7 +87,7 @@ public class MySQL_test extends Application{
 		borderpane.setBottom(bottomBox);
 		
 		Scene scene = new Scene(borderpane);
-		primaryStage.setTitle("Exercise 41.1 - Staff");
+		primaryStage.setTitle("My SQL");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		

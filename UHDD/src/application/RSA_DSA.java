@@ -41,6 +41,8 @@ public class RSA_DSA{
     private Random r; // a random number to determine the prime numbers
     static String teststring; // the user input text
     static byte[] encrypted; // after the text bytes get encrypted
+    static byte[] decrypted ;
+    static byte[] B2S ;
     static String RSAString; // for the signature however returning a null(maybe too long)
     
     // Signing declarations
@@ -77,6 +79,7 @@ public class RSA_DSA{
         System.out.println("Enter the plain text:");
         teststring = in.readLine();
         System.out.println("Encrypting String: " + teststring); // for testing
+        System.out.println("String getBytes: " + teststring.getBytes()); // check the byte value is working
         System.out.println("String in Bytes: " + bytesToString(teststring.getBytes())); // check the byte value is working
         
         // encrypt
@@ -97,7 +100,7 @@ public class RSA_DSA{
 		System.out.println("Verification: " + Verify_Digital_Signature(input.getBytes(),signature, keyPair.getPublic()));
 		
 		// decrypt
-	    byte[] decrypted = rsa.decrypt(encrypted);
+	    decrypted = rsa.decrypt(encrypted);
 	    System.out.println("Decrypting Bytes: " + bytesToString(decrypted));
 	    System.out.println("Decrypted String: " + new String(decrypted));
     }
@@ -105,20 +108,27 @@ public class RSA_DSA{
     // Methods below
     // Bytes to string
     public static String bytesToString(byte[] encrypted){
+//    	System.out.println("In bytesToString encrypted: " + encrypted);
         String test = "";
         for (byte b : encrypted){
             test += Byte.toString(b);
         }
+//        B2S = test.getBytes();
+//        System.out.println("In bytesToString test: " + B2S);
         return test;
     }
  
     // Encrypt message
     public byte[] encrypt(byte[] message){
+    	System.out.println("tempByteArray ByteArray inside encrypt: " + message);
+    	System.out.println("tempByteArray String inside encrypt: " + new String(message));
         return (new BigInteger(message)).modPow(e, N).toByteArray();
     }
  
     // Decrypt message
     public byte[] decrypt(byte[] message){
+    	System.out.println("tempByteArray ByteArray inside decrypt: " + message);
+    	System.out.println("tempByteArray String inside decrypt: " + new String(message));
         return (new BigInteger(message)).modPow(d, N).toByteArray();
     }
 
@@ -140,6 +150,18 @@ public class RSA_DSA{
 	public static boolean Verify_Digital_Signature(byte[] input, byte[] signatureToVerify, PublicKey key) throws Exception{
 		Signature signature	= Signature.getInstance(SIGNING_ALGORITHM);	signature.initVerify(key); signature.update(input);
 		return signature.verify(signatureToVerify);
-	}	
+	}
+
+	public BigInteger getN() {
+		return N;
+	}
+
+	public BigInteger getE() {
+		return e;
+	}
+
+	public BigInteger getD() {
+		return d;
+	}
 
 }
