@@ -48,7 +48,6 @@ public class UI {
 	@FXML private Text actionGrabber;
 	@FXML private TextField userGrabber;
 	@FXML private TextField passGrabber;
-	
 	@FXML private TableView maintable;
 	@FXML private AnchorPane anchor;
 	@FXML private TextField searchRef1;
