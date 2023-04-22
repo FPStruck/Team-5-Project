@@ -61,11 +61,11 @@ public class KeyTest {
         PrivateKey aPrivate = kp.getPrivate();
         PublicKey aPublic = kp.getPublic();
         
-        try (FileOutputStream outPrivate = new FileOutputStream("key.PRIVATE")) {
+        try (FileOutputStream outPrivate = new FileOutputStream("key.private")) {
             outPrivate.write(aPrivate.getEncoded());
         }
         
-        try (FileOutputStream outPublic = new FileOutputStream("key.PUBLIC")) {
+        try (FileOutputStream outPublic = new FileOutputStream("key.public")) {
             outPublic.write(aPublic.getEncoded());
         }
         
