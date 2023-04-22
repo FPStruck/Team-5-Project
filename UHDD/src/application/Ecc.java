@@ -18,7 +18,7 @@ public class Ecc {
 	  */
 	 
      KeyPairGenerator g = KeyPairGenerator.getInstance("EC","SunEC");
-     ECGenParameterSpec ecsp = new ECGenParameterSpec("secp160k1");
+     ECGenParameterSpec ecsp = new ECGenParameterSpec("secp256r1");
      g.initialize(ecsp);
 
      KeyPair kp = g.genKeyPair();
