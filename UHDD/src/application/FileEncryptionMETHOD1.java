@@ -74,7 +74,8 @@ public class FileEncryptionMETHOD1 {
     public static void main(String[] args) {
         try {
         	FileEncryptionMETHOD1 fileEncryption = new FileEncryptionMETHOD1();
-            String fileName = "data.txt";
+        	String documentsFolder = System.getProperty("user.home") + "/Documents/";
+        	String fileName = documentsFolder + "fileEncryptionTest.txt";
             
             // Write data to file
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

@@ -1,2 +1,0 @@
-Billy,Billy1,visitor
-billy,billy,admin
