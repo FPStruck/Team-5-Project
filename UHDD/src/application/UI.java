@@ -3,6 +3,7 @@ package application;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -54,6 +55,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -111,6 +114,7 @@ public class UI {
 	@FXML private TextField textTelephone = new TextField();
 	@FXML private Label labelEmail = new Label("Email");
 	@FXML private TextArea textEmail = new TextArea();
+	@FXML private ImageView QRCode = new ImageView();
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
@@ -151,12 +155,14 @@ public class UI {
 		mySQL_test.start(stage);
 	}
 	
-	public void switchToMySQLTest(ActionEvent event) throws Exception {
+	@FXML public void switchToMySQLTest(ActionEvent event) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("MySQL.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+		initialDB();
+		
 //		MySQL_test2 mySQL_test2 = new MySQL_test2();
 //		mySQL_test2.start(stage);
 	}
@@ -420,7 +426,7 @@ public class UI {
 		return false;
 	}
 	
-	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException {
+	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("viewed");
 		// TODO Auto-generated method stub
 		initialDB();
@@ -432,7 +438,7 @@ public class UI {
 			loadFields(results);
 			
 		} catch (SQLException Ex){
-			labelStatus.setText("Record failed:");
+			labelStatus.setText("Record failed");
 			System.out.println(Ex.getMessage());
 		}
 	}
@@ -455,11 +461,13 @@ public class UI {
 		try {
 			// execute statement
 			statement.executeUpdate(updateQuery);
-			labelStatus.setText("Update completed:");
+			labelStatus.setText("Update completed or does not exist please view the ID");
+			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Update suceeded");
 			
 		} catch (SQLException Ex){
-			labelStatus.setText("Update failed:");
+			labelStatus.setText("Update failed");
+			labelStatus.setTextFill(Color.RED);
 			System.out.println(Ex.getMessage());
 		}
 	}
@@ -492,11 +500,13 @@ public class UI {
 		try {
 			// execute statement
 			statement.executeUpdate(insertQuery);
-			labelStatus.setText("Insert completed:");
+			labelStatus.setText("Insert completed");
+			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Insert suceeded");
 			
 		} catch (SQLException Ex){
-			labelStatus.setText("Insert failed:");
+			labelStatus.setText("Insert failed");
+			labelStatus.setTextFill(Color.RED);
 			System.out.println(Ex.getMessage());
 		}
 		
@@ -514,6 +524,7 @@ public class UI {
 			textTelephone.setText(results.getString(8));
 			textEmail.setText(results.getString(9));
 			labelStatus.setText("Record found");
+			labelStatus.setTextFill(Color.GREEN);
 		} else {
 			textLastName.setText("");
 			textFirstName.setText("");
@@ -524,10 +535,11 @@ public class UI {
 			textTelephone.setText("");
 			textEmail.setText("");
 			labelStatus.setText("Record not found");
+			labelStatus.setTextFill(Color.RED);
 		}
 	}
 	
-	private void initialDB() throws ClassNotFoundException, SQLException {
+	public void initialDB() throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		// loads and checks the driver
 		Class.forName("com.mysql.cj.jdbc.Driver");
