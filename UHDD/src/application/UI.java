@@ -50,6 +50,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -109,7 +110,7 @@ public class UI {
 	@FXML private Label labelTelephone = new Label("Telephone");
 	@FXML private TextField textTelephone = new TextField();
 	@FXML private Label labelEmail = new Label("Email");
-	@FXML private TextField textEmail = new TextField();
+	@FXML private TextArea textEmail = new TextArea();
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;

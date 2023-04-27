@@ -16,7 +16,7 @@ public class AuthenticatorEMAIL
       String host = "smtp.gmail.com";
       int port = 587;
       String username = "tobez103@gmail.com";
-      String password = "charlie3!";
+      String password = "vyvjfygmhyyfkcix";
       
       // Set email properties
       Properties properties = System.getProperties();  
@@ -24,6 +24,10 @@ public class AuthenticatorEMAIL
       properties.setProperty("mail.smtp.port", String.valueOf(port));
       properties.setProperty("mail.smtp.starttls.enable", "true");
       properties.setProperty("mail.smtp.auth", "true");
+//      properties.put("mail.smtp.starttls.required", "true");
+//      properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+//      properties.setProperty("mail.smtp.ssl.protocols", "TLSv1.2"); 
+//      properties.setProperty("mail.smtp.ssl.ciphersuites", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
 
       // Get the email session object  
       Session session = Session.getDefaultInstance(properties,  
