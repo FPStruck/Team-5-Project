@@ -1,12 +1,13 @@
 package application;
 
+import java.io.PrintWriter;
 import java.security.*;
 import java.security.spec.*;
 
 public class Ecc {
 
  public static void main(String[] args) throws Exception {
-
+	 
      // Create a public and private key for secp384r1.
 	 
 	 /* All the increase complexity of curves
@@ -28,26 +29,31 @@ public class Ecc {
      // Select the signature algorithm.
      Signature s = Signature.getInstance("SHA256withECDSA","SunEC");
      s.initSign(privKey);
-
+     
      // Compute the signature.
      byte[] msg = "Hello, World!".getBytes("UTF-8");
-     byte[] sig;
+     byte[] sig;  
      s.update(msg);
      sig = s.sign();
-
+     
      // Verify the signature.
      Signature sg = Signature.getInstance("SHA256withECDSA", "SunEC");
      sg.initVerify(pubKey);
      sg.update(msg);
      boolean validSignature = sg.verify(sig);
-
-     // Shows the public key, what will be given out freely
-     System.out.println(pubKey);
-          
-     // Shows the signature for learning purposes 
-     System.out.println(sig);
      
-     //Is the Signature valid?
-     System.out.println(validSignature);
+ 	try (PrintWriter out = new PrintWriter("AHHHHHHHHH")) {
+	    out.println(privKey);
+	}
+
+//     // Shows the public key, what will be given out freely
+//     System.out.println(pubKey);
+//     System.out.println();
+//
+//     // Shows the signature for learning purposes 
+//     System.out.println(privKey);
+//     
+//     //Is the Signature valid?
+//     System.out.println(validSignature);
  }
 }
