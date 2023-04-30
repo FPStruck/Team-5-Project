@@ -45,6 +45,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -115,6 +116,7 @@ public class UI {
 	@FXML private Label labelEmail = new Label("Email");
 	@FXML private TextArea textEmail = new TextArea();
 	@FXML private ImageView QRCode = new ImageView();
+	@FXML private ComboBox<String> dd = new ComboBox<String>();
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
@@ -156,7 +158,27 @@ public class UI {
 	}
 	
 	@FXML public void switchToMySQLTest(ActionEvent event) throws Exception {
+		
+		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
+		System.out.println(dd.getItems());
+		
 		Parent root = FXMLLoader.load(getClass().getResource("MySQL.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		initialDB();
+		
+//		MySQL_test2 mySQL_test2 = new MySQL_test2();
+//		mySQL_test2.start(stage);
+	}
+	
+@FXML public void switchToDoctorView(ActionEvent event) throws Exception {
+		
+		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
+		System.out.println(dd.getItems());
+		
+		Parent root = FXMLLoader.load(getClass().getResource("DoctorView.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

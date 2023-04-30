@@ -44,8 +44,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -104,19 +102,7 @@
             </Label>
                   <TextField fx:id="textId" layoutX="130.0" layoutY="15.0" prefHeight="25.0" prefWidth="78.0" />
                   <Button fx:id="view" layoutX="14.0" layoutY="86.0" mnemonicParsing="false" onAction="#view" style="-fx-background-color: #2e4450;" text="View" textFill="#16c2d5" />
-                  <Button fx:id="add" layoutX="14.0" layoutY="119.0" mnemonicParsing="false" onAction="#insert" style="-fx-background-color: #2e4450;" text="Add" textFill="#16c2d5" />
-                  <Button fx:id="modify" layoutX="14.0" layoutY="152.0" mnemonicParsing="false" onAction="#update" style="-fx-background-color: #2e4450;" text="Modify" textFill="#16c2d5" />
                   <Button fx:id="clear" layoutX="14.0" layoutY="188.0" mnemonicParsing="false" onAction="#clear" style="-fx-background-color: #2e4450;" text="Clear" textFill="#16c2d5" />
-                  <ImageView fx:id="QRCode" fitHeight="150.0" fitWidth="200.0" layoutX="36.0" layoutY="352.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../QRCode.png" />
-                     </image>
-                  </ImageView>
-                  <Label alignment="CENTER" layoutX="36.0" layoutY="513.0" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #2e4450;" text="Google Authenticator QR Code" textFill="#16c2d5">
-                     <font>
-                        <Font name="System Bold" size="10.0" />
-                     </font>
-                  </Label>
           </children>
         </AnchorPane>
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
