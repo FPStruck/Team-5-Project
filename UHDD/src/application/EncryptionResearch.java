@@ -22,6 +22,7 @@ public class EncryptionResearch {
         Cipher cipherAES = Cipher.getInstance("AES");
         cipherAES.init(Cipher.ENCRYPT_MODE, secretKeyAES);
         byte[] encryptedTextAES = cipherAES.doFinal(plainText.getBytes());
+        System.out.println("Encrypted AES text: "+ encryptedTextAES);
 
         // Decrypt the AES encrypted text
         cipherAES.init(Cipher.DECRYPT_MODE, secretKeyAES);
@@ -40,6 +41,7 @@ public class EncryptionResearch {
         Cipher cipherRSA = Cipher.getInstance("RSA");
         cipherRSA.init(Cipher.ENCRYPT_MODE, publicKeyRSA);
         byte[] encryptedKeyRSA = cipherRSA.doFinal(secretKeyAES.getEncoded());
+        System.out.println("Encrypted AES key with RSA encryption text: "+ encryptedKeyRSA);
         
         // Decrypt the AES key with RSA
         PrivateKey privateKeyRSA = keyPairRSA.getPrivate();
@@ -56,9 +58,10 @@ public class EncryptionResearch {
         // Decrypt the RSA-encrypted AES encrypted text
         cipherRSA_AES.init(Cipher.DECRYPT_MODE, originalKeyAES);
         byte[] decryptedTextRSA = cipherRSA_AES.doFinal(encryptedTextRSA);
+        System.out.println("Encrypted RSA encrypted AES text: "+ decryptedTextRSA);
 
         // Print the decrypted RSA-encrypted AES text
-        System.out.println("Decrypted RSA-encrypted AES text: " + new String(decryptedTextRSA));
+        System.out.println("Decrypted RSA encrypted AES text: " + new String(decryptedTextRSA));
 
         // Generate a random 256-bit key for Blowfish encryption
         KeyGenerator keyGeneratorBlowfish = KeyGenerator.getInstance("Blowfish");
@@ -69,6 +72,7 @@ public class EncryptionResearch {
         Cipher cipherBlowfish = Cipher.getInstance("Blowfish");
         cipherBlowfish.init(Cipher.ENCRYPT_MODE, secretKeyBlowfish);
         byte[] encryptedTextBlowfish = cipherBlowfish.doFinal(plainText.getBytes());
+        System.out.println("Encrypted Blowfish text: "+ encryptedTextBlowfish);
 
         // Decrypt the Blowfish encrypted text
         cipherBlowfish.init(Cipher.DECRYPT_MODE, secretKeyBlowfish);

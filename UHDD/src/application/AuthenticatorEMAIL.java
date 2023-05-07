@@ -17,7 +17,7 @@ public class AuthenticatorEMAIL
       String username = "mina.gemian79@gmail.com";
       String password = "ecdxshtuimguqmom";
       
-      // Set email properties
+      // Set email propertiesE
       Properties properties = System.getProperties();  
       properties.setProperty("mail.smtp.host", host);
       properties.setProperty("mail.smtp.port", String.valueOf(port));

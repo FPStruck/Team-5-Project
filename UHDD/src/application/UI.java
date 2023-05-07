@@ -45,6 +45,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -105,10 +106,10 @@ public class UI {
 	    int port = 587;
 	    String username = "mina.gemian79@gmail.com";
 	    String password = "ecdxshtuimguqmom";
-	    int expectedCode = (int) (Math.random() * 1000000); // Generate a random 6-digit code
+	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
 
-	    // Set email properties
+	    //email properties
 	    Properties properties = System.getProperties();  
 	    properties.setProperty("mail.smtp.host", host);
 	    properties.setProperty("mail.smtp.port", String.valueOf(port));
@@ -123,7 +124,7 @@ public class UI {
 	            }  
 	        });  
 
-	    // Compose the message  
+	    //message  
 	    try {  
 	        MimeMessage message = new MimeMessage(session);  
 	        message.setFrom(new InternetAddress(from));  
@@ -131,14 +132,14 @@ public class UI {
 	        message.setSubject("Verification Code");  
 	        message.setText("Your verification code is: " + expectedCode);  
 
-	        // Send the message  
+	        //Send message to email
 	        Transport transport = session.getTransport("smtp");
 	        transport.connect(host, username, password);
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
 	        System.out.println("Verification code sent to " + to);  
 
-	        // Display the dialog box for entering the verification code
+	        // Display the dialog box for verification code
 	        Dialog<Integer> dialog = new Dialog<>();
 	        dialog.setTitle("Verification Code");
 	        dialog.setHeaderText("Enter the verification code:");
@@ -192,7 +193,7 @@ public class UI {
 	            stage.setScene(scene);
 	            stage.show();
 	        } else {
-	            actionGrabber.setText("Email sending cancelled by the user.");
+	            actionGrabber.setText("Email sending cancelled.");
 	        }
 	    }
 	}
@@ -352,7 +353,10 @@ public class UI {
 			String directory = System.getProperty("user.home");
 			String filePath = directory + "/Documents/credentials.txt";
 			FileWriter writer = new FileWriter(filePath, true);
-			writer.write(username + ":" + password + ":" + email + "\n");
+			EncryptionController enc = new EncryptionController();
+			String hashedPassword = enc.hashData(password);
+			writer.write(username + ":" + hashedPassword + ":" + email + "\n");
+			System.out.println(hashedPassword);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -361,16 +365,24 @@ public class UI {
 	
 	private String checkCredentialsInFile(String username, String password) {
 	    try {
-	        String directory = System.getProperty("user.home");
+	    	EncryptionController enc = new EncryptionController();
+	    	String directory = System.getProperty("user.home");
 	        String filePath = directory + "/Documents/credentials.txt";
 	        File file = new File(filePath);
 	        Scanner scan = new Scanner(file);
 	        while (scan.hasNextLine()) {
 	            String data = scan.nextLine();
 	            String[] part = data.split(":");
-	            if (part.length == 3 && part[0].equals(username) && part[1].equals(password)) {
-	                scan.close();
-	                return part[2]; // return email address
+	            if (part.length == 3 && part[0].equals(username)) {
+	                String storedHashedPassword = part[1];
+	                String inputHashedPassword = enc.hashData(password);
+	                System.out.println(inputHashedPassword);
+	                System.out.println(storedHashedPassword);
+	                if (storedHashedPassword.equals(inputHashedPassword)) {
+	                	System.out.println(part[2]);
+	                    scan.close();
+	                    return part[2]; // return email address
+	                }
 	            }
 	        }
 	        scan.close();

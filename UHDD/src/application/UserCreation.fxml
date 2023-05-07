@@ -42,11 +42,11 @@
       </Button>
       <Text fx:id="actionGrabberCreator" fill="#f51414" layoutX="180.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
       <PasswordField fx:id="passGrabberCreator" layoutX="226.0" layoutY="199.0" promptText="enter new password" />
-      <PasswordField fx:id="emailGrabberCreator" layoutX="227.0" layoutY="240.0" prefHeight="25.0" prefWidth="149.0" promptText="enter new password" />
       <Text layoutX="180.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
+      <TextField fx:id="emailGrabberCreator" layoutX="226.0" layoutY="239.0" promptText="enter new username" />
    </children>
 </AnchorPane>

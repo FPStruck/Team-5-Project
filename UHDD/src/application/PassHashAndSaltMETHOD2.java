@@ -27,15 +27,15 @@ public class PassHashAndSaltMETHOD2 {
         random.nextBytes(salt);
         
         // Combining the message and salt and hashing again
-        md2.reset();
-        md2.update(salt);
-        byte[] saltedHash2 = md.digest(message.getBytes());
-        System.out.println("Salted and hashed message: (256) " + bytesToHex(saltedHash2));
-        
         md.reset();
         md.update(salt);
         byte[] saltedHash = md.digest(message.getBytes());
         System.out.println("Salted and hashed message: (512) " + bytesToHex(saltedHash));
+        
+        md2.reset();
+        md2.update(salt);
+        byte[] saltedHash2 = md.digest(message.getBytes());
+        System.out.println("Salted and hashed message: (256) " + bytesToHex(saltedHash2));
         
         // Prompting the user to enter a message to check against the hashed message
         System.out.print("Enter a message to check against the hashed message: ");
