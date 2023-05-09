@@ -1,3 +1,4 @@
+
 package application;
 	
 import javafx.stage.Stage;
@@ -8,12 +9,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import java.util.*;  
+import javax.mail.*;  
+import javax.mail.internet.*;  
+import javax.activation.*;  
+
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +34,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -33,13 +46,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
+import javax.mail.SendFailedException;
 
 public class UI {
 	private Stage stage;
@@ -56,6 +70,7 @@ public class UI {
 	@FXML private Text actionGrabberCreator;
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
+	@FXML private TextField emailGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
 
@@ -84,39 +99,104 @@ public class UI {
 	}
 	
 	public boolean loginSuccessful() {
-		String userLog = userGrabber.getText();
-		String passLog = passGrabber.getText();
-		boolean credentialsMatch = checkCredentialsInFile(userLog, passLog);
-		if(credentialsMatch) {
-			return true;
-		} else {
-			return false;
-		}
+	    String userLog = userGrabber.getText();
+	    String passLog = passGrabber.getText();
+	    String to = checkCredentialsInFile(userLog, passLog);
+	    String from = "Verifier";
+	    String host = "smtp.gmail.com";
+	    int port = 587;
+	    String username = "mina.gemian79@gmail.com";
+	    String password = "ecdxshtuimguqmom";
+	    int expectedCode = (int) (Math.random() * 1000000);
+	    int inputCode = 0;
+
+	    //email properties
+	    Properties properties = System.getProperties();  
+	    properties.setProperty("mail.smtp.host", host);
+	    properties.setProperty("mail.smtp.port", String.valueOf(port));
+	    properties.setProperty("mail.smtp.starttls.enable", "true");
+	    properties.setProperty("mail.smtp.auth", "true");
+
+	    // Get the email session object  
+	    Session session = Session.getDefaultInstance(properties,  
+	        new javax.mail.Authenticator() {  
+	            protected PasswordAuthentication getPasswordAuthentication() {  
+	                return new PasswordAuthentication(username, password);  
+	            }  
+	        });  
+
+	    //message  
+	    try {  
+	        MimeMessage message = new MimeMessage(session);  
+	        message.setFrom(new InternetAddress(from));  
+	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));  
+	        message.setSubject("Verification Code");  
+	        message.setText("Your verification code is: " + expectedCode);  
+
+	        //Send message to email
+	        Transport transport = session.getTransport("smtp");
+	        transport.connect(host, username, password);
+	        transport.sendMessage(message, message.getAllRecipients());
+	        transport.close();
+	        System.out.println("Verification code sent to " + to);  
+
+	        // Display the dialog box for verification code
+	        Dialog<Integer> dialog = new Dialog<>();
+	        dialog.setTitle("Verification Code");
+	        dialog.setHeaderText("Enter the verification code:");
+
+	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
+
+	        TextField verificationCodeField = new TextField();
+	        Platform.runLater(() -> verificationCodeField.requestFocus());
+	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == submitButton) {
+	                return Integer.parseInt(verificationCodeField.getText());
+	            }
+	            return null;
+	        });
+
+	        Optional<Integer> result = dialog.showAndWait();
+	        if (result.isPresent()) {
+	            inputCode = result.get();
+	        }
+
+	        // Check if the input code matches the expected value
+	        if (inputCode == expectedCode) {
+	            System.out.println("Verification successful!");
+	            return true;
+	        } 
+	    } catch (MessagingException mex) {
+	        mex.printStackTrace();
+	    }
+	    return false;
 	}
-	
+
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
-		
-		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
-			actionGrabber.setText("Username and Password cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} else if(userGrabber.getText().equals("")) {
-			actionGrabber.setText("Username cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} else if(passGrabber.getText().equals("")) {
-			actionGrabber.setText("Password cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} 
-		else {
-			if(loginSuccessful() == true) {
-				Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
-				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-				scene = new Scene(root);
-				stage.setScene(scene);
-				stage.show();
-			} else if (loginSuccessful() == false) {
-				actionGrabber.setText("No Credentials Found");
-			}
-		}
+	    
+	    if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
+	        actionGrabber.setText("Username and Password cannot be empty");
+	        actionGrabber.setFill(Color.RED);
+	    } else if(userGrabber.getText().equals("")) {
+	        actionGrabber.setText("Username cannot be empty");
+	        actionGrabber.setFill(Color.RED);
+	    } else if(passGrabber.getText().equals("")) {
+	        actionGrabber.setText("Password cannot be empty");
+	        actionGrabber.setFill(Color.RED);
+	    } 
+	    else {
+	        if(loginSuccessful()) {
+	            Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
+	            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+	            scene = new Scene(root);
+	            stage.setScene(scene);
+	            stage.show();
+	        } else {
+	            actionGrabber.setText("Email sending cancelled.");
+	        }
+	    }
 	}
 	
 	
@@ -137,7 +217,8 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
-			saveCredentialsToFile(userCreate, passCreate);
+			String emailCreate = emailGrabberCreator.getText();
+			saveCredentialsToFile(userCreate, passCreate, emailCreate);
 		}
 	}
 
@@ -268,37 +349,48 @@ public class UI {
 		
 	}
 	
-	private void saveCredentialsToFile(String username, String password) {
+	private void saveCredentialsToFile(String username, String password, String email) {
 		try {
 			String directory = System.getProperty("user.home");
 			String filePath = directory + "/Documents/credentials.txt";
 			FileWriter writer = new FileWriter(filePath, true);
-			writer.write(username + ":" + password + "\n");
+			EncryptionController enc = new EncryptionController();
+			String hashedPassword = enc.hashData(password);
+			writer.write(username + ":" + hashedPassword + ":" + email + "\n");
+			System.out.println(hashedPassword);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private boolean checkCredentialsInFile(String username, String password) {
-		try {
-			String directory = System.getProperty("user.home");
-			String filePath = directory + "/Documents/credentials.txt";
-			File file = new File(filePath);
-			Scanner scan = new Scanner(file);
-			while(scan.hasNextLine()) {
-				String data = scan.nextLine();
-				String[] part = data.split(":");
-				if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
-				scan.close();
-				return true;
-				} 
-			}
-			scan.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		return false;
+	private String checkCredentialsInFile(String username, String password) {
+	    try {
+	    	EncryptionController enc = new EncryptionController();
+	    	String directory = System.getProperty("user.home");
+	        String filePath = directory + "/Documents/credentials.txt";
+	        File file = new File(filePath);
+	        Scanner scan = new Scanner(file);
+	        while (scan.hasNextLine()) {
+	            String data = scan.nextLine();
+	            String[] part = data.split(":");
+	            if (part.length == 3 && part[0].equals(username)) {
+	                String storedHashedPassword = part[1];
+	                String inputHashedPassword = enc.hashData(password);
+	                System.out.println(inputHashedPassword);
+	                System.out.println(storedHashedPassword);
+	                if (storedHashedPassword.equals(inputHashedPassword)) {
+	                	System.out.println(part[2]);
+	                    scan.close();
+	                    return part[2]; // return email address
+	                }
+	            }
+	        }
+	        scan.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
-
 }
+
