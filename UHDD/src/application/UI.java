@@ -118,6 +118,8 @@ public class UI {
 	@FXML private ImageView QRCode = new ImageView();
 	@FXML private ComboBox<String> dd = new ComboBox<String>();
 	
+	private ObservableList<String> ddList = FXCollections.observableArrayList("one", "two", "three");
+	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
 	private Statement statement;
@@ -159,8 +161,8 @@ public class UI {
 	
 	@FXML public void switchToMySQLTest(ActionEvent event) throws Exception {
 		
-		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
-		System.out.println(dd.getItems());
+//		dd.setItems(ddList);
+		
 		
 		Parent root = FXMLLoader.load(getClass().getResource("MySQL.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -168,6 +170,9 @@ public class UI {
 		stage.setScene(scene);
 		stage.show();
 		initialDB();
+		
+		dd.getItems().addAll(ddList);
+		System.out.println(dd.getItems());
 		
 //		MySQL_test2 mySQL_test2 = new MySQL_test2();
 //		mySQL_test2.start(stage);
