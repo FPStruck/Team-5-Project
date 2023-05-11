@@ -1,6 +1,7 @@
 package application;
 	
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +36,8 @@ import com.google.zxing.common.BitMatrix;
 import de.taimos.totp.TOTP;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +57,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -88,12 +92,16 @@ public class UI {
 	@FXML private Button update;
 	@FXML private Button insert;
 	@FXML private Button clear;
+	@FXML private Button viewTable;
+	@FXML private TableView<ObservableList> tableView = new TableView();
 	
 	//Toby's changes
 	static byte[] encryptedPassword; // for the encryption
 	static byte[] decryptedPassword; // for the decryption
 	static RSA_DSA rsa;
 	static byte[] tempByteArray;
+	static ObservableList<ObservableList> data;
+	static TableColumn col;
 	
 	@FXML private Label labelStatus = new Label();
 	
@@ -117,6 +125,7 @@ public class UI {
 	@FXML private TextArea textEmail = new TextArea();
 	@FXML private ImageView QRCode = new ImageView();
 	@FXML private ComboBox<String> dd = new ComboBox<String>();
+	
 	
 	private ObservableList<String> ddList = FXCollections.observableArrayList("one", "two", "three");
 	
@@ -183,7 +192,7 @@ public class UI {
 		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
 		System.out.println(dd.getItems());
 		
-		Parent root = FXMLLoader.load(getClass().getResource("DoctorView.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -451,6 +460,62 @@ public class UI {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
+		System.out.println("view table");
+		// TODO Auto-generated method stub
+		initialDB();
+		data = FXCollections.observableArrayList();
+        try {
+            //SQL FOR SELECTING ALL OF CUSTOMER
+            String SQL = "SELECT * from `javabook`.`test`";
+            //ResultSet
+            ResultSet rs = connection.createStatement().executeQuery(SQL);
+
+            /**
+             * ********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             *********************************
+             */
+            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                //We are using non property style for making dynamic table
+                final int j = i;
+                col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(param.getValue().get(j).toString());
+                    }
+                });
+
+                tableView.getColumns().addAll(col);
+                System.out.println("Column [" + i + "] ");
+            }
+
+            /**
+             * ******************************
+             * Data added to ObservableList *
+             *******************************
+             */
+            while (rs.next()) {
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    //Iterate Column
+                    row.add(rs.getString(i));
+                }
+                System.out.println("Row [1] added " + row);
+                data.add(row);
+
+            }
+
+            //FINALLY ADDED TO TableView
+            tableView.setItems(data);
+            System.out.println("Data: " + data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error on Building Data");
+        }
 	}
 	
 	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
