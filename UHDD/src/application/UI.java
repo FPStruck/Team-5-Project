@@ -92,6 +92,7 @@ public class UI {
 	@FXML private Button update;
 	@FXML private Button insert;
 	@FXML private Button clear;
+	@FXML private Button back;
 	@FXML private Button viewTable;
 	@FXML private TableView<ObservableList> tableView = new TableView();
 	

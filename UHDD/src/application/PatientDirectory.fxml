@@ -126,6 +126,7 @@
                         <Font size="18.0" fx:id="x111111" />
                      </font>
                   </Label>
+                  <Button fx:id="back" layoutX="22.0" layoutY="512.0" mnemonicParsing="false" onAction="#switchToTableCreator" style="-fx-background-color: white;" text="back" textFill="#16c2d5" />
           </children>
         </AnchorPane>
             <VBox prefHeight="200.0" prefWidth="100.0">
