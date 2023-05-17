@@ -469,7 +469,7 @@ public class UI {
 		data = FXCollections.observableArrayList();
         try {
             //SQL FOR SELECTING ALL OF CUSTOMER
-            String SQL = "SELECT * from `javabook`.`test`";
+            String SQL = "SELECT * from `testdb`.`test3`";
             //ResultSet
             ResultSet rs = connection.createStatement().executeQuery(SQL);
 
@@ -522,7 +522,7 @@ public class UI {
 		System.out.println("viewed");
 		// TODO Auto-generated method stub
 		initialDB();
-		String query = "SELECT * FROM `javabook`.`test` WHERE ID = '" + textId.getText().trim() + "'";
+		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
 		
 		try {
 			// execute statement
@@ -537,7 +537,7 @@ public class UI {
 	
 	@FXML private void update(ActionEvent event) {
 		// TODO Auto-generated method stub
-		String updateQuery = "UPDATE `javabook`.`test` SET "
+		String updateQuery = "UPDATE `testdb`.`test3` SET "
 				+ "FirstName = '" + textFirstName.getText().trim() + 
 				"', MiddleName = '" + textMiddleName.getText().trim()+ 
 				"', LastName = '" + textLastName.getText().trim() + 
@@ -579,7 +579,7 @@ public class UI {
 	
 	@FXML private void insert(ActionEvent event) {
 		// TODO Auto-generated method stub
-		String insertQuery = "INSERT INTO `javabook`.`test` "
+		String insertQuery = "INSERT INTO `testdb`.`test3` "
 				+ "(ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email) "
 				+ "VALUES ('" + textId.getText().trim() + "', '" + textFirstName.getText().trim() + 
 				"', '" + textMiddleName.getText().trim()+ "', '" + textLastName.getText().trim() + 
@@ -638,7 +638,7 @@ public class UI {
 		System.out.println("Driver loaded:");
 		
 		// connection for database...make sure the URL is correct JDBC:MYSQL
-		String url = "jdbc:mysql://127.0.0.1:3306/javabook";
+		String url = "jdbc:mysql://127.0.0.1:3306/testdb";
 		String username = "root";
 		String password = "mysql";
 		
