@@ -125,10 +125,10 @@ public class UI {
 	@FXML private Label labelEmail = new Label("Email");
 	@FXML private TextArea textEmail = new TextArea();
 	@FXML private ImageView QRCode = new ImageView();
-	@FXML private ComboBox<String> dd = new ComboBox<String>();
+	@FXML private ComboBox<String> dd = new ComboBox();
 	
 	
-	private ObservableList<String> ddList = FXCollections.observableArrayList("one", "two", "three");
+	static ObservableList<String> ddList;
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
@@ -171,27 +171,32 @@ public class UI {
 	
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
-//		dd.setItems(ddList);
-		
-		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 		initialDB();
 		
-		dd.getItems().addAll(ddList);
-		System.out.println(dd.getItems());
+		
+//		dd.getItems().addAll(ddList);
+//		System.out.println(dd.getItems());
 		
 //		MySQL_test2 mySQL_test2 = new MySQL_test2();
 //		mySQL_test2.start(stage);
 	}
 	
+	@FXML
+    public void initialize() { // this will load all the variables in the fields referring to components  
+		ddList = FXCollections.observableArrayList("one", "two", "three");
+		dd.getItems().addAll(ddList);
+		System.out.println(dd.getItems());
+    }
+	
 	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
-		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
-		System.out.println(dd.getItems());
+//		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
+//		System.out.println(dd.getItems());
 		
 		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
