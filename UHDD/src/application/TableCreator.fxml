@@ -14,12 +14,12 @@
             <Font name="System Bold" size="19.0" />
          </font>
       </Text>
-      <Button fx:id="remover" layoutX="493.0" layoutY="198.0" mnemonicParsing="false" onAction="#handleRemoveButton" text="Remove Row">
+      <Button fx:id="remover" layoutX="492.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleRemoveButton" text="Remove Row">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button fx:id="addColumn" layoutX="494.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleAddColumn" text="Add Column">
+      <Button fx:id="addColumn" layoutX="495.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleAddColumn" text="Add Column">
          <font>
             <Font size="13.0" />
          </font>
@@ -28,13 +28,13 @@
       <TextField fx:id="searchRef1" layoutX="19.0" layoutY="365.0" prefHeight="25.0" prefWidth="107.0" promptText="Search reference" />
       <Text layoutX="185.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Item 2" />
       <Text layoutX="36.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Item 1" />
-      <Button fx:id="saver" layoutX="516.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleSave" text="Save">
+      <Button fx:id="saver" layoutX="512.0" layoutY="187.0" mnemonicParsing="false" onAction="#handleSave" text="Save">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
       <TableView fx:id="maintable" editable="true" layoutX="19.0" layoutY="51.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="294.0" prefWidth="451.0" />
-      <Button fx:id="addRow" layoutX="503.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleAddRow" text="Add Row">
+      <Button fx:id="addRow" layoutX="505.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddRow" text="Add Row">
          <font>
             <Font size="13.0" />
          </font>
@@ -44,13 +44,13 @@
             <Font size="13.0" />
          </font>
       </Button>
-      <Button fx:id="addColumn1" layoutX="482.0" layoutY="246.0" mnemonicParsing="false" onAction="#handleColumnRemoval" text="Remove Column">
+      <Button fx:id="addColumn1" layoutX="478.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleColumnRemoval" text="Remove Column">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button fx:id="mySQL" layoutX="477.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchToMySQL" text="MySQL" />
-      <Button fx:id="mySQL2" layoutX="534.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchToMySQLTest" text="MySQL2" />
-      <Button fx:id="doctorView" layoutX="495.0" layoutY="333.0" mnemonicParsing="false" onAction="#switchToDoctorView" text="DoctorView" />
+      <Button fx:id="mySQL" layoutX="508.0" layoutY="302.0" mnemonicParsing="false" onAction="#switchToMySQL" text="MySQL" />
+      <Button fx:id="patientInformation" layoutX="475.0" layoutY="269.0" mnemonicParsing="false" onAction="#switchToPatientInformation" text="Patient Information" />
+      <Button fx:id="patientDirectory" layoutX="482.0" layoutY="237.0" mnemonicParsing="false" onAction="#switchToPatientDirectory" text="Patient Directory" />
    </children>
 </AnchorPane>

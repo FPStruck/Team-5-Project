@@ -117,7 +117,7 @@
                         <Font name="System Bold" size="10.0" />
                      </font>
                   </Label>
-                  <Button fx:id="back" layoutX="21.0" layoutY="739.0" mnemonicParsing="false" onAction="#switchToTableCreator" style="-fx-background-color: grey;" text="Back" textFill="#16c2d5" />
+                  <Button fx:id="back" layoutX="21.0" layoutY="739.0" mnemonicParsing="false" onAction="#switchToDashBoard" style="-fx-background-color: grey;" text="Back" textFill="#16c2d5" />
           </children>
         </AnchorPane>
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">

@@ -169,12 +169,12 @@ public class UI {
 		mySQL_test.start(stage);
 	}
 	
-	@FXML public void switchToMySQLTest(ActionEvent event) throws Exception {
+	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
 //		dd.setItems(ddList);
 		
 		
-		Parent root = FXMLLoader.load(getClass().getResource("MySQL.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -188,7 +188,7 @@ public class UI {
 //		mySQL_test2.start(stage);
 	}
 	
-@FXML public void switchToDoctorView(ActionEvent event) throws Exception {
+	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
 		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
 		System.out.println(dd.getItems());
@@ -202,6 +202,14 @@ public class UI {
 		
 //		MySQL_test2 mySQL_test2 = new MySQL_test2();
 //		mySQL_test2.start(stage);
+	}
+	
+	public void switchToDashBoard(ActionEvent event) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	public boolean loginSuccessful() throws IOException, WriterException {
@@ -230,7 +238,7 @@ public class UI {
 		} 
 		else {
 			if(loginSuccessful() == true) {
-				Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
+				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
 				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);
