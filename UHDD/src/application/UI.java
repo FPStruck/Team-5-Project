@@ -57,6 +57,12 @@ public class UI {
 	@FXML private TextField passGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
+	
+	//Buttons for overview UI
+	@FXML private Button fetchDiagnoses;
+	@FXML private Button fetchHistory;
+	@FXML private Button fetchPerscription;
+	@FXML private Button fetchReport;
 
 	public void switchToCreateUser(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
@@ -299,5 +305,42 @@ public class UI {
 		}
 		return false;
 	}
+	
+	//Overview button actions
+	
+    @FXML
+    private void fetchDiagnoses() {
+        System.out.println("Hopefully gets 'diagnoses' info");
+    }
+    
+    // Other controller methods and variables
+    
+	
+	
+	@FXML
+	private void fetchHistory() {
+	    System.out.println("Get patient history");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchPerscription() {
+	    System.out.println("Get Patient perscription");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchReport() {
+	    System.out.println("Gets report");
+	}
+	
+	// Other controller methods and variables
+	
+	}
 
-}

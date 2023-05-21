@@ -42,18 +42,18 @@ public class Ecc {
      sg.update(msg);
      boolean validSignature = sg.verify(sig);
      
- 	try (PrintWriter out = new PrintWriter("AHHHHHHHHH")) {
-	    out.println(privKey);
-	}
+// 	try (PrintWriter out = new PrintWriter("AHHHHHHHHH")) {
+//	    out.println(privKey);
+//	}
 
-//     // Shows the public key, what will be given out freely
-//     System.out.println(pubKey);
-//     System.out.println();
-//
-//     // Shows the signature for learning purposes 
-//     System.out.println(privKey);
-//     
-//     //Is the Signature valid?
+     // Shows the public key, what will be given out freely
+     System.out.println(pubKey);
+     System.out.println();
+
+     // Shows the signature for learning purposes 
+     System.out.println(privKey);
+     
+     //Is the Signature valid?
 //     System.out.println(validSignature);
  }
 }

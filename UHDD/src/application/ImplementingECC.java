@@ -2,12 +2,17 @@ package application;
 
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-//import java.security.interfaces.ECPrivateKey;
-//import java.security.interfaces.ECPublicKey;
-import java.security.spec.*;
+import java.security.PublicKey;
+import java.security.PrivateKey;
+import java.security.Security;
+import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
+import java.security.KeyPair;
+import java.security.SecureRandom;
 import java.util.Base64;
+import java.security.spec.ECGenParameterSpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
@@ -15,8 +20,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-//import org.bouncycastle.jce.interfaces.ECPrivateKey;
-//import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.Arrays;
 
@@ -26,19 +29,21 @@ public class ImplementingECC {
 
 	
 	Security.addProvider(new BouncyCastleProvider());
-	ECGenParameterSpec spec = new ECGenParameterSpec("secp256r1");
-	KeyPairGenerator gen = KeyPairGenerator.getInstance("ECDH", "BC");
-	gen.initialize(spec, new SecureRandom());
-	KeyPair pair = gen.generateKeyPair();
-	PublicKey partyBPubKey = pair.getPublic();
-	PrivateKey partyBPrivKey = pair.getPrivate();
-	PublicKey partyAPubKey = pair.getPublic();
-	PrivateKey partyAPrivKey = pair.getPrivate();
 	
-	System.out.println(partyAPubKey);
-	System.out.println(partyAPrivKey);
-	System.out.println(partyBPubKey);
-	System.out.println(partyBPrivKey);
+	KeyPairGenerator gen = KeyPairGenerator.getInstance("ECDH", "BC");
+	ECGenParameterSpec spec = new ECGenParameterSpec("secp256r1");
+	gen.initialize(spec, new SecureRandom());
+	
+	KeyPair pair1 = gen.genKeyPair();
+	KeyPair pair2 = gen.genKeyPair();
+	
+	PrivateKey partyAPrivKey = pair1.getPrivate();
+	PublicKey partyAPubKey = pair1.getPublic();
+	
+	PrivateKey partyBPrivKey = pair2.getPrivate();
+	PublicKey partyBPubKey = pair2.getPublic();
+		
+	
 
 	
 	// 1. Generate the pre-master shared secret
@@ -78,22 +83,23 @@ public class ImplementingECC {
 	String decryptMe = cipherString; // Message received from Party A
 	byte[] decryptMeBytes = Base64.getDecoder().decode(decryptMe);
 	byte[] textBytes = cipher.doFinal(decryptMeBytes);
-	//String originalText = new String(textBytes);
+	String originalText = new String(textBytes);
 	
 //	// 7. Saving the key for use in another file
 //	try (PrintWriter out = new PrintWriter("key_Pub.txt")) {
 //	    out.println(partyBPubKey);
-//	}
-//	try (PrintWriter out = new PrintWriter("key_Priv.txt")) {
+////	}
+//	try (PrintWriter out = new PrintWriter("key_Priv")) {
 //	    out.println(partyAPrivKey);
 //	}
 //	// Saving the encrypted file
 //	try (PrintWriter out = new PrintWriter("Secret.txt")) {
 //	    out.println(decryptMe);
 //	}
-//
-//	System.out.println(partyAPrivKey);
-//	System.out.println(decryptMe);
+
+	System.out.println(secretKey);
+	System.out.println(ivSpec);
+	System.out.println(originalText);
 	
-}
+	}	
 }
