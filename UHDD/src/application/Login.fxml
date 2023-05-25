@@ -10,8 +10,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UI">
    <children>
       <TextField fx:id="userGrabber" layoutX="228.0" layoutY="160.0" promptText="enter username" />
-      <Button layoutX="325.0" layoutY="239.0" mnemonicParsing="false" onAction="#handleSignInAction" text="Sign In" />
-      <Button layoutX="224.0" layoutY="239.0" mnemonicParsing="false" onAction="#switchToCreateUser" text="New User" />
+      <Button layoutX="324.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleSignInAction" text="Sign In" />
+      <Button layoutX="228.0" layoutY="281.0" mnemonicParsing="false" onAction="#switchToCreateUser" text="New User" />
       <PasswordField fx:id="passGrabber" layoutX="228.0" layoutY="199.0" promptText="enter password" />
       <Text layoutX="154.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:">
          <font>
@@ -28,11 +28,17 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="actionGrabber" fill="#f51414" layoutX="188.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
+      <Text fx:id="actionGrabber" fill="#f51414" layoutX="188.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
       <Text layoutX="194.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, Sign in please">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Text>
+      <Text layoutX="155.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2FA Code:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfacode" layoutX="228.0" layoutY="240.0" promptText="enter code" />
    </children>
 </AnchorPane>
