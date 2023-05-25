@@ -130,7 +130,7 @@
                               <Font size="18.0" fx:id="x11" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="11.0" layoutY="86.0" style="&#10;" text="Middel name" textAlignment="CENTER" textFill="#10217d" wrapText="false">
+                        <Label alignment="CENTER" layoutX="11.0" layoutY="86.0" style="&#10;" text="Middle name" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                            <font>
                               <Font size="18.0" fx:id="x12" />
                            </font>

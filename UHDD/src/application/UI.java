@@ -176,27 +176,18 @@ public class UI {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
-		initialDB();
-		
-		
-//		dd.getItems().addAll(ddList);
-//		System.out.println(dd.getItems());
-		
-//		MySQL_test2 mySQL_test2 = new MySQL_test2();
-//		mySQL_test2.start(stage);
 	}
 	
 	@FXML
-    public void initialize() { // this will load all the variables in the fields referring to components  
+    public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
 		ddList = FXCollections.observableArrayList("one", "two", "three");
 		dd.getItems().addAll(ddList);
 		System.out.println(dd.getItems());
+		
+		initialDB(); // connect to the database
     }
 	
 	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
-		
-//		dd.setItems(FXCollections.observableArrayList("1", "2", "3"));
-//		System.out.println(dd.getItems());
 		
 		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -205,8 +196,6 @@ public class UI {
 		stage.show();
 		initialDB();
 		
-//		MySQL_test2 mySQL_test2 = new MySQL_test2();
-//		mySQL_test2.start(stage);
 	}
 	
 	public void switchToDashBoard(ActionEvent event) throws IOException {
@@ -272,20 +261,7 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
-			
-			// Toby's added
-//			rsa = new RSA_DSA(); // create a new object
-//			System.out.println("N:" + rsa.getN());
-//			System.out.println("D:" + rsa.getD());
-//			System.out.println("E:" + rsa.getE());
-//			
-//			encryptedPassword = rsa.encrypt(passCreate.getBytes());
-//			System.out.println("Encrypting BytesToString: " + RSA_DSA.bytesToString(encryptedPassword));
-//			System.out.println("PassCreate: " + passCreate); // check the byte value is working
-//			System.out.println("String in Bytes: " + RSA_DSA.bytesToString(passCreate.getBytes())); // check the byte value is working
-//			System.out.println("PassCreate getBytes: " + passCreate.getBytes()); // check the byte value is working
-			
-			
+					
 			saveCredentialsToFile(userCreate, passCreate);
 		}
 	}
@@ -438,31 +414,6 @@ public class UI {
 			while(scan.hasNextLine()) {
 				String data = scan.nextLine();
 				String[] part = data.split(":");
-		
-				// Toby's changes
-//				System.out.println("****************************************************************************");
-//				System.out.println("Password entered: " +  part[1]);
-//				tempByteArray = part[1].getBytes();
-//				System.out.println("tempByteArray String: " + new String(tempByteArray));
-//				decryptedPassword = rsa.decrypt(encryptedPassword);
-////				decryptedPassword = rsa.decrypt(part[1].getBytes());
-////				System.out.println("Part1 plain: " + part[1]);
-////				System.out.println("Part1 bytes: " + part[1].getBytes());
-//				
-//				//String passwordChecker = RSA_DSA.bytesToString(decryptedPassword);
-//				System.out.println("Decrypting Bytes: " + RSA_DSA.bytesToString(decryptedPassword));
-//				System.out.println("Decrypted String: " + new String(decryptedPassword));
-//				
-//				String result = RSA_DSA.bytesToString(decryptedPassword);
-//			    System.out.println("Decrypted String result: " + result);
-//			    System.out.println("Decrypted String result in bytes: " + result.getBytes());
-//			    
-//			    System.out.println("N:" + rsa.getN());
-//			    System.out.println("D:" + rsa.getD());
-//			    System.out.println("E:" + rsa.getE());
-//				
-//				System.out.println("Decrypting Bytes: " + RSA_DSA.bytesToString(decryptedPassword));
-//			    System.out.println("Decrypted String: " + new String(decryptedPassword));
 				
 			    if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
 				scan.close();
@@ -482,21 +433,17 @@ public class UI {
 		initialDB();
 		data = FXCollections.observableArrayList();
         try {
-            //SQL FOR SELECTING ALL OF CUSTOMER
+            //MySql query table
             String SQL = "SELECT * from `testdb`.`test3`";
             //ResultSet
             ResultSet rs = connection.createStatement().executeQuery(SQL);
 
-            /**
-             * ********************************
-             * TABLE COLUMN ADDED DYNAMICALLY *
-             *********************************
-             */
+            // add table column dynamically
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
                 final int j = i;
-                col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                col = new TableColumn(rs.getMetaData().getColumnName(i + 1)); // loops through the results and grabs the column name
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { // makes the columns ready for population
                     public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
                     }
@@ -506,11 +453,7 @@ public class UI {
                 System.out.println("Column [" + i + "] ");
             }
 
-            /**
-             * ******************************
-             * Data added to ObservableList *
-             *******************************
-             */
+            // add to observation list
             while (rs.next()) {
                 //Iterate Row
                 ObservableList<String> row = FXCollections.observableArrayList();
@@ -523,7 +466,7 @@ public class UI {
 
             }
 
-            //FINALLY ADDED TO TableView
+            //add to table view
             tableView.setItems(data);
             System.out.println("Data: " + data);
         } catch (Exception e) {
@@ -534,8 +477,6 @@ public class UI {
 	
 	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("viewed");
-		// TODO Auto-generated method stub
-		initialDB();
 		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
 		
 		try {
@@ -579,7 +520,7 @@ public class UI {
 	}
 	
 	@FXML private void clear(ActionEvent event) {
-		// TODO Auto-generated method stub
+		// clear the input text
 		textId.setText(null);
 		textLastName.setText(null);
 		textFirstName.setText(null);
@@ -592,7 +533,7 @@ public class UI {
 	}
 	
 	@FXML private void insert(ActionEvent event) {
-		// TODO Auto-generated method stub
+		
 		String insertQuery = "INSERT INTO `testdb`.`test3` "
 				+ "(ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email) "
 				+ "VALUES ('" + textId.getText().trim() + "', '" + textFirstName.getText().trim() + 
@@ -619,7 +560,7 @@ public class UI {
 	}
 	
 	private void loadFields(ResultSet results) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		if (results.next()) {
 			textLastName.setText(results.getString(2));
 			textFirstName.setText(results.getString(3));
@@ -646,7 +587,7 @@ public class UI {
 	}
 	
 	public void initialDB() throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
+		
 		// loads and checks the driver
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		System.out.println("Driver loaded:");
@@ -661,10 +602,12 @@ public class UI {
 			connection = DriverManager.getConnection(url, username, password);
 			System.out.println("Database connected:");
 			labelStatus.setText("Database connected");
+			labelStatus.setTextFill(Color.GREEN);
 			statement = connection.createStatement();
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 			labelStatus.setText("Connection failed");
+			labelStatus.setTextFill(Color.RED);
 		} 
 	}
 	
@@ -691,8 +634,6 @@ public class UI {
 		
 	}
 	
-	
-
 		public static String generateSecretKey() {
 			SecureRandom random = new SecureRandom();
 			byte[] bytes = new byte[20];
