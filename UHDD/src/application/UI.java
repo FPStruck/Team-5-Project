@@ -558,6 +558,44 @@ public class UI {
 		}
 		
 	}
+  
+  	//Overview button actions
+	
+    @FXML
+    private void fetchDiagnoses() {
+        System.out.println("Hopefully gets 'diagnoses' info");
+    }
+    
+    // Other controller methods and variables
+    
+	
+	
+	@FXML
+	private void fetchHistory() {
+	    System.out.println("Get patient history");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchPerscription() {
+	    System.out.println("Get Patient perscription");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchReport() {
+	    System.out.println("Gets report");
+	}
+	
+	// Other controller methods and variables
+	
+	}
 	
 	private void loadFields(ResultSet results) throws SQLException {
 		
@@ -671,4 +709,5 @@ public class UI {
 	
 
 }
+
 
