@@ -254,6 +254,7 @@
 							    <TableColumn text="Recent Diagnoses" />
 							    </columns>
                               </TableView>
+                              <!-- If the buttons do not work once implemented try moving the button in between table view or columns   -->
                                 <Button text="Add Diagnoses" onAction="#fetchDiagnoses" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
                            </children>
                   </AnchorPane>
@@ -308,7 +309,7 @@
 							    <TableColumn text="Progress Report" />
 							    </columns>
                               </TableView>                           
-                                    <Button text="IDK REPORT BUTTON" onAction="#fetchReport" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
+                                    <Button text="Report button" onAction="#fetchReport" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
                            </children>
                   </AnchorPane>
                 </content>
