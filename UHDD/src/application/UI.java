@@ -133,6 +133,7 @@ public class UI {
 	@FXML private Text actionGrabberCreator;
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
+	@FXML private TextField emailGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
 	@FXML private Button view;
@@ -355,10 +356,10 @@ public class UI {
 	}
 	
 	
-     @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
+@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
-		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Username and Password cannot be empty");
+		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("All fields cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} else if(userGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Username cannot be empty");
@@ -366,14 +367,17 @@ public class UI {
 		} else if(passGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Password cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
+		} else if(emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("Email cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
 		} 
 		else {
 			actionGrabberCreator.setText("User Creation Successful");
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
-					
-			saveCredentialsToFile(userCreate, passCreate);
+			String emailCreate = emailGrabberCreator.getText();
+			saveCredentialsToFile(userCreate, passCreate, emailCreate);
 		}
 	}
 
@@ -504,12 +508,15 @@ public class UI {
 		
 	}
 	
-	private void saveCredentialsToFile(String username, String password) {
+	private void saveCredentialsToFile(String username, String password, String email) {
 		try {
 			String directory = System.getProperty("user.home");
 			String filePath = directory + "/Documents/credentials.txt";
 			FileWriter writer = new FileWriter(filePath, true);
-			writer.write(username + ":" + password + "\n");
+			EncryptionController enc = new EncryptionController();
+			String hashedPassword = enc.hashData(password);
+			writer.write(username + ":" + hashedPassword + ":" + email + "\n");
+			System.out.println(hashedPassword);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -713,7 +720,7 @@ public class UI {
 		// connection for database...make sure the URL is correct JDBC:MYSQL
 		String url = "jdbc:mysql://127.0.0.1:3306/testdb";
 		String username = "root";
-		String password = "mysql";
+		String password = "1234";
 		
 		// connect to the database
 		try {
