@@ -1,341 +1,295 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.TableColumn?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UI">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-   <items>
-       <AnchorPane style="-fx-background-color: #9370DB;">
-          <children>
-            <Label alignment="CENTER" layoutX="22.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="UHDD&#10;Nurse dashboard" textFill="WHITE" wrapText="false">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-            </Label>
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="130.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Dashboard" textFill="WHITE" wrapText="false">
-                     <font>
-                        <Font size="18.0" fx:id="x11" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="164.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Schedules" textFill="WHITE" wrapText="false">
-                     <font>
-                        <Font size="18.0" fx:id="x111" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="198.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Patient Directory" textFill="WHITE" wrapText="false">
-                     <font>
-                        <Font size="24.0" fx:id="x1111" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="18.0" layoutY="241.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Notes" textFill="WHITE" wrapText="false">
-                     <font>
-                        <Font size="18.0" fx:id="x11111" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="282.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Settings" textFill="WHITE" wrapText="false">
-                     <font>
-                        <Font size="18.0" fx:id="x111111" />
-                     </font>
-                  </Label>
-                  <Button fx:id="back" layoutX="22.0" layoutY="512.0" mnemonicParsing="false" onAction="#switchToTableCreator" style="-fx-background-color: white;" text="back" textFill="#16c2d5" />
-          </children> 
-        </AnchorPane>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <HBox prefHeight="44.0" prefWidth="443.0">
-                     <children>
-                        <TextField promptText="Search">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </TextField>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nurse">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Text>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Info">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                        </Text>
-		           </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                        
-                                            <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Overview">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                        </Text>
-		           </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                        
-                                            <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Progress and Plan">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                        </Text>
-		           </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                        
-                                            <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Documents">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                        </Text>
-		           </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                        
-                                            <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Visits">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                        </Text>
-		           </children>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </VBox>                        
-                     </children>
-                  </HBox>
-                  
-                  <HBox spacing="30">
-                      <padding>
-       						 <Insets top="10" right="10" bottom="10" left="10" />
-  					  </padding>
-  				
-                                <ScrollPane prefHeight="260.0" prefWidth="260.0">
-                <content>
-                  <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" prefWidth="250.0">
-                           <children>
-                              <TableView fx:id="tableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
-                              <columns>
-							    <TableColumn text="Recent Diagnoses" />
-							    </columns>
-                              </TableView>
-                              <!-- If the buttons do not work once implemented try moving the button in between table view or columns   -->
-                                <Button text="Add Diagnoses" onAction="#fetchDiagnoses" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
-                           </children>
-                  </AnchorPane>
-                </content>
-              </ScrollPane>
-
-              
-                                              <ScrollPane prefHeight="260.0" prefWidth="260.0">
-                <content>
-                  <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" prefWidth="250.0">
-                           <children>
-                              <TableView fx:id="tableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
-                              <columns>
-							    <TableColumn text="Visit History" />
-							    </columns>
-                              </TableView> 
-                  				 <Button text="View notes" onAction="#fetchHistory" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
-                           </children>
-                  </AnchorPane>
-                </content>
-              </ScrollPane>
-                 </HBox>
-                  
-                  <!-- Second set of tables -->
-                  
-                  <HBox spacing="30">
-                      <padding>
-       						 <Insets top="10" right="10" bottom="10" left="10" />
-  					  </padding>
-                                <ScrollPane prefHeight="260.0" prefWidth="260.0">
-                <content>
-                  <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" prefWidth="250.0">
-                           <children>
-                              <TableView fx:id="tableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
-                              <columns>
-							    <TableColumn text="Assign Perscription" />
-							    </columns>
-                              </TableView>
-                    			  <Button text="Generate Perscription" onAction="#fetchPerscription" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
-                           </children>
-                  </AnchorPane>
-                </content>
-              </ScrollPane>
-
-              
-                                              <ScrollPane prefHeight="260.0" prefWidth="260.0">
-                <content>
-                  <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" prefWidth="250.0">
-                           <children>
-                              <TableView fx:id="tableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
-                              <columns>
-							    <TableColumn text="Progress Report" />
-							    </columns>
-                              </TableView>                           
-                                    <Button text="Report button" onAction="#fetchReport" AnchorPane.bottomAnchor="10" /> <!-- ACTION NEEDS TO BE ADDED -->
-                           </children>
-                  </AnchorPane>
-                </content>
-              </ScrollPane>
-                 </HBox>
-                  
-     	 		</children>
-            </VBox>
-      </items>
-    </SplitPane>
-    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
-      <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-          <font>
-            <Font size="11.0" fx:id="x3" />
-          </font>
-          <textFill>
-            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
-          </textFill>
-        </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
-      </children>
-      <padding>
-        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-      </padding>
-    </HBox>
-  </children>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UI">
+   <children>
+      <TextField alignment="CENTER" layoutX="303.0" layoutY="31.0" prefHeight="34.0" prefWidth="417.0" text="Search" />
+      <Line endX="480.0" layoutX="398.0" layoutY="82.0" startX="-100.0" />
+      <Line endX="308.0" endY="-59.0" layoutX="431.0" layoutY="92.0" startX="308.0" startY="-27.0" />
+      <Pane layoutX="768.0" layoutY="27.0" prefHeight="45.0" prefWidth="40.0" style="-fx-background-color: grey;" />
+      <Text layoutX="824.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dr C">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text fill="#0349ff" layoutX="298.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Info">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#0349ff" layoutX="420.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Overview">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#0349ff" layoutX="536.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#0349ff" layoutX="687.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#0349ff" layoutX="809.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visits">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Pane layoutY="-5.0" prefHeight="736.0" prefWidth="261.0" style="-fx-background-color: #03a9f4;">
+         <children>
+            <Pane layoutX="23.0" layoutY="29.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Pane layoutX="45.0" layoutY="165.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Pane layoutX="45.0" layoutY="273.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Pane layoutX="45.0" layoutY="378.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Pane layoutX="45.0" layoutY="478.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Pane layoutX="45.0" layoutY="566.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Text fill="WHITE" layoutX="93.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UHDD Dr Dashboard" wrappingWidth="101.4453125">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="130.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notes">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="130.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Schedules">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="130.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Directory" wrappingWidth="112.4296875">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="130.0" layoutY="513.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="129.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Billing">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Pane layoutX="45.0" layoutY="663.0" prefHeight="58.0" prefWidth="61.0" style="-fx-background-color: grey;" />
+            <Text fill="WHITE" layoutX="129.0" layoutY="698.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="283.0" layoutY="124.0" prefHeight="265.0" prefWidth="214.0" style="-fx-border-color: black;">
+         <children>
+            <Text layoutX="37.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent Diagnoses" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Diagnoses)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="40.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Diagnosis">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Diagnoses)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Diagnoses)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="536.0" layoutY="124.0" prefHeight="265.0" prefWidth="368.0" style="-fx-border-color: black;">
+         <children>
+            <Text layoutX="37.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visits History" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Dr)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="40.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Visit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="158.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Dr)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="158.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Dr)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="158.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Dr)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="158.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="263.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View notes">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="263.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View notes">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="263.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View notes">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="263.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View notes">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="283.0" layoutY="431.0" prefHeight="265.0" prefWidth="207.0" style="-fx-border-color: black;">
+         <children>
+            <Text layoutX="37.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perscriptions" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perscription Item">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="40.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Perscription">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perscription Item">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Perscription Item">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="40.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(date)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="497.0" layoutY="431.0" prefHeight="265.0" prefWidth="408.0" style="-fx-border-color: black;">
+         <children>
+            <Text layoutX="37.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Report" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="273.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Graph">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <BarChart alternativeColumnFillVisible="true" barGap="12.0" layoutY="36.0" prefHeight="195.0" prefWidth="250.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <Text layoutX="14.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Tasks completed (%)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#0349ff" layoutX="273.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Graph">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="237.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RemainingTasks (%)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
