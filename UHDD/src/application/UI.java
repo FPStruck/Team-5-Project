@@ -595,7 +595,7 @@ public class UI {
 	
 	// Other controller methods and variables
 	
-	}
+	
 	
 	private void loadFields(ResultSet results) throws SQLException {
 		
