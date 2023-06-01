@@ -30,17 +30,23 @@
             <Font name="System Bold" size="43.0" />
          </font>
       </Text>
-      <Button fx:id="createNewUser" layoutX="291.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleCreateNewUsernAction" text="Create User">
+      <Button fx:id="createNewUser" layoutX="292.0" layoutY="272.0" mnemonicParsing="false" onAction="#handleCreateNewUsernAction" text="Create User">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Button fx:id="backButton" layoutX="220.0" layoutY="245.0" mnemonicParsing="false" onAction="#switchToHomepage" text="Back">
+      <Button fx:id="backButton" layoutX="223.0" layoutY="272.0" mnemonicParsing="false" onAction="#switchToHomepage" text="Back">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
       <Text fx:id="actionGrabberCreator" fill="#f51414" layoutX="180.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
       <PasswordField fx:id="passGrabberCreator" layoutX="226.0" layoutY="199.0" promptText="enter new password" />
+      <Text layoutX="180.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
+         <font>
+            <Font size="15.0" /> 
+         </font>
+      </Text>
+      <TextField fx:id="emailGrabberCreator" layoutX="226.0" layoutY="239.0" promptText="enter new username" />
    </children>
 </AnchorPane>
