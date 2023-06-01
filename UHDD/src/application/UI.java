@@ -317,13 +317,22 @@ public class UI {
 	        Optional<Integer> result = dialog.showAndWait();
 	        if (result.isPresent()) {
 	            inputCode = result.get();
+	        } else {
+	        	actionGrabber.setText("Email verification cancelled");
+				actionGrabber.setFill(Color.RED);
+				return false;
 	        }
 
 	        // Check if the input code matches the expected value
 	        if (inputCode == expectedCode) {
 	            System.out.println("Verification successful!");
 	            return true;
-	        } 
+	        } else if (inputCode != expectedCode) {
+	        	dialog.close();
+	        	actionGrabber.setText("Wrong code input. Email verification cancelled");
+				actionGrabber.setFill(Color.RED);
+				return false;
+	        }
 	    } catch (MessagingException mex) {
 	        mex.printStackTrace();
 	    }
@@ -349,8 +358,6 @@ public class UI {
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
-			} else if (loginSuccessful() == false) {
-				actionGrabber.setText("No Credentials Found");
 			}
 		}
 	}
@@ -542,10 +549,12 @@ public class UI {
 	                	System.out.println(part[2]);
 	                    scan.close();
 	                    return part[2]; // return email address
-	                }
+	                } 
 	            }
 	        }
 	        scan.close();
+	        actionGrabber.setText("no match found");
+			actionGrabber.setFill(Color.RED);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
