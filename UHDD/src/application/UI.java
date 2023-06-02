@@ -364,7 +364,7 @@ public class UI {
 	
 	
 @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
-		
+	CredentialManager CredentialManager = new CredentialManager();
 		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("All fields cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
@@ -384,7 +384,7 @@ public class UI {
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
 			String emailCreate = emailGrabberCreator.getText();
-			saveCredentialsToFile(userCreate, passCreate, emailCreate);
+			CredentialManager.saveCredentialsToFile(userCreate, passCreate, emailCreate);
 		}
 	}
 
@@ -515,20 +515,6 @@ public class UI {
 		
 	}
 	
-	private void saveCredentialsToFile(String username, String password, String email) {
-		try {
-			String directory = System.getProperty("user.home");
-			String filePath = directory + "/Documents/credentials.txt";
-			FileWriter writer = new FileWriter(filePath, true);
-			EncryptionController enc = new EncryptionController();
-			String hashedPassword = enc.hashData(password);
-			writer.write(username + ":" + hashedPassword + ":" + email + "\n");
-			System.out.println(hashedPassword);
-			writer.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	private String checkCredentialsInFile(String username, String password) {
 	    try {
