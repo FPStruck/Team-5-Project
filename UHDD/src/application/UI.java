@@ -77,6 +77,8 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import application.EmailManager.LoginResult;
+
 import java.util.*;  
 import javax.mail.*;  
 import javax.mail.internet.*;  
@@ -255,88 +257,34 @@ public class UI {
 	}
 	
 	public boolean loginSuccessful() {
-	    String userLog = userGrabber.getText();
+		CredentialManager credentialManager = new CredentialManager();
+		String userLog = userGrabber.getText();
 	    String passLog = passGrabber.getText();
-	    String to = checkCredentialsInFile(userLog, passLog);
-	    String from = "Verifier";
-	    String host = "smtp.gmail.com";
-	    int port = 587;
-	    String username = "jonoleo@gmail.com";
-	    String password = "xxx";
-	    int expectedCode = (int) (Math.random() * 1000000);
-	    int inputCode = 0;
-
-	    //email properties
-	    Properties properties = System.getProperties();  
-	    properties.setProperty("mail.smtp.host", host);
-	    properties.setProperty("mail.smtp.port", String.valueOf(port));
-	    properties.setProperty("mail.smtp.starttls.enable", "true");
-	    properties.setProperty("mail.smtp.auth", "true");
-
-	    // Get the email session object  
-	    Session session = Session.getDefaultInstance(properties,  
-	        new javax.mail.Authenticator() {  
-	            protected PasswordAuthentication getPasswordAuthentication() {  
-	                return new PasswordAuthentication(username, password);  
-	            }  
-	        });  
-
-	    //message  
-	    try {  
-	        MimeMessage message = new MimeMessage(session);  
-	        message.setFrom(new InternetAddress(from));  
-	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));  
-	        message.setSubject("Verification Code");  
-	        message.setText("Your verification code is: " + expectedCode);  
-
-	        //Send message to email
-	        Transport transport = session.getTransport("smtp");
-	        transport.connect(host, username, password);
-	        transport.sendMessage(message, message.getAllRecipients());
-	        transport.close();
-	        System.out.println("Verification code sent to " + to);  
-
-	        // Display the dialog box for verification code
-	        Dialog<Integer> dialog = new Dialog<>();
-	        dialog.setTitle("Verification Code");
-	        dialog.setHeaderText("Enter the verification code:");
-
-	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
-	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
-
-	        TextField verificationCodeField = new TextField();
-	        Platform.runLater(() -> verificationCodeField.requestFocus());
-	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
-	        dialog.setResultConverter(dialogButton -> {
-	            if (dialogButton == submitButton) {
-	                return Integer.parseInt(verificationCodeField.getText());
-	            }
-	            return null;
-	        });
-
-	        Optional<Integer> result = dialog.showAndWait();
-	        if (result.isPresent()) {
-	            inputCode = result.get();
-	        } else {
-	        	actionGrabber.setText("Email verification cancelled");
-				actionGrabber.setFill(Color.RED);
-				return false;
-	        }
-
-	        // Check if the input code matches the expected value
-	        if (inputCode == expectedCode) {
-	            System.out.println("Verification successful!");
-	            return true;
-	        } else if (inputCode != expectedCode) {
-	        	dialog.close();
-	        	actionGrabber.setText("Wrong code input. Email verification cancelled");
-				actionGrabber.setFill(Color.RED);
-				return false;
-	        }
-	    } catch (MessagingException mex) {
-	        mex.printStackTrace();
+	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
+	    if(to == null) {
+	    	actionGrabber.setText("no match found");
+			actionGrabber.setFill(Color.RED);
 	    }
-	    return false;
+	    EmailManager emailManager = new EmailManager();
+	    LoginResult result = emailManager.verifyLogin(userLog, passLog, to);
+	    if (result == LoginResult.SUCCESSFUL) {
+	        // Handle successful login
+	    	return true;
+	    } else if (result == LoginResult.WRONG_CODE) {
+	        // Handle wrong code scenario
+	    	actionGrabber.setText("Wrong code input. Email verification cancelled");
+			actionGrabber.setFill(Color.RED);
+			return false;
+	    } else if (result == LoginResult.CANCELLED) {
+	        // Handle login cancelled scenario
+	    	actionGrabber.setText("Email verification cancelled");
+			actionGrabber.setFill(Color.RED);
+			return false;
+	    } else {
+	        // Handle any other result if necessary
+	    	return false;
+	    }
+
 	}
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
@@ -516,36 +464,6 @@ public class UI {
 	}
 	
 	
-	private String checkCredentialsInFile(String username, String password) {
-	    try {
-	    	EncryptionController enc = new EncryptionController();
-	    	String directory = System.getProperty("user.home");
-	        String filePath = directory + "/Documents/credentials.txt";
-	        File file = new File(filePath);
-	        Scanner scan = new Scanner(file);
-	        while (scan.hasNextLine()) {
-	            String data = scan.nextLine();
-	            String[] part = data.split(":");
-	            if (part.length == 3 && part[0].equals(username)) {
-	                String storedHashedPassword = part[1];
-	                String inputHashedPassword = enc.hashData(password);
-	                System.out.println(inputHashedPassword);
-	                System.out.println(storedHashedPassword);
-	                if (storedHashedPassword.equals(inputHashedPassword)) {
-	                	System.out.println(part[2]);
-	                    scan.close();
-	                    return part[2]; // return email address
-	                } 
-	            }
-	        }
-	        scan.close();
-	        actionGrabber.setText("no match found");
-			actionGrabber.setFill(Color.RED);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	    return null;
-	}
 	
 	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");

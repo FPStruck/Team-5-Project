@@ -23,9 +23,10 @@ public class CredentialManager {
 		}
 	}
 	
-	/*
+	
 	protected String checkCredentialsInFile(String username, String password) {
-	    try {
+	    //loops through the credentials.txt to store each line in an array which should have an email at index 2
+		try {
 	    	EncryptionController enc = new EncryptionController();
 	    	String directory = System.getProperty("user.home");
 	        String filePath = directory + "/Documents/credentials.txt";
@@ -47,12 +48,14 @@ public class CredentialManager {
 	            }
 	        }
 	        scan.close();
+	        /*
 	        actionGrabber.setText("no match found");
 			actionGrabber.setFill(Color.RED);
+			*/
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
 	    return null;
 	}
-	*/
+	
 }
