@@ -15,8 +15,8 @@ public class AuthenticatorEMAIL
       String from = "Verifier";
       String host = "smtp.gmail.com";
       int port = 587;
-      String username = "tobez103@gmail.com";
-      String password = "vyvjfygmhyyfkcix";
+      String username = "jonoleo@gmail.com";
+      String password = "xxx";
       
       // Set email properties
       Properties properties = System.getProperties();  

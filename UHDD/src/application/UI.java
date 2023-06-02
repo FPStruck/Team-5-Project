@@ -261,8 +261,8 @@ public class UI {
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
 	    int port = 587;
-	    String username = "mina.gemian79@gmail.com";
-	    String password = "ecdxshtuimguqmom";
+	    String username = "jonoleo@gmail.com";
+	    String password = "xxx";
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
 
@@ -663,7 +663,7 @@ public class UI {
 		textCity.setText(null);
 		textState.setText(null);
 		textTelephone.setText(null);
-		textEmail.setText(null);
+		textEmail.setText(null); 
 	}
 	
 	@FXML private void insert(ActionEvent event) {
@@ -727,9 +727,9 @@ public class UI {
 		System.out.println("Driver loaded:");
 		
 		// connection for database...make sure the URL is correct JDBC:MYSQL
-		String url = "jdbc:mysql://127.0.0.1:3306/testdb";
-		String username = "root";
-		String password = "1234";
+		String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
+		String username = "itc303admin";
+		String password = "L3cr3X2bNCtcvf";
 		
 		// connect to the database
 		try {

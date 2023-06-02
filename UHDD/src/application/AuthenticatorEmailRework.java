@@ -16,8 +16,8 @@ public class AuthenticatorEmailRework
       String from = "Verifier";
       String host = "smtp.gmail.com";
       int port = 587;
-      final String username = "tobez103@gmail.com";
-      final String password = "kagdrwlehcakxyhi";
+      final String username = "jonoleo@gmail.com";
+      final String password = "xxxx";
       
       // Set email properties
       Properties properties = System.getProperties();  

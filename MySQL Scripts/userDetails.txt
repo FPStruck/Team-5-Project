@@ -1,0 +1,9 @@
+use produhdb;
+create table userdetails
+	(userId int(11) unsigned not null auto_increment,
+    username varchar(20) default null,
+    password varchar(100) default null,
+    salt varchar(20) default null,
+    primary key(userId)
+    ) engine = innodb default charset = latin1;
+    
