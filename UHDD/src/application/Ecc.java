@@ -6,11 +6,7 @@ import java.security.spec.*;
 public class Ecc {
 
  public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
-   
-=======
 
->>>>>>> main
      // Create a public and private key for secp384r1.
 	 
 	 /* All the increase complexity of curves
@@ -21,10 +17,6 @@ public class Ecc {
 		secp521r1 (NIST P-521)
 	  */
 	 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
      KeyPairGenerator g = KeyPairGenerator.getInstance("EC","SunEC"); // create a key pair object with two which represent the algorithm and the provider
      ECGenParameterSpec ecsp = new ECGenParameterSpec("secp256r1"); // create a elliptic-curve with a name string 
      g.initialize(ecsp);
@@ -61,15 +53,5 @@ public class Ecc {
      
      //Is the Signature valid?
      System.out.println("This is the results after comparing the signature created by the private key with the public key: " + validSignature);
-<<<<<<< HEAD
-   
-        // Shows the public key, what will be given out freely
-     System.out.println(pubKey);
-     System.out.println();
-
-     // Shows the signature for learning purposes 
-     System.out.println(privKey);
-=======
->>>>>>> main
  }
 }

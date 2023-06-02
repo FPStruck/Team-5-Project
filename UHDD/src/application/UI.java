@@ -2,8 +2,6 @@ package application;
 	
 import javafx.stage.Stage;
 import javafx.util.Callback;
-<<<<<<< HEAD
-=======
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,43 +63,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
->>>>>>> main
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.file.Path;
-import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.codec.binary.Base32;
-import org.apache.commons.codec.binary.Hex;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
+import java.util.*;  
+import javax.mail.*;  
+import javax.mail.internet.*;  
+import javax.activation.*;  
 
-import de.taimos.totp.TOTP;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -112,19 +95,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -132,7 +114,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
+import javax.mail.SendFailedException;
 
 
 public class UI {
@@ -151,6 +133,7 @@ public class UI {
 	@FXML private Text actionGrabberCreator;
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
+	@FXML private TextField emailGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
 	@FXML private Button view;
@@ -232,60 +215,6 @@ public class UI {
 		stage.show();
 		MySQL_test mySQL_test = new MySQL_test();
 		mySQL_test.start(stage);
-<<<<<<< HEAD
-	}
-	
-	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
-		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
-	
-	@FXML
-    public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
-		ddList = FXCollections.observableArrayList("one", "two", "three");
-		dd.getItems().addAll(ddList);
-		System.out.println(dd.getItems());
-		
-		initialDB(); // connect to the database
-    }
-	
-	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
-		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		initialDB();
-		
-	}
-	
-	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
-	
-	public boolean loginSuccessful() throws IOException, WriterException {
-		String userLog = userGrabber.getText();
-		String passLog = passGrabber.getText();
-		boolean credentialsMatch = checkCredentialsInFile(userLog, passLog);
-		if(credentialsMatch) {
-			boolean tfa = startGoogleAppAuthenticator();
-			return tfa;
-		} else {
-			return false;
-		}
-	}
-	
-	@FXML protected void handleSignInAction(ActionEvent event) throws IOException, WriterException {
-=======
 	}
 	
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
@@ -411,7 +340,6 @@ public class UI {
 	}
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
->>>>>>> main
 		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
@@ -430,11 +358,6 @@ public class UI {
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
-<<<<<<< HEAD
-			} else if (loginSuccessful() == false) {
-				actionGrabber.setText("No Credentials Found");
-=======
->>>>>>> main
 			}
 		}
 	}
@@ -460,8 +383,8 @@ public class UI {
 			actionGrabberCreator.setFill(Color.GREEN);
 			String userCreate = userGrabberCreator.getText();
 			String passCreate = passGrabberCreator.getText();
-					
-			saveCredentialsToFile(userCreate, passCreate);
+			String emailCreate = emailGrabberCreator.getText();
+			saveCredentialsToFile(userCreate, passCreate, emailCreate);
 		}
 	}
 
@@ -592,40 +515,21 @@ public class UI {
 		
 	}
 	
-	private void saveCredentialsToFile(String username, String password) {
+	private void saveCredentialsToFile(String username, String password, String email) {
 		try {
 			String directory = System.getProperty("user.home");
 			String filePath = directory + "/Documents/credentials.txt";
 			FileWriter writer = new FileWriter(filePath, true);
-			writer.write(username + ":" + password + "\n");
+			EncryptionController enc = new EncryptionController();
+			String hashedPassword = enc.hashData(password);
+			writer.write(username + ":" + hashedPassword + ":" + email + "\n");
+			System.out.println(hashedPassword);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-<<<<<<< HEAD
-	private boolean checkCredentialsInFile(String username, String password) {
-		try {
-			String directory = System.getProperty("user.home");
-			String filePath = directory + "/Documents/credentials.txt";
-			File file = new File(filePath);
-			Scanner scan = new Scanner(file);
-			while(scan.hasNextLine()) {
-				String data = scan.nextLine();
-				String[] part = data.split(":");
-				
-			    if(part.length == 2 && part[0].equals(username) && part[1].equals(password)) {
-				scan.close();
-				return true;
-				} 
-			}
-			scan.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-=======
 	private String checkCredentialsInFile(String username, String password) {
 	    try {
 	    	EncryptionController enc = new EncryptionController();
@@ -655,7 +559,6 @@ public class UI {
 	        e.printStackTrace();
 	    }
 	    return null;
->>>>>>> main
 	}
 	
 	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
@@ -789,47 +692,6 @@ public class UI {
 		}
 		
 	}
-<<<<<<< HEAD
-  
-  	//Overview button actions
-	
-    @FXML
-    private void fetchDiagnoses() {
-        System.out.println("Hopefully gets 'diagnoses' info");
-    }
-    
-    // Other controller methods and variables
-    
-	
-	
-	@FXML
-	private void fetchHistory() {
-	    System.out.println("Get patient history");
-	}
-	
-	// Other controller methods and variables
-	
-	
-	
-	@FXML
-	private void fetchPerscription() {
-	    System.out.println("Get Patient perscription");
-	}
-	
-	// Other controller methods and variables
-	
-	
-	
-	@FXML
-	private void fetchReport() {
-	    System.out.println("Gets report");
-	}
-	
-	// Other controller methods and variables
-	
-	
-=======
->>>>>>> main
 	
 	private void loadFields(ResultSet results) throws SQLException {
 		
@@ -867,11 +729,7 @@ public class UI {
 		// connection for database...make sure the URL is correct JDBC:MYSQL
 		String url = "jdbc:mysql://127.0.0.1:3306/testdb";
 		String username = "root";
-<<<<<<< HEAD
-		String password = "mysql";
-=======
 		String password = "1234";
->>>>>>> main
 		
 		// connect to the database
 		try {
@@ -887,71 +745,5 @@ public class UI {
 		} 
 	}
 	
-<<<<<<< HEAD
-	public boolean startGoogleAppAuthenticator () throws WriterException, IOException{
-		
-			String secretKey = "QDWSM3OYBPGTEVSPB5FKVDM3CSNCWHVI";
-			String email = "Team5@gmail.com";
-			String companyName = "CSU ITC 303";
-			String barCodeUrl = getGoogleAuthenticatorBarCode(secretKey, email, companyName);
-			createQRCode(barCodeUrl, "QRCode.png", 400, 400);
-					
-			System.out.print("Please enter 2fA code here -> ");
-//			Scanner scanner = new Scanner(System.in);
-//			String code = scanner.nextLine();
-			String code = tfacode.getText();
-			if (code.equals(getTOTPCode(secretKey))) {
-				System.out.println("Logged in successfully");
-				return true;
-			} else {
-				System.out.println("Invalid 2FA Code");
-				return false;
-			}
-
-		
-	}
-	
-		public static String generateSecretKey() {
-			SecureRandom random = new SecureRandom();
-			byte[] bytes = new byte[20];
-			random.nextBytes(bytes);
-			Base32 base32 = new Base32();
-			return base32.encodeToString(bytes);
-		}
-
-		public static String getTOTPCode(String secretKey) {
-			Base32 base32 = new Base32();
-			byte[] bytes = base32.decode(secretKey);
-			String hexKey = Hex.encodeHexString(bytes);
-			return TOTP.getOTP(hexKey);
-		}
-
-		public static String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
-			try {
-				return "otpauth://totp/"
-						+ URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
-						+ "?secret=" + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
-						+ "&issuer=" + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
-			} catch (UnsupportedEncodingException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
-		public static void createQRCode(String barCodeData, String filePath, int height, int width)
-				throws WriterException, IOException {
-			BitMatrix matrix = new MultiFormatWriter().encode(barCodeData, BarcodeFormat.QR_CODE, width, height);
-			try (FileOutputStream out = new FileOutputStream(filePath)) {
-				MatrixToImageWriter.writeToStream(matrix, "png", out);
-			}
-		}
-
-	
 
 }
-
-
-=======
-
-}
-
->>>>>>> main

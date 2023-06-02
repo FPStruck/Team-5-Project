@@ -233,4 +233,3 @@ public class MySQL_test2 extends Application{
 	}
 		
 }
-
