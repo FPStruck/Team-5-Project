@@ -44,7 +44,7 @@
       <PasswordField fx:id="passGrabberCreator" layoutX="226.0" layoutY="199.0" promptText="enter new password" />
       <Text layoutX="180.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
          <font>
-            <Font size="15.0" />
+            <Font size="15.0" /> 
          </font>
       </Text>
       <TextField fx:id="emailGrabberCreator" layoutX="226.0" layoutY="239.0" promptText="enter new username" />

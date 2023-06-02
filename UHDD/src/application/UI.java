@@ -2,6 +2,70 @@ package application;
 	
 import javafx.stage.Stage;
 import javafx.util.Callback;
+<<<<<<< HEAD
+=======
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+
+import javafx.application.Application;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+>>>>>>> main
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,6 +132,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
 
 
 public class UI {
@@ -167,6 +232,7 @@ public class UI {
 		stage.show();
 		MySQL_test mySQL_test = new MySQL_test();
 		mySQL_test.start(stage);
+<<<<<<< HEAD
 	}
 	
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
@@ -219,6 +285,133 @@ public class UI {
 	}
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException, WriterException {
+=======
+	}
+	
+	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
+		
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML
+    public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
+		ddList = FXCollections.observableArrayList("one", "two", "three");
+		dd.getItems().addAll(ddList);
+		System.out.println(dd.getItems());
+		
+		initialDB(); // connect to the database
+    }
+	
+	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
+		
+		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		initialDB();
+		
+	}
+	
+	public void switchToDashBoard(ActionEvent event) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	public boolean loginSuccessful() {
+	    String userLog = userGrabber.getText();
+	    String passLog = passGrabber.getText();
+	    String to = checkCredentialsInFile(userLog, passLog);
+	    String from = "Verifier";
+	    String host = "smtp.gmail.com";
+	    int port = 587;
+	    String username = "mina.gemian79@gmail.com";
+	    String password = "ecdxshtuimguqmom";
+	    int expectedCode = (int) (Math.random() * 1000000);
+	    int inputCode = 0;
+
+	    //email properties
+	    Properties properties = System.getProperties();  
+	    properties.setProperty("mail.smtp.host", host);
+	    properties.setProperty("mail.smtp.port", String.valueOf(port));
+	    properties.setProperty("mail.smtp.starttls.enable", "true");
+	    properties.setProperty("mail.smtp.auth", "true");
+
+	    // Get the email session object  
+	    Session session = Session.getDefaultInstance(properties,  
+	        new javax.mail.Authenticator() {  
+	            protected PasswordAuthentication getPasswordAuthentication() {  
+	                return new PasswordAuthentication(username, password);  
+	            }  
+	        });  
+
+	    //message  
+	    try {  
+	        MimeMessage message = new MimeMessage(session);  
+	        message.setFrom(new InternetAddress(from));  
+	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));  
+	        message.setSubject("Verification Code");  
+	        message.setText("Your verification code is: " + expectedCode);  
+
+	        //Send message to email
+	        Transport transport = session.getTransport("smtp");
+	        transport.connect(host, username, password);
+	        transport.sendMessage(message, message.getAllRecipients());
+	        transport.close();
+	        System.out.println("Verification code sent to " + to);  
+
+	        // Display the dialog box for verification code
+	        Dialog<Integer> dialog = new Dialog<>();
+	        dialog.setTitle("Verification Code");
+	        dialog.setHeaderText("Enter the verification code:");
+
+	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
+
+	        TextField verificationCodeField = new TextField();
+	        Platform.runLater(() -> verificationCodeField.requestFocus());
+	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == submitButton) {
+	                return Integer.parseInt(verificationCodeField.getText());
+	            }
+	            return null;
+	        });
+
+	        Optional<Integer> result = dialog.showAndWait();
+	        if (result.isPresent()) {
+	            inputCode = result.get();
+	        } else {
+	        	actionGrabber.setText("Email verification cancelled");
+				actionGrabber.setFill(Color.RED);
+				return false;
+	        }
+
+	        // Check if the input code matches the expected value
+	        if (inputCode == expectedCode) {
+	            System.out.println("Verification successful!");
+	            return true;
+	        } else if (inputCode != expectedCode) {
+	        	dialog.close();
+	        	actionGrabber.setText("Wrong code input. Email verification cancelled");
+				actionGrabber.setFill(Color.RED);
+				return false;
+	        }
+	    } catch (MessagingException mex) {
+	        mex.printStackTrace();
+	    }
+	    return false;
+	}
+	
+	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
+>>>>>>> main
 		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
@@ -237,23 +430,29 @@ public class UI {
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
+<<<<<<< HEAD
 			} else if (loginSuccessful() == false) {
 				actionGrabber.setText("No Credentials Found");
+=======
+>>>>>>> main
 			}
 		}
 	}
 	
 	
-     @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
+@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
-		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Username and Password cannot be empty");
+		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("All fields cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} else if(userGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Username cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} else if(passGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Password cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("Email cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} 
 		else {
@@ -405,6 +604,7 @@ public class UI {
 		}
 	}
 	
+<<<<<<< HEAD
 	private boolean checkCredentialsInFile(String username, String password) {
 		try {
 			String directory = System.getProperty("user.home");
@@ -425,6 +625,37 @@ public class UI {
 			e.printStackTrace();
 		}
 		return false;
+=======
+	private String checkCredentialsInFile(String username, String password) {
+	    try {
+	    	EncryptionController enc = new EncryptionController();
+	    	String directory = System.getProperty("user.home");
+	        String filePath = directory + "/Documents/credentials.txt";
+	        File file = new File(filePath);
+	        Scanner scan = new Scanner(file);
+	        while (scan.hasNextLine()) {
+	            String data = scan.nextLine();
+	            String[] part = data.split(":");
+	            if (part.length == 3 && part[0].equals(username)) {
+	                String storedHashedPassword = part[1];
+	                String inputHashedPassword = enc.hashData(password);
+	                System.out.println(inputHashedPassword);
+	                System.out.println(storedHashedPassword);
+	                if (storedHashedPassword.equals(inputHashedPassword)) {
+	                	System.out.println(part[2]);
+	                    scan.close();
+	                    return part[2]; // return email address
+	                } 
+	            }
+	        }
+	        scan.close();
+	        actionGrabber.setText("no match found");
+			actionGrabber.setFill(Color.RED);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+>>>>>>> main
 	}
 	
 	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
@@ -558,6 +789,7 @@ public class UI {
 		}
 		
 	}
+<<<<<<< HEAD
   
   	//Overview button actions
 	
@@ -596,6 +828,8 @@ public class UI {
 	// Other controller methods and variables
 	
 	
+=======
+>>>>>>> main
 	
 	private void loadFields(ResultSet results) throws SQLException {
 		
@@ -633,7 +867,11 @@ public class UI {
 		// connection for database...make sure the URL is correct JDBC:MYSQL
 		String url = "jdbc:mysql://127.0.0.1:3306/testdb";
 		String username = "root";
+<<<<<<< HEAD
 		String password = "mysql";
+=======
+		String password = "1234";
+>>>>>>> main
 		
 		// connect to the database
 		try {
@@ -649,6 +887,7 @@ public class UI {
 		} 
 	}
 	
+<<<<<<< HEAD
 	public boolean startGoogleAppAuthenticator () throws WriterException, IOException{
 		
 			String secretKey = "QDWSM3OYBPGTEVSPB5FKVDM3CSNCWHVI";
@@ -711,3 +950,8 @@ public class UI {
 }
 
 
+=======
+
+}
+
+>>>>>>> main
