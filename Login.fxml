@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #281E5D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UI">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #281E5D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
    <children>
       <TextField fx:id="userGrabber" layoutX="725.0" layoutY="241.0" promptText="enter username" />
       <Button layoutX="822.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSignInAction" text="Sign In" />

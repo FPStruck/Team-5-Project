@@ -12,6 +12,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import application.EmailManager.LoginResult;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,18 +30,50 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class loginController {
+public class LoginController {
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
 	@FXML private TextField userGrabber;
 	@FXML private TextField passGrabber;
 	@FXML private Text actionGrabber;
+	@FXML private Text actionGrabberCreator;
+	@FXML private TextField userGrabberCreator;
+	@FXML private TextField passGrabberCreator;
+	@FXML private TextField emailGrabberCreator;
 	
-	/*
+	public boolean loginSuccessful() {
+		CredentialManager credentialManager = new CredentialManager();
+		String userLog = userGrabber.getText();
+	    String passLog = passGrabber.getText();
+	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
+	    if(to == null) {
+	    	actionGrabber.setText("no match found");
+			actionGrabber.setFill(Color.RED);
+	    }
+	    EmailManager emailManager = new EmailManager();
+	    LoginResult result = emailManager.verifyLogin(userLog, passLog, to);
+	    if (result == LoginResult.SUCCESSFUL) {
+	        // Handle successful login
+	    	return true;
+	    } else if (result == LoginResult.WRONG_CODE) {
+	        // Handle wrong code scenario
+	    	actionGrabber.setText("Wrong code input. Email verification cancelled");
+			actionGrabber.setFill(Color.RED);
+			return false;
+	    } else if (result == LoginResult.CANCELLED) {
+	        // Handle login cancelled scenario
+	    	actionGrabber.setText("Email verification cancelled");
+			actionGrabber.setFill(Color.RED);
+			return false;
+	    } else {
+	        // Handle any other result if necessary
+	    	return false;
+	    }
+
+	}
 	
-	@FXML 
-	protected void handleSignInAction(ActionEvent event) throws IOException {
+	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
 		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
@@ -62,5 +95,12 @@ public class loginController {
 			}
 		}
 	}
-	*/
+
+@FXML public void switchToCreateUser(ActionEvent event) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
 }

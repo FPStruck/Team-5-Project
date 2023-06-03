@@ -123,19 +123,13 @@ public class UI {
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
-	@FXML private Text actionGrabber;
-	@FXML private TextField userGrabber;
-	@FXML private TextField passGrabber;
+	
 	@FXML private TextField tfacode  = new TextField();
 	
 	@FXML private TableView maintable;
 	@FXML private AnchorPane anchor;
 	@FXML private TextField searchRef1;
 	@FXML private TextField searchRef2;
-	@FXML private Text actionGrabberCreator;
-	@FXML private TextField userGrabberCreator;
-	@FXML private TextField passGrabberCreator;
-	@FXML private TextField emailGrabberCreator;
 	@FXML private Button addColumn;
 	@FXML private Button addRow;
 	@FXML private Button view;
@@ -185,29 +179,9 @@ public class UI {
 	private Statement statement;
 	private ResultSet results;
 
-	public void switchToCreateUser(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
 	
-	public void switchToHomepage(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
 	
-	public void switchToTableCreator(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
+	
 	
 	public void switchToMySQL(ActionEvent event) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
@@ -219,14 +193,7 @@ public class UI {
 		mySQL_test.start(stage);
 	}
 	
-	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
-		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
+	
 	
 	@FXML
     public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
@@ -237,16 +204,7 @@ public class UI {
 		initialDB(); // connect to the database
     }
 	
-	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
-		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		initialDB();
-		
-	}
+	
 	
 	public void switchToDashBoard(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
@@ -256,87 +214,10 @@ public class UI {
 		stage.show();
 	}
 	
-	public boolean loginSuccessful() {
-		CredentialManager credentialManager = new CredentialManager();
-		String userLog = userGrabber.getText();
-	    String passLog = passGrabber.getText();
-	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
-	    if(to == null) {
-	    	actionGrabber.setText("no match found");
-			actionGrabber.setFill(Color.RED);
-	    }
-	    EmailManager emailManager = new EmailManager();
-	    LoginResult result = emailManager.verifyLogin(userLog, passLog, to);
-	    if (result == LoginResult.SUCCESSFUL) {
-	        // Handle successful login
-	    	return true;
-	    } else if (result == LoginResult.WRONG_CODE) {
-	        // Handle wrong code scenario
-	    	actionGrabber.setText("Wrong code input. Email verification cancelled");
-			actionGrabber.setFill(Color.RED);
-			return false;
-	    } else if (result == LoginResult.CANCELLED) {
-	        // Handle login cancelled scenario
-	    	actionGrabber.setText("Email verification cancelled");
-			actionGrabber.setFill(Color.RED);
-			return false;
-	    } else {
-	        // Handle any other result if necessary
-	    	return false;
-	    }
+	
 
-	}
-	
-	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
-		
-		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
-			actionGrabber.setText("Username and Password cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} else if(userGrabber.getText().equals("")) {
-			actionGrabber.setText("Username cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} else if(passGrabber.getText().equals("")) {
-			actionGrabber.setText("Password cannot be empty");
-			actionGrabber.setFill(Color.RED);
-		} 
-		else {
-			if(loginSuccessful() == true) {
-				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
-				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-				scene = new Scene(root);
-				stage.setScene(scene);
-				stage.show();
-			}
-		}
-	}
-	
-	
-@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
-	CredentialManager CredentialManager = new CredentialManager();
-		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("All fields cannot be empty");
-			actionGrabberCreator.setFill(Color.RED);
-		} else if(userGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Username cannot be empty");
-			actionGrabberCreator.setFill(Color.RED);
-		} else if(passGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Password cannot be empty");
-			actionGrabberCreator.setFill(Color.RED);
-		} else if(emailGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Email cannot be empty");
-			actionGrabberCreator.setFill(Color.RED);
-		} 
-		else {
-			actionGrabberCreator.setText("User Creation Successful");
-			actionGrabberCreator.setFill(Color.GREEN);
-			String userCreate = userGrabberCreator.getText();
-			String passCreate = passGrabberCreator.getText();
-			String emailCreate = emailGrabberCreator.getText();
-			CredentialManager.saveCredentialsToFile(userCreate, passCreate, emailCreate);
-		}
-	}
 
-	@FXML protected void handleAddColumn(ActionEvent event) {
+@FXML protected void handleAddColumn(ActionEvent event) {
 		
 		
 		TextField htf = new TextField("");
