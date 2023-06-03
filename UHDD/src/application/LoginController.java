@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -25,6 +26,7 @@ public class LoginController {
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
 	@FXML private TextField emailGrabberCreator;
+	@FXML private Button btnLogin;
 	
 	public boolean loginSuccessful() {
 		CredentialManager credentialManager = new CredentialManager();
