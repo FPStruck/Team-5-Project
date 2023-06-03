@@ -77,12 +77,31 @@
 }
 
 #btnUCBack{
-	-fx-border-color: #063847;
+	-fx-border-color: transparent;
 	-fx-text-fill: #063847;	
-	-fx-background-color: transparent;	
+	-fx-background-color: transparent;
+	-fx-effect: none;	
+}
+
+.table-view .column-header {
+    -fx-background-color: #063847;
+    -fx-background-radius: 7;
+    
 }
     
-    
+.table-view .column-header-background{
+	-fx-background-color: #063847;
+	
+}
+
+.table-view .column-header-background .label{
+	-fx-font-size: 11px;
+	-fx-text-fill: #fcfcfc;
+}
+.table-view {
+	-fx-background-radius: 7;
+	-fx-background-color: white;
+}    
     
     
     
