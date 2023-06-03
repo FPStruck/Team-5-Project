@@ -9,12 +9,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class DashboardController {
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
+	@FXML
+	private Pane patientDirectoryDBPane;
+	@FXML
+	private Pane appointmentsDBPane;
+	@FXML
+	private Pane patientNotesDBPane;
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
@@ -24,7 +32,7 @@ public class DashboardController {
 		stage.setScene(scene);
 		stage.show();
 	}
-
+	
 	@FXML 
 	public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
@@ -43,5 +51,35 @@ public class DashboardController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	@FXML	
+	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {
+		patientDirectoryDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightPatientDirectoryPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		patientDirectoryDBPane.setStyle("-fx-background-color:  #063847");
+	}
+	
+	@FXML	
+	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {
+		appointmentsDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightAppointmentsPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		appointmentsDBPane.setStyle("-fx-background-color:  #063847");
+	}
+	
+	@FXML	
+	public void highlightPatientNotesPaneOnEnter(MouseEvent mouseEvent) throws IOException {
+		patientNotesDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightPatientNotesPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		patientNotesDBPane.setStyle("-fx-background-color:  #063847");
 	}
 }

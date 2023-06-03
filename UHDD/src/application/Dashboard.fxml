@@ -66,7 +66,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane fx:id="patientDirectoryDBPane" layoutY="149.0" onMouseClicked="#switchToPatientInformation" prefHeight="40.0" prefWidth="200.0">
+            <Pane fx:id="patientDirectoryDBPane" layoutY="149.0" onMouseClicked="#switchToPatientInformation" onMouseEntered="#highlightPatientDirectoryPane" onMouseExited="#highlightPatientDirectoryPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Directory" wrappingWidth="133.0">
                      <font>
@@ -75,8 +75,26 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="patientDirectory" layoutX="45.0" layoutY="295.0" mnemonicParsing="false" onAction="#switchToPatientDirectory" stylesheets="@application.css" text="Patient Directory" textFill="#063847" />
-            <Button fx:id="tableCreator" layoutX="45.0" layoutY="353.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@application.css" text="Table Creator" textFill="#063847" />
+            <Button fx:id="patientDirectory" layoutX="77.0" layoutY="411.0" mnemonicParsing="false" onAction="#switchToPatientDirectory" stylesheets="@application.css" text="Patient Directory" textFill="#063847" />
+            <Button fx:id="tableCreator" layoutX="85.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@application.css" text="Table Creator" textFill="#063847" />
+            <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane fx:id="patientNotesDBPane" layoutX="-1.0" layoutY="255.0" onMouseEntered="#highlightPatientNotesPaneOnEnter" onMouseExited="#highlightPatientNotesPaneOnExit" prefHeight="40.0" prefWidth="200.0">
+               <children>
+                  <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="133.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane layoutX="200.0" layoutY="253.0" prefHeight="253.0" prefWidth="358.0">
