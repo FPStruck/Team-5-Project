@@ -92,7 +92,7 @@
             </Text>
             <Button fx:id="patientInformation" layoutX="260.0" layoutY="94.0" mnemonicParsing="false" onAction="#switchToPatientInformation" style="-fx-background-color: white;" text="Patient Information" textFill="#16c2d5" />
             <Button fx:id="patientDirectory" layoutX="267.0" layoutY="133.0" mnemonicParsing="false" onAction="#switchToPatientDirectory" style="-fx-background-color: white;" text="Patient Directory" textFill="#16c2d5" />
-            <Button fx:id="tableCreator" layoutX="276.0" layoutY="175.0" mnemonicParsing="false" onAction="#switchToTableCreator" style="-fx-background-color: white;" text="Table Creator" textFill="#16c2d5" />
+            <Button fx:id="tableCreator" layoutX="276.0" layoutY="175.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" style="-fx-background-color: white;" text="Table Creator" textFill="#16c2d5" />
       </children>
     </AnchorPane>
   </children>

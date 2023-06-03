@@ -1,34 +1,12 @@
 package application;
-	
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.file.Path;
-import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
-
-import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -37,147 +15,31 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Path;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-import application.EmailManager.LoginResult;
-
-import java.util.*;  
-import javax.mail.*;  
-import javax.mail.internet.*;  
-import javax.activation.*;  
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javax.mail.SendFailedException;
-
-
-public class UI {
+public class TableCreatorController {
 	private Stage stage;
 	private Scene scene;
-	private Parent root;
-	
-	@FXML private TextField tfacode  = new TextField();
-	
 	@FXML private TableView maintable;
-	@FXML private AnchorPane anchor;
 	@FXML private TextField searchRef1;
 	@FXML private TextField searchRef2;
-	@FXML private Button addColumn;
-	@FXML private Button addRow;
-	@FXML private Button view;
-	@FXML private Button update;
-	@FXML private Button insert;
-	@FXML private Button clear;
-	@FXML private Button back;
-	@FXML private Button viewTable;
 	@FXML private TableView<ObservableList> tableView = new TableView();
-	
-	//Toby's changes
-	static byte[] encryptedPassword; // for the encryption
-	static byte[] decryptedPassword; // for the decryption
-	//static RSA_DSA rsa;
-	static byte[] tempByteArray;
 	static ObservableList<ObservableList> data;
 	static TableColumn col;
-	
-	@FXML private Label labelStatus = new Label();
-	
-	@FXML private Label labelId = new Label("ID");
-	@FXML private TextField textId = new TextField();
-	@FXML private Label labelLastName = new Label("Last Name");
-	@FXML private TextField textLastName = new TextField();
-	@FXML private Label labelFirstName = new Label("First Name");
-	@FXML private TextField textFirstName = new TextField();
-	@FXML private Label labelMiddleName = new Label("Middle Name");
-	@FXML private TextField textMiddleName = new TextField();
-	@FXML private Label labelAddress = new Label("Address");
-	@FXML private TextField textAddress = new TextField();
-	@FXML private Label labelCity = new Label("City");
-	@FXML private TextField textCity = new TextField();
-	@FXML private Label labelState = new Label("State");
-	@FXML private TextField textState = new TextField();
-	@FXML private Label labelTelephone = new Label("Telephone");
-	@FXML private TextField textTelephone = new TextField();
-	@FXML private Label labelEmail = new Label("Email");
-	@FXML private TextArea textEmail = new TextArea();
-	@FXML private ImageView QRCode = new ImageView();
+	static ObservableList<String> ddList;
 	@FXML private ComboBox<String> dd = new ComboBox();
 	
-	
-	static ObservableList<String> ddList;
-	
-	// these objects will be used in querying the database and processing the results
-	private Connection connection;
-	private Statement statement;
-	private ResultSet results;
 	DBConnector dbConnection = new DBConnector();
 	
 	@FXML
@@ -185,37 +47,43 @@ public class UI {
 		ddList = FXCollections.observableArrayList("one", "two", "three");
 		dd.getItems().addAll(ddList);
 		System.out.println(dd.getItems());		
-		//this is connecting to the db simply to update the status variables on the page I believe
-		//initialDB(); // connect to the database
     }
 	
-	/*
-	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
-		System.out.println("viewed");
-		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
-		dbConnection.initialiseDB();
-		try {
-			ResultSet rsView = dbConnection.executeQueryReturnResults(query);
-			loadFields(rsView);
-			
-		} catch (SQLException Ex){
-			labelStatus.setText("Record failed");
-			System.out.println(Ex.getMessage());
-		}
+	public void switchToMySQL(ActionEvent event) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		MySQL_test mySQL_test = new MySQL_test();
+		mySQL_test.start(stage);
 	}
-
-	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+	
+	@FXML 
+	public void switchToPatientInformation(ActionEvent event) throws Exception {
+		
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
-	*/
-
-@FXML protected void handleAddColumn(ActionEvent event) {
+	
+	@FXML 
+	public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
+		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
 		
+	}
+	
+	@FXML 
+	protected void handleAddColumn(ActionEvent event) {
+		
+	
 		TextField htf = new TextField("");
 		
 		//Creates table column object with header
@@ -260,7 +128,8 @@ public class UI {
 		
 	}
 	
-	@FXML protected void handleAddRow(ActionEvent event) {
+	@FXML 
+	protected void handleAddRow(ActionEvent event) {
 		
 		int index = maintable.getSelectionModel().getSelectedIndex();
 		if(index == -1) {
@@ -277,11 +146,13 @@ public class UI {
 		maintable.getSelectionModel().select(index);
 	}
 	
-	@FXML protected void handleRemoveButton(ActionEvent event) {
+	@FXML 
+	protected void handleRemoveButton(ActionEvent event) {
 		maintable.getItems().removeAll(maintable.getSelectionModel().getSelectedItem());
 	}
 	
-	@FXML protected void handleColumnRemoval(ActionEvent event) {
+	@FXML 
+	protected void handleColumnRemoval(ActionEvent event) {
 		ObservableList<TableColumn> columns = maintable.getColumns();
 		
 		if(columns.isEmpty()) {
@@ -340,8 +211,6 @@ public class UI {
 		
 	}
 	
-	
-	
 	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
@@ -389,7 +258,6 @@ public class UI {
             e.printStackTrace();
             System.out.println("Error on Building Data");
         }
-	}
-	
-
+        dbConnection.closeConnection();	
+        }
 }
