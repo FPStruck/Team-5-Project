@@ -12,8 +12,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #281E5D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
       <TextField fx:id="userGrabber" layoutX="725.0" layoutY="241.0" promptText="enter username" />
-      <Button layoutX="822.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSignInAction" text="Sign In" />
-      <Button layoutX="721.0" layoutY="320.0" mnemonicParsing="false" onAction="#switchToCreateUser" text="New User" />
+      <Button layoutX="822.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSignInAction" stylesheets="@application.css" text="Sign In" />
+      <Button layoutX="721.0" layoutY="320.0" mnemonicParsing="false" onAction="#switchToCreateUser" stylesheets="@application.css" text="New User" />
       <PasswordField fx:id="passGrabber" layoutX="725.0" layoutY="280.0" promptText="enter password" />
       <Text fill="#f5f3f3" layoutX="651.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:">
          <font>
@@ -38,7 +38,7 @@
       </Text>
       <ImageView fx:id="imageViewer" fitHeight="506.0" fitWidth="627.0" pickOnBounds="true">
          <image>
-            <Image url="@../databasePhoto.png" />
+            <Image url="@databasePhoto.png" />
          </image>
       </ImageView>
    </children>

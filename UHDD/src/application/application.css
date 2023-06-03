@@ -57,4 +57,30 @@
 .scroll-bar:vertical .thumb:hover {
     -fx-background-color :derive(#4D4C4F,10.0%);
     -fx-background-insets : 2.0, 0.0, 0.0;
+}
+
+.button{
+	-fx-border-radius: 8px;
+	-fx-background-color : #EDF0FF;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
