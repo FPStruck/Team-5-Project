@@ -60,14 +60,25 @@
 }
 
 .button{
-	-fx-border-radius: 8px;
-	-fx-background-color : #ebfffe;
+	-fx-border-radius: 3px;
+	-fx-background-color : #EDF0FF;
+	-fx-padding: 3 10 3 10;
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.text-field {
+    -fx-prompt-text-fill: gray;
 }
 
 #btnLogin{
 	-fx-border-color: #EDF0FF;
-	-fx-text-fill: #EDF0FF;
+	-fx-text-fill: #EDF0FF;	
+	-fx-background-color: transparent;	
+}
+
+#btnUCBack{
+	-fx-border-color: #063847;
+	-fx-text-fill: #063847;	
 	-fx-background-color: transparent;	
 }
     

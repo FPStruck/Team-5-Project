@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,6 +21,7 @@ public class UserCreationController {
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
 	@FXML private TextField emailGrabberCreator;
+	@FXML private Rectangle ucRectanglePane;
 	
 	@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		CredentialManager CredentialManager = new CredentialManager();
