@@ -178,34 +178,32 @@ public class UI {
 	private Connection connection;
 	private Statement statement;
 	private ResultSet results;
-
-	
-	
-	
-	
-	public void switchToMySQL(ActionEvent event) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		MySQL_test mySQL_test = new MySQL_test();
-		mySQL_test.start(stage);
-	}
-	
-	
+	DBConnector dbConnection = new DBConnector();
 	
 	@FXML
     public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
 		ddList = FXCollections.observableArrayList("one", "two", "three");
 		dd.getItems().addAll(ddList);
-		System.out.println(dd.getItems());
-		
-		initialDB(); // connect to the database
+		System.out.println(dd.getItems());		
+		//this is connecting to the db simply to update the status variables on the page I believe
+		//initialDB(); // connect to the database
     }
 	
-	
-	
+	/*
+	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
+		System.out.println("viewed");
+		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
+		dbConnection.initialiseDB();
+		try {
+			ResultSet rsView = dbConnection.executeQueryReturnResults(query);
+			loadFields(rsView);
+			
+		} catch (SQLException Ex){
+			labelStatus.setText("Record failed");
+			System.out.println(Ex.getMessage());
+		}
+	}
+
 	public void switchToDashBoard(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -213,9 +211,7 @@ public class UI {
 		stage.setScene(scene);
 		stage.show();
 	}
-	
-	
-
+	*/
 
 @FXML protected void handleAddColumn(ActionEvent event) {
 		
@@ -349,13 +345,14 @@ public class UI {
 	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
-		initialDB();
+		dbConnection.initialiseDB();
+		
 		data = FXCollections.observableArrayList();
         try {
             //MySql query table
             String SQL = "SELECT * from `testdb`.`test3`";
             //ResultSet
-            ResultSet rs = connection.createStatement().executeQuery(SQL);
+            ResultSet rs = dbConnection.executeQueryReturnResults(SQL);
 
             // add table column dynamically
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
@@ -392,142 +389,6 @@ public class UI {
             e.printStackTrace();
             System.out.println("Error on Building Data");
         }
-	}
-	
-	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
-		System.out.println("viewed");
-		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
-		
-		try {
-			// execute statement
-			results = statement.executeQuery(query);
-			loadFields(results);
-			
-		} catch (SQLException Ex){
-			labelStatus.setText("Record failed");
-			System.out.println(Ex.getMessage());
-		}
-	}
-	
-	@FXML private void update(ActionEvent event) {
-		// TODO Auto-generated method stub
-		String updateQuery = "UPDATE `testdb`.`test3` SET "
-				+ "FirstName = '" + textFirstName.getText().trim() + 
-				"', MiddleName = '" + textMiddleName.getText().trim()+ 
-				"', LastName = '" + textLastName.getText().trim() + 
-				"', Address = '" + textAddress.getText().trim() + 
-				"', City = '" + textCity.getText().trim() +
-				"', State = '" + textState.getText().trim() + 
-				"', Telephone = '" + textTelephone.getText().trim() + 
-				"', Email = '" + textEmail.getText().trim() + 
-				"' WHERE ID = '" + textId.getText().trim() + "';";
-		
-		System.out.println(updateQuery);
-		
-		try {
-			// execute statement
-			statement.executeUpdate(updateQuery);
-			labelStatus.setText("Update completed or does not exist please view the ID");
-			labelStatus.setTextFill(Color.GREEN);
-			System.out.println("Update suceeded");
-			
-		} catch (SQLException Ex){
-			labelStatus.setText("Update failed");
-			labelStatus.setTextFill(Color.RED);
-			System.out.println(Ex.getMessage());
-		}
-	}
-	
-	@FXML private void clear(ActionEvent event) {
-		// clear the input text
-		textId.setText(null);
-		textLastName.setText(null);
-		textFirstName.setText(null);
-		textMiddleName.setText(null);
-		textAddress.setText(null);
-		textCity.setText(null);
-		textState.setText(null);
-		textTelephone.setText(null);
-		textEmail.setText(null); 
-	}
-	
-	@FXML private void insert(ActionEvent event) {
-		
-		String insertQuery = "INSERT INTO `testdb`.`test3` "
-				+ "(ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email) "
-				+ "VALUES ('" + textId.getText().trim() + "', '" + textFirstName.getText().trim() + 
-				"', '" + textMiddleName.getText().trim()+ "', '" + textLastName.getText().trim() + 
-				"', '" + textAddress.getText().trim() + "', '" + textCity.getText().trim() +
-				"', '" + textState.getText().trim() + "', '" + textTelephone.getText().trim() + 
-				"', '" + textEmail.getText().trim() + "');";
-		
-		//System.out.println(insertQuery);
-		
-		try {
-			// execute statement
-			statement.executeUpdate(insertQuery);
-			labelStatus.setText("Insert completed");
-			labelStatus.setTextFill(Color.GREEN);
-			System.out.println("Insert suceeded");
-			
-		} catch (SQLException Ex){
-			labelStatus.setText("Insert failed");
-			labelStatus.setTextFill(Color.RED);
-			System.out.println(Ex.getMessage());
-		}
-		
-	}
-	
-	private void loadFields(ResultSet results) throws SQLException {
-		
-		if (results.next()) {
-			textLastName.setText(results.getString(2));
-			textFirstName.setText(results.getString(3));
-			textMiddleName.setText(results.getString(4));
-			textAddress.setText(results.getString(5));
-			textCity.setText(results.getString(6));
-			textState.setText(results.getString(7));
-			textTelephone.setText(results.getString(8));
-			textEmail.setText(results.getString(9));
-			labelStatus.setText("Record found");
-			labelStatus.setTextFill(Color.GREEN);
-		} else {
-			textLastName.setText("");
-			textFirstName.setText("");
-			textMiddleName.setText("");
-			textAddress.setText("");
-			textCity.setText("");
-			textState.setText("");
-			textTelephone.setText("");
-			textEmail.setText("");
-			labelStatus.setText("Record not found");
-			labelStatus.setTextFill(Color.RED);
-		}
-	}
-	
-	public void initialDB() throws ClassNotFoundException, SQLException {
-		
-		// loads and checks the driver
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		System.out.println("Driver loaded:");
-		
-		// connection for database...make sure the URL is correct JDBC:MYSQL
-		String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
-		String username = "itc303admin";
-		String password = "L3cr3X2bNCtcvf";
-		
-		// connect to the database
-		try {
-			connection = DriverManager.getConnection(url, username, password);
-			System.out.println("Database connected:");
-			labelStatus.setText("Database connected");
-			labelStatus.setTextFill(Color.GREEN);
-			statement = connection.createStatement();
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-			labelStatus.setText("Connection failed");
-			labelStatus.setTextFill(Color.RED);
-		} 
 	}
 	
 

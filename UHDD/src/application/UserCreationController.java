@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 public class UserCreationController {
 	private Stage stage;
 	private Scene scene;
-	private Parent root;
 	@FXML private Text actionGrabberCreator;
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;

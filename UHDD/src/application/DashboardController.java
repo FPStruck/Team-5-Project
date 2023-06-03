@@ -17,7 +17,6 @@ public class DashboardController {
 	
 	@FXML 	
 	public void switchToPatientInformation(ActionEvent event) throws Exception {
-		
 		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);

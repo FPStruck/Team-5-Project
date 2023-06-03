@@ -1,31 +1,14 @@
 package application;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import application.EmailManager.LoginResult;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -33,7 +16,7 @@ import javafx.stage.Stage;
 public class LoginController {
 	private Stage stage;
 	private Scene scene;
-	private Parent root;
+	
 	@FXML private TextField userGrabber;
 	@FXML private TextField passGrabber;
 	@FXML private Text actionGrabber;
