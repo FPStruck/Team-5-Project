@@ -132,8 +132,8 @@
                   </DropShadow>
                </effect>
             </Rectangle>
-            <Button layoutX="135.0" layoutY="96.0" mnemonicParsing="false" prefWidth="83.0" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Quick notes" textFill="#fcfcfc" />
-            <Button layoutX="135.0" layoutY="141.0" mnemonicParsing="false" prefWidth="83.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View notes" />
+            <Button layoutX="135.0" layoutY="96.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="92.0" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Quick notes" textFill="#fcfcfc" />
+            <Button layoutX="135.0" layoutY="141.0" mnemonicParsing="false" prefWidth="92.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View notes" />
          </children>
       </Pane>
       <Pane layoutX="199.0" layoutY="12.0" prefHeight="253.0" prefWidth="358.0">

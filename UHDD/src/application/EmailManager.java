@@ -36,7 +36,7 @@ public class EmailManager {
 	    String password = "xx";
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
-
+	    
 	    //email properties
 	    Properties properties = System.getProperties();  
 	    properties.setProperty("mail.smtp.host", host);
@@ -51,12 +51,12 @@ public class EmailManager {
 	                return new PasswordAuthentication(username, password);  
 	            }  
 	        });  
-
+	    
 	    //message  
 	    try {  
-	        MimeMessage message = new MimeMessage(session);  
-	        message.setFrom(new InternetAddress(from));  
-	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));  
+	    	MimeMessage message = new MimeMessage(session);
+	        message.setFrom(new InternetAddress(from)); 	        
+	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress)); 
 	        message.setSubject("Verification Code");  
 	        message.setText("Your verification code is: " + expectedCode);  
 

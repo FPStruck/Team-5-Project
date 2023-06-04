@@ -36,12 +36,7 @@
     	<artifactId>javafx-fxml</artifactId>
     	<version>19.0.2.1</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-core -->
-	<dependency>
-    	<groupId>org.apache.spark</groupId>
-    	<artifactId>spark-core_2.13</artifactId>
-    	<version>3.4.0</version>
-	</dependency>
+		
 	<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
 	<dependency>
     	<groupId>org.bouncycastle</groupId>

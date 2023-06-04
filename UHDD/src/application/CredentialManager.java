@@ -29,22 +29,27 @@ public class CredentialManager {
 		dbConnector.initialiseDB();
 	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
-			dbConnector.closeConnection();
 			if (userDetails.next()) {  				
 				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));				
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
 		            String email = userDetails.getString("email");
+		            dbConnector.closeConnection();
 		            return email;
+		            
 		        } else {
 		        	System.out.println("false");
+		        	dbConnector.closeConnection();
 		            return null;
 		        }
 		    } else {
+		    	dbConnector.closeConnection();
 		        return null;   
 		    }  		
-		} catch (SQLException e) {
+		} catch (SQLException e) {			
 		    // handle exception
+			dbConnector.closeConnection();
 		}
+		dbConnector.closeConnection();
 		return null;
 	    
 	}
