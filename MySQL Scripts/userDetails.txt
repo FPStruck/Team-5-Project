@@ -4,6 +4,7 @@ create table user_details
     username varchar(20) default null,
     password_hash varchar(100) default null,
     password_params varchar(100) default null,
+    email VARCHAR(100),
     primary key(id)
     ) engine = innodb default charset = latin1;
     

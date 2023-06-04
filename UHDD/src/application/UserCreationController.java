@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ public class UserCreationController {
 	@FXML private TextField emailGrabberCreator;
 	@FXML private Rectangle ucRectanglePane;
 	
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) {
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws ClassNotFoundException, SQLException {
 		CredentialManager CredentialManager = new CredentialManager();
 			if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
 				actionGrabberCreator.setText("All fields cannot be empty");

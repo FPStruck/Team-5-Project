@@ -1,14 +1,27 @@
+ 
+
 package application;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import javafx.scene.paint.Color;
 
 public class CredentialManager {
-	protected void saveCredentialsToFile(String username, String password, String email) {
+	DBConnector dbConnector = new DBConnector();
+	
+	protected void saveCredentialsToFile(String username, String password, String email) throws ClassNotFoundException, SQLException {
+		dbConnector.initialiseDB();
+		PasswordHasher passwordHasher = new PasswordHasher();		
+		PasswordHash passwordHash = passwordHasher.hashPassword(password);
+		String passwordHashAsString = passwordHash.getHashAsString();
+		String paramsAsString = passwordHash.getParamsAsString();
+		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email);
+		dbConnector.closeConnection();
+		/*
 		try {
 			String directory = System.getProperty("user.home");
 			String filePath = directory + "/Documents/credentials.txt";
@@ -21,6 +34,7 @@ public class CredentialManager {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 	
 	

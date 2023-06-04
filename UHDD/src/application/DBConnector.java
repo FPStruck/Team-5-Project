@@ -2,6 +2,7 @@ package application;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -64,5 +65,15 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-	
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email) throws SQLException {
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email) VALUES (?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setString(2, passwordHash);
+			statement.setString(3, passwordHash);
+			statement.setString(4, email);
+			statement.executeUpdate();
+		}
+		
+		
 }
