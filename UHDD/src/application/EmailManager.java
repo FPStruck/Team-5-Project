@@ -70,7 +70,7 @@ public class EmailManager {
 	        // Display the dialog box for verification code
 	        Dialog<Integer> dialog = new Dialog<>();
 	        dialog.setTitle("Verification Code");
-	        dialog.setHeaderText("Enter the verification code:");
+	        //dialog.setHeaderText("Enter the verification code:");
 
 	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
 	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
