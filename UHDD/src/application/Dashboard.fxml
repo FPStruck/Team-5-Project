@@ -152,7 +152,7 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <Button layoutX="103.0" layoutY="180.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="138.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View Patient Records">
+            <Button fx:id="viewPatientInfoBtn" layoutX="103.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInfoView" prefHeight="22.0" prefWidth="138.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View Patient Records">
                <font>
                   <Font size="11.0" />
                </font>

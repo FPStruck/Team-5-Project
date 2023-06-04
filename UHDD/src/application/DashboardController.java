@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,6 +24,8 @@ public class DashboardController {
 	private Pane appointmentsDBPane;
 	@FXML
 	private Pane patientNotesDBPane;
+	@FXML
+	private Button viewPatientInfoBtn;
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
@@ -40,13 +43,20 @@ public class DashboardController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
-		
-	
 	}
 
 	@FXML	
 	public void switchToTableCreator(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML	
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

@@ -31,9 +31,7 @@ public class CredentialManager {
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
 			if (userDetails.next()) {  				
 				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));				
-				
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
-					System.out.println("36");
 		            String email = userDetails.getString("email");		           
 		            return email;
 		        } else {
