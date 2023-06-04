@@ -1,6 +1,8 @@
 package application;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class PatientInfoViewController {
@@ -23,6 +26,56 @@ public class PatientInfoViewController {
 	@FXML
 	private Pane dashboardIVPane;
 	
+	//labels that update
+	@FXML
+	private Text fullnameTXT;
+	@FXML
+	private Text genderTXT;
+	@FXML
+	private Text dobTXT;
+	@FXML
+	private Text locationTXT;
+	@FXML
+	private Text patientIdTXT;
+	@FXML
+	private Text phoneNoTXT;
+	@FXML 
+	private Text emailTXT;
+	@FXML
+	private Text addressTXT;
+	
+	DBConnector dbConnector = new DBConnector();
+	
+	public void setTextFieldsToPatientId(String Id) throws ClassNotFoundException, SQLException {
+		dbConnector.initialiseDB();
+		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
+			
+		if(patientDetails.next()) {
+			fullnameTXT.setText(patientDetails.getString("firstName") + " " + patientDetails.getString("middleName") + " " + patientDetails.getString("lastName"));
+			emailTXT.setText(patientDetails.getString("email"));
+			dobTXT.setText(patientDetails.getString("dateOfBirth"));
+			locationTXT.setText(patientDetails.getString("city"));
+			patientIdTXT.setText(patientDetails.getString("patientId"));
+			phoneNoTXT.setText(patientDetails.getString("telephone"));
+			addressTXT.setText(patientDetails.getString("address"));
+			if(patientDetails.getString("gender").equals("M")){
+				genderTXT.setText("Male");
+			} else if(patientDetails.getString("gender").equals("F")) {
+				genderTXT.setText("Female");
+			} else {
+				genderTXT.setText("Other");
+			}
+			
+		}
+		
+		
+		dbConnector.closeConnection();
+	}
+	
+	@FXML
+	public void initialize() throws ClassNotFoundException, SQLException {
+		setTextFieldsToPatientId("4");
+	}
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
@@ -41,6 +94,7 @@ public class PatientInfoViewController {
 		stage.setScene(scene);
 		stage.show();
 	}
+	
 	
 	@FXML	
 	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {

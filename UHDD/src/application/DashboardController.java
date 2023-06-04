@@ -44,7 +44,7 @@ public class DashboardController {
 		stage.setScene(scene);
 		stage.show();
 	}
-
+	
 	@FXML	
 	public void switchToTableCreator(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));

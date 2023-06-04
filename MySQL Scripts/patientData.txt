@@ -1,9 +1,10 @@
 use produhdb;
-CREATE TABLE patientData (
-  patientId INT PRIMARY KEY,
+CREATE TABLE patient_data (
+  patientId INT PRIMARY KEY AUTO_INCREMENT,
   firstName VARCHAR(50),
   middleName VARCHAR(50),
   lastName VARCHAR(50),
+  gender ENUM('M', 'F', 'O'),
   address VARCHAR(100),
   city VARCHAR(50),
   state VARCHAR(50),

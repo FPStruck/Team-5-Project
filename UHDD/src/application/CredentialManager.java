@@ -29,10 +29,11 @@ public class CredentialManager {
 		dbConnector.initialiseDB();
 	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
+			dbConnector.closeConnection();
 			if (userDetails.next()) {  				
 				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));				
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
-		            String email = userDetails.getString("email");		           
+		            String email = userDetails.getString("email");
 		            return email;
 		        } else {
 		        	System.out.println("false");
