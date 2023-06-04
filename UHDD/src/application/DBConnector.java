@@ -54,7 +54,7 @@ public class DBConnector {
 	        Statement statement = connection.createStatement();
 	        return statement.executeQuery(sql);
 	    }
-		
+
 		public void executeUpdate(String sql) throws SQLException {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate(sql);
@@ -70,10 +70,16 @@ public class DBConnector {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setString(2, passwordHash);
-			statement.setString(3, passwordHash);
+			statement.setString(3, params);
 			statement.setString(4, email);
 			statement.executeUpdate();
 		}
 		
+		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
+			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+	        return statement.executeQuery();
+	    }
 		
 }

@@ -25,20 +25,28 @@ public class PasswordHash {
     }
 
     public String getParamsAsString() {
-        return this.params.getSalt() + ":" + this.params.getMemory() + ":" + this.params.getIterations();
+        return Base64.getEncoder().encodeToString(this.params.getSalt()) + ":" + this.params.getMemory() + ":" + this.params.getIterations();
     }
 
     public static PasswordHash fromString(String hash, String params) {
         byte[] decodedHash = Base64.getDecoder().decode(hash);
-
+        
         String[] splitParams = params.split(":");
-        byte[] salt = splitParams[0].getBytes();
+        System.out.println(params);
+        System.out.println(splitParams[0]);
+        System.out.println(splitParams[1]);
+        System.out.println(splitParams[2]);
+         // Fixed here
+        byte[] salt = Base64.getDecoder().decode(splitParams[0]);
         int memory = Integer.parseInt(splitParams[1]);
         int iterations = Integer.parseInt(splitParams[2]);
+        
 
+        
         Argon2Parameters.Builder builder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
                 .withSalt(salt)
                 .withMemoryAsKB(memory)
+                .withParallelism(4)
                 .withIterations(iterations);
 
         Argon2Parameters paramsObj = builder.build();

@@ -1,5 +1,6 @@
 package application;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -23,7 +24,7 @@ public class PasswordHasher {
         // Configure the Argon2 parameters
         Argon2Parameters.Builder builder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
                 .withSalt(salt)
-                .withParallelism(4) // use 4 threads
+                .withParallelism(4)
                 .withMemoryAsKB(65536) // use 64 MB
                 .withIterations(3);
 
@@ -32,16 +33,17 @@ public class PasswordHasher {
         // Hash the password
         gen.init(params);
         byte[] hash = new byte[32]; // 256-bit hash
-        gen.generateBytes(password.toCharArray(), hash);
-
+        gen.generateBytes(password.getBytes(StandardCharsets.UTF_8), hash);
         return new PasswordHash(hash, params);
     }
 
     public boolean verifyPassword(String password, PasswordHash passwordHash) {
         gen.init(passwordHash.getParams());
         byte[] inputHash = new byte[32]; // 256-bit hash
-        gen.generateBytes(password.toCharArray(), inputHash);
-
+        gen.generateBytes(password.getBytes(StandardCharsets.UTF_8), inputHash);
+        
+        System.out.println(passwordHash.getHash());
+        System.out.println(inputHash);        
         return Arrays.equals(passwordHash.getHash(), inputHash);
     }
 }

@@ -45,7 +45,7 @@ public class UserCreationController {
 				String userCreate = userGrabberCreator.getText();
 				String passCreate = passGrabberCreator.getText();
 				String emailCreate = emailGrabberCreator.getText();
-				CredentialManager.saveCredentialsToFile(userCreate, passCreate, emailCreate);
+				CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate);
 			}
 		}
 	

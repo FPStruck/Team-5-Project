@@ -1,10 +1,9 @@
 use produhdb;
 create table user_details
-	(id int(11) unsigned not null auto_increment,
+    (id INT PRIMARY KEY AUTO_INCREMENT,
     username varchar(20) default null,
     password_hash varchar(100) default null,
     password_params varchar(100) default null,
-    email VARCHAR(100),
-    primary key(id)
+    email VARCHAR(100)
     ) engine = innodb default charset = latin1;
     

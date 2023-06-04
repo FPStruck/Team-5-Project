@@ -1,6 +1,8 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import application.EmailManager.LoginResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +30,7 @@ public class LoginController {
 	@FXML private TextField emailGrabberCreator;
 	@FXML private Button btnLogin;
 	
-	public boolean loginSuccessful() {
+	public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
 		CredentialManager credentialManager = new CredentialManager();
 		String userLog = userGrabber.getText();
 	    String passLog = passGrabber.getText();
@@ -59,7 +61,7 @@ public class LoginController {
 
 	}
 	
-	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
+	@FXML protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
 		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
