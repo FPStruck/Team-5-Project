@@ -74,7 +74,7 @@ public class PatientInfoViewController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
-		setTextFieldsToPatientId("4");
+		setTextFieldsToPatientId("2");
 	}
 	
 	@FXML 	
