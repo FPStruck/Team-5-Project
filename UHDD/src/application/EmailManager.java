@@ -33,6 +33,7 @@ public class EmailManager {
 	    String host = "smtp.gmail.com";
 	    int port = 587;
 	    String username = "jonoleo@gmail.com";
+	    //Will require a password here
 	    String password = "xx";
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
