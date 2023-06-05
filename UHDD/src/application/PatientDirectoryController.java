@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,7 +42,7 @@ public class PatientDirectoryController {
 		stage.show();
 	}
 	
-	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
+	@FXML public void viewTable(MouseEvent mouseEvent) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
 		dbConnection.initialiseDB();
@@ -51,29 +52,33 @@ public class PatientDirectoryController {
             String SQL = "SELECT * from `testdb`.`test3`";
             //ResultSet
             ResultSet rs = dbConnection.executeQueryReturnResults(SQL);
-
+            System.out.println("55");
             // add table column dynamically
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
                 final int j = i;
                 col = new TableColumn(rs.getMetaData().getColumnName(i + 1)); // loops through the results and grabs the column name
+                System.out.println("64");
                 col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { // makes the columns ready for population
                     public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
+                        
                     }
                 });
-
+                System.out.println("68");
                 tableView.getColumns().addAll(col);
                 System.out.println("Column [" + i + "] ");
             }
 
             // add to observation list
+            System.out.println("74");
             while (rs.next()) {
                 //Iterate Row
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     //Iterate Column
                     row.add(rs.getString(i));
+                    System.out.println("81");
                 }
                 System.out.println("Row [1] added " + row);
                 data.add(row);
