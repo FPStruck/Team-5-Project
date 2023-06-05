@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,15 +33,27 @@ public class PatientDirectoryController {
 	@FXML private TableView<ObservableList> tableView = new TableView();
 	static ObservableList<ObservableList> data;
 	static TableColumn col;
+	@FXML
+	private Pane patientDirectoryDBPane;
+	@FXML
+	private Pane appointmentsDBPane;
+	@FXML
+	private Pane patientNotesDBPane;
+	@FXML
+	private Button viewPatientInfoBtn;
+	@FXML
+	private Pane dashboardDBPane;
 	DBConnector dbConnection = new DBConnector();
 	
-	public void switchToDashBoard(ActionEvent event) throws IOException {
+	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
+	
+
 	
 	@FXML public void viewTable(MouseEvent mouseEvent) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");
@@ -93,5 +106,35 @@ public class PatientDirectoryController {
             System.out.println("Error on Building Data");
         }
         dbConnection.closeConnection();
+	}
+	
+	@FXML	
+	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {
+		appointmentsDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightAppointmentsPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		appointmentsDBPane.setStyle("-fx-background-color:  #063847");
+	}
+	
+	@FXML	
+	public void highlightPatientNotesPaneOnEnter(MouseEvent mouseEvent) throws IOException {
+		patientNotesDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightPatientNotesPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		patientNotesDBPane.setStyle("-fx-background-color:  #063847");
+	}
+	
+	@FXML	
+	public void highlightDashboardPaneOnEnter(MouseEvent mouseEvent) throws IOException {
+		dashboardDBPane.setStyle("-fx-background-color: #02181f");
+	}
+	
+	@FXML	
+	public void highlightDashboardPaneOnExit(MouseEvent mouseEvent) throws IOException {
+		dashboardDBPane.setStyle("-fx-background-color:  #063847");
 	}
 }
