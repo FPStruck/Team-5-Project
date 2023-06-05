@@ -26,6 +26,8 @@ public class DashboardController {
 	private Pane patientNotesDBPane;
 	@FXML
 	private Button viewPatientInfoBtn;
+	@FXML
+	private Button patientInformationBTN;
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
