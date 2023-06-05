@@ -37,9 +37,9 @@ public class DashboardController {
 	}
 	
 	@FXML 
-	public void switchToPatientDirectory(ActionEvent event) throws Exception {
+	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
@@ -62,6 +62,8 @@ public class DashboardController {
 		stage.setScene(scene);
 		stage.show();
 	}
+	
+	
 	
 	@FXML	
 	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {
