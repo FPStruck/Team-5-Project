@@ -212,13 +212,12 @@ public class MySQL_test2 extends Application{
 		System.out.println("Driver loaded:");
 		
 		// connection for database...make sure the URL is correct JDBC:MYSQL
-		String url = "jdbc:mysql://127.0.0.1:3306/javabook";
-		String username = "root";
-		String password = "mysql";
+		String url = "\"jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true\";myDbConn=DriverManager.getConnection(url, \"itc303admin\", \"L3cr3X2bNCtcvf\");";
+		
 		
 		// connect to the database
 		try {
-			connection = DriverManager.getConnection(url, username, password);
+			connection = DriverManager.getConnection(url);
 			System.out.println("Database connected:");
 			labelStatus.setText("Database connected");
 			statement = connection.createStatement();
@@ -233,4 +232,3 @@ public class MySQL_test2 extends Application{
 	}
 		
 }
-
