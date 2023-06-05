@@ -63,6 +63,8 @@ public class DashboardController {
 		stage.show();
 	}
 	
+	
+	
 	@FXML	
 	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {
 		patientDirectoryDBPane.setStyle("-fx-background-color: #02181f");

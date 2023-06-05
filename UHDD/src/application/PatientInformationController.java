@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class PatientInformationController {
 	private Stage stage;
 	private Scene scene;
-@FXML private Label labelStatus = new Label();
+	@FXML private Label labelStatus = new Label();
 	
 	@FXML private Label labelId = new Label("ID");
 	@FXML private TextField textId = new TextField();
@@ -65,6 +65,14 @@ public class PatientInformationController {
 
 	public void switchToDashBoard(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	public void switchToPatientDirectory(ActionEvent event) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
