@@ -1,13 +1,12 @@
 package application;
 
 
-
 import java.util.*;  
 import javax.mail.*;  
 import javax.mail.internet.*;  
 import javax.activation.*;  
   
-public class AuthenticatorEmailRework
+public class AuthenticatorEMAIL
 {  
  public static void main(String [] args){  
 	 System.out.print("Input email to send verification code: ");
@@ -16,8 +15,8 @@ public class AuthenticatorEmailRework
       String from = "Verifier";
       String host = "smtp.gmail.com";
       int port = 587;
-      final String username = "tobez103@gmail.com";
-      final String password = "kagdrwlehcakxyhi";
+      String username = "jonoleo@gmail.com";
+      String password = "xxx";
       
       // Set email properties
       Properties properties = System.getProperties();  
