@@ -48,7 +48,7 @@ public class ImplementingECC {
 	
 	// 1. Generate the pre-master shared secret
 	KeyAgreement ka = KeyAgreement.getInstance("ECDH", "BC");
-	ka.init(partyAPrivKey);
+	ka.init(partyBPrivKey);
 	ka.doPhase(partyBPubKey, true);
 	byte[] sharedSecret = ka.generateSecret();
 
