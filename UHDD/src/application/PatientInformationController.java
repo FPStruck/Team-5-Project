@@ -2,6 +2,7 @@ package application;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -41,7 +42,8 @@ public class PatientInformationController {
 	@FXML private Label labelTelephone = new Label("Telephone");
 	@FXML private TextField textTelephone = new TextField();
 	@FXML private Label labelEmail = new Label("Email");
-	@FXML private TextArea textEmail = new TextArea();
+	@FXML private TextField textEmail = new TextField();
+	@FXML private TextArea textDetails = new TextArea();
 	@FXML private ImageView QRCode = new ImageView();
 	@FXML private ComboBox<String> dd = new ComboBox();
 	
@@ -89,6 +91,7 @@ public class PatientInformationController {
 			textState.setText(results.getString(7));
 			textTelephone.setText(results.getString(8));
 			textEmail.setText(results.getString(9));
+			textDetails.setText(results.getString(10));
 			labelStatus.setText("Record found");
 			labelStatus.setTextFill(Color.GREEN);
 		} else {
@@ -100,6 +103,7 @@ public class PatientInformationController {
 			textState.setText("");
 			textTelephone.setText("");
 			textEmail.setText("");
+			textDetails.setText("");
 			labelStatus.setText("Record not found");
 			labelStatus.setTextFill(Color.RED);
 		}
@@ -108,19 +112,38 @@ public class PatientInformationController {
 	@FXML 
 	private void insert(ActionEvent event) throws SQLException, ClassNotFoundException {
 		dbConnection.initialiseDB();
-		String insertQuery = "INSERT INTO `testdb`.`test3` "
-				+ "(ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email) "
-				+ "VALUES ('" + textId.getText().trim() + "', '" + textFirstName.getText().trim() + 
-				"', '" + textMiddleName.getText().trim()+ "', '" + textLastName.getText().trim() + 
-				"', '" + textAddress.getText().trim() + "', '" + textCity.getText().trim() +
-				"', '" + textState.getText().trim() + "', '" + textTelephone.getText().trim() + 
-				"', '" + textEmail.getText().trim() + "');";
 		
-		//System.out.println(insertQuery);
+		// old query to long 
+//		String insertQuery = "INSERT INTO `testdb`.`test3` "
+//				+ "(ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email, Details) "
+//				+ "VALUES ('" + textId.getText().trim() + "', '" + textFirstName.getText().trim() + 
+//				"', '" + textMiddleName.getText().trim() + "', '" + textLastName.getText().trim() + 
+//				"', '" + textAddress.getText().trim() + "', '" + textCity.getText().trim() +
+//				"', '" + textState.getText().trim() + "', '" + textTelephone.getText().trim() + 
+//				"', '" + textEmail.getText().trim() + "', '" + textDetails.getText().trim() + "');";
+//		
+//		System.out.println(insertQuery); // this line is to ensure the query is formatted correctly 
+		
+		// new query easier to read
+		String insertQuery1 = "INSERT INTO `testdb`.`test3` (ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email, Details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement statement = dbConnection.connection.prepareStatement(insertQuery1);
+		statement.setString(1, textId.getText().trim());
+		statement.setString(2, textFirstName.getText().trim());
+		statement.setString(3, textMiddleName.getText().trim());
+		statement.setString(4, textLastName.getText().trim());
+		statement.setString(5, textAddress.getText().trim());
+		statement.setString(6, textCity.getText().trim());
+		statement.setString(7, textState.getText().trim());
+		statement.setString(8, textTelephone.getText().trim());
+		statement.setString(9, textEmail.getText().trim());
+		statement.setString(10, textDetails.getText().trim());
+		 
+		System.out.println(insertQuery1); // this line is to ensure the query is formatted correctly 
 		
 		try {
 			// execute statement
-			dbConnection.executeUpdate(insertQuery);
+//			dbConnection.executeUpdate(insertQuery); // used with old query
+			statement.executeUpdate();
 			labelStatus.setText("Insert completed");
 			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Insert suceeded");
@@ -144,29 +167,48 @@ public class PatientInformationController {
 		textCity.setText(null);
 		textState.setText(null);
 		textTelephone.setText(null);
-		textEmail.setText(null); 
+		textEmail.setText(null);
+		textDetails.setText(null);
 	}
 
 	@FXML 
 	private void update(ActionEvent event) throws ClassNotFoundException, SQLException {
 		dbConnection.initialiseDB();
-		// TODO Auto-generated method stub
-		String updateQuery = "UPDATE `testdb`.`test3` SET "
-				+ "FirstName = '" + textFirstName.getText().trim() + 
-				"', MiddleName = '" + textMiddleName.getText().trim()+ 
-				"', LastName = '" + textLastName.getText().trim() + 
-				"', Address = '" + textAddress.getText().trim() + 
-				"', City = '" + textCity.getText().trim() +
-				"', State = '" + textState.getText().trim() + 
-				"', Telephone = '" + textTelephone.getText().trim() + 
-				"', Email = '" + textEmail.getText().trim() + 
-				"' WHERE ID = '" + textId.getText().trim() + "';";
+		// old query to long and hard to maintain 
+//		String updateQuery = "UPDATE `testdb`.`test3` SET "
+//				+ "FirstName = '" + textFirstName.getText().trim() + 
+//				"', MiddleName = '" + textMiddleName.getText().trim()+ 
+//				"', LastName = '" + textLastName.getText().trim() + 
+//				"', Address = '" + textAddress.getText().trim() + 
+//				"', City = '" + textCity.getText().trim() +
+//				"', State = '" + textState.getText().trim() + 
+//				"', Telephone = '" + textTelephone.getText().trim() + 
+//				"', Email = '" + textEmail.getText().trim() + 
+//				"' WHERE ID = '" + textId.getText().trim() + "';";
+//		
+//		System.out.println(updateQuery);
 		
-		System.out.println(updateQuery);
+		// new query easier to read
+		String updateQuery1 = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, Details = ? WHERE ID = ?";
+		PreparedStatement statement = dbConnection.connection.prepareStatement(updateQuery1);
+		statement.setString(1, textFirstName.getText().trim());
+		statement.setString(2, textMiddleName.getText().trim());
+		statement.setString(3, textLastName.getText().trim());
+		statement.setString(4, textAddress.getText().trim());
+		statement.setString(5, textCity.getText().trim());
+		statement.setString(6, textState.getText().trim());
+		statement.setString(7, textTelephone.getText().trim());
+		statement.setString(8, textEmail.getText().trim());
+		statement.setString(9, textDetails.getText().trim());
+		statement.setString(10, textId.getText().trim());
+		
+		 
+		System.out.println(updateQuery1); // this line is to ensure the query is formatted correctly 
 		
 		try {
 			// execute statement
-			dbConnection.executeUpdate(updateQuery);
+//			dbConnection.executeUpdate(updateQuery); // old query
+			statement.executeUpdate();
 			labelStatus.setText("Update completed or does not exist please view the ID");
 			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Update suceeded");

@@ -147,7 +147,7 @@ public class UI {
 	//Toby's changes
 	static byte[] encryptedPassword; // for the encryption
 	static byte[] decryptedPassword; // for the decryption
-	static RSA_DSA rsa;
+	//static RSA_DSA rsa;
 	static byte[] tempByteArray;
 	static ObservableList<ObservableList> data;
 	static TableColumn col;

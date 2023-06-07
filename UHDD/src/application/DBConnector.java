@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
-		private Connection connection;
+		Connection connection; // the controllers needs to use this connection 
 		private Statement statement;
 		private ResultSet resultSet;
 		
@@ -23,9 +23,15 @@ public class DBConnector {
 			System.out.println("Driver loaded:");
 		
 			// connection for database...make sure the URL is correct JDBC:MYSQL
+			// connect to Jonathan's cloud
 			String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
 			String username = "itc303admin";
 			String password = "L3cr3X2bNCtcvf";
+			
+			// connect to local database
+//			String url = "jdbc:mysql://127.0.0.1:3306/testdb";
+//			String username = "root";
+//			String password = "mysql";
 		
 			// connect to the database
 			try {
