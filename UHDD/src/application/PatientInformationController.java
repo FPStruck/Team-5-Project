@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -57,6 +59,7 @@ public class PatientInformationController {
 	@FXML private ComboBox<String> dd = new ComboBox();
 	@FXML private ComboBox<String> mm = new ComboBox();
 	@FXML private ComboBox<String> yy = new ComboBox();
+	@FXML private DatePicker datePicker = new DatePicker();
 	
 	DBConnector dbConnection = new DBConnector();
 	
@@ -112,6 +115,7 @@ public class PatientInformationController {
 			textDetails.setText(results.getString(17));
 			textFamilyMedicalHistory.setText(results.getString(18));
 			textProgressNotes.setText(results.getString(19));
+			datePicker.setPromptText(results.getString(20));
 			labelStatus.setText("Record found");
 			
 			labelStatus.setTextFill(Color.GREEN);
@@ -124,6 +128,7 @@ public class PatientInformationController {
 			textState.setText("");
 			textTelephone.setText("");
 			textEmail.setText("");
+			datePicker.setPromptText("This cannot be empty when adding!!!");;
 			textHealthInsuranceNumber.setText("");
 			textEmergencyContactNumber.setText("");
 			textAllergies.setText("");
@@ -157,8 +162,8 @@ public class PatientInformationController {
 		// new query easier to read
 		String insertQuery1 = "INSERT INTO `testdb`.`test3` (ID, FirstName, MiddleName, LastName, Address, City, "
 				+ "State, Telephone, Email, HealthInsuranceNumber, EmergencyContactNumber, Allergies, "
-				+ "PastMedicalConditions, SurgeriesOrProcedures, Medications, Immunisations, Details, FamilyMedicalHistory, ProgressNotes) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "PastMedicalConditions, SurgeriesOrProcedures, Medications, Immunisations, Details, FamilyMedicalHistory, ProgressNotes, DateOfBirth) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement statement = dbConnection.connection.prepareStatement(insertQuery1);
 		statement.setString(1, textId.getText().trim());
 		statement.setString(2, textFirstName.getText().trim());
@@ -179,6 +184,7 @@ public class PatientInformationController {
 		statement.setString(17, textDetails.getText().trim());
 		statement.setString(18, textFamilyMedicalHistory.getText().trim());
 		statement.setString(19, textProgressNotes.getText().trim());
+		statement.setString(20, datePicker.getValue().toString());
 		 
 		System.out.println(insertQuery1); // this line is to ensure the query is formatted correctly 
 		
@@ -194,7 +200,7 @@ public class PatientInformationController {
 			labelStatus.setText("Insert failed");
 			labelStatus.setTextFill(Color.RED);
 			System.out.println(Ex.getMessage());
-		}
+		} 
 		dbConnection.closeConnection();
 	}
 	
@@ -210,6 +216,7 @@ public class PatientInformationController {
 		textState.setText("");
 		textTelephone.setText("");
 		textEmail.setText("");
+		datePicker.setPromptText("This cannot be empty when adding!!!");
 		textHealthInsuranceNumber.setText("");
 		textEmergencyContactNumber.setText("");
 		textAllergies.setText("");
@@ -220,6 +227,7 @@ public class PatientInformationController {
 		textDetails.setText("");
 		textFamilyMedicalHistory.setText("");
 		textProgressNotes.setText("");
+		
 	}
 
 	@FXML 
@@ -242,7 +250,7 @@ public class PatientInformationController {
 		// new query easier to read
 		String updateQuery1 = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, "
 				+ "HealthInsuranceNumber = ?, EmergencyContactNumber = ?, Allergies = ?, PastMedicalConditions = ?, SurgeriesOrProcedures = ?, Medications = ?, Immunisations = ?,"
-				+ "Details =?, FamilyMedicalHistory = ?, ProgressNotes = ? WHERE ID = ?";
+				+ "Details =?, FamilyMedicalHistory = ?, ProgressNotes = ?, DateOfBirth = ? WHERE ID = ?";
 		PreparedStatement statement = dbConnection.connection.prepareStatement(updateQuery1);
 		statement.setString(1, textFirstName.getText().trim());
 		statement.setString(2, textMiddleName.getText().trim());
@@ -262,7 +270,8 @@ public class PatientInformationController {
 		statement.setString(16, textDetails.getText().trim());
 		statement.setString(17, textFamilyMedicalHistory.getText().trim());
 		statement.setString(18, textProgressNotes.getText().trim());
-		statement.setString(19, textId.getText().trim());
+		statement.setString(19, datePicker.getValue().toString());
+		statement.setString(20, textId.getText().trim());
 		
 		 
 		System.out.println(updateQuery1); // this line is to ensure the query is formatted correctly 
