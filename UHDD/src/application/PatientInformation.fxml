@@ -233,7 +233,7 @@
                         <TextField fx:id="textPastMedicalConditions" layoutX="267.0" layoutY="572.0" />
                         <TextField fx:id="textSurgeriesOrProcedures" layoutX="268.0" layoutY="607.0" />
                         <TextField fx:id="textMedications" layoutX="268.0" layoutY="644.0" />
-                        <TextField fx:id="texImmunisations" layoutX="268.0" layoutY="682.0" />
+                        <TextField fx:id="textImmunisations" layoutX="268.0" layoutY="682.0" />
                         <DatePicker layoutX="261.0" layoutY="486.0" />
               </children>
             </AnchorPane>

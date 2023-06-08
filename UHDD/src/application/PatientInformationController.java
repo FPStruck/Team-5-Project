@@ -201,16 +201,25 @@ public class PatientInformationController {
 	@FXML 
 	private void clear(ActionEvent event) {
 		// clear the input text
-		textId.setText(null);
-		textLastName.setText(null);
-		textFirstName.setText(null);
-		textMiddleName.setText(null);
-		textAddress.setText(null);
-		textCity.setText(null);
-		textState.setText(null);
-		textTelephone.setText(null);
-		textEmail.setText(null);
-		textDetails.setText(null);
+		textId.setText("");
+		textLastName.setText("");
+		textFirstName.setText("");
+		textMiddleName.setText("");
+		textAddress.setText("");
+		textCity.setText("");
+		textState.setText("");
+		textTelephone.setText("");
+		textEmail.setText("");
+		textHealthInsuranceNumber.setText("");
+		textEmergencyContactNumber.setText("");
+		textAllergies.setText("");
+		textPastMedicalConditions.setText("");
+		textSurgeriesOrProcedures.setText("");
+		textMedications.setText("");
+		textImmunisations.setText("");
+		textDetails.setText("");
+		textFamilyMedicalHistory.setText("");
+		textProgressNotes.setText("");
 	}
 
 	@FXML 
@@ -231,7 +240,9 @@ public class PatientInformationController {
 //		System.out.println(updateQuery);
 		
 		// new query easier to read
-		String updateQuery1 = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, Details = ? WHERE ID = ?";
+		String updateQuery1 = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, "
+				+ "HealthInsuranceNumber = ?, EmergencyContactNumber = ?, Allergies = ?, PastMedicalConditions = ?, SurgeriesOrProcedures = ?, Medications = ?, Immunisations = ?,"
+				+ "Details =?, FamilyMedicalHistory = ?, ProgressNotes = ? WHERE ID = ?";
 		PreparedStatement statement = dbConnection.connection.prepareStatement(updateQuery1);
 		statement.setString(1, textFirstName.getText().trim());
 		statement.setString(2, textMiddleName.getText().trim());
@@ -241,8 +252,17 @@ public class PatientInformationController {
 		statement.setString(6, textState.getText().trim());
 		statement.setString(7, textTelephone.getText().trim());
 		statement.setString(8, textEmail.getText().trim());
-		statement.setString(9, textDetails.getText().trim());
-		statement.setString(10, textId.getText().trim());
+		statement.setString(9, textHealthInsuranceNumber.getText().trim());
+		statement.setString(10, textEmergencyContactNumber.getText().trim());
+		statement.setString(11, textAllergies.getText().trim());
+		statement.setString(12, textPastMedicalConditions.getText().trim());
+		statement.setString(13, textSurgeriesOrProcedures.getText().trim());
+		statement.setString(14, textMedications.getText().trim());
+		statement.setString(15, textImmunisations.getText().trim());
+		statement.setString(16, textDetails.getText().trim());
+		statement.setString(17, textFamilyMedicalHistory.getText().trim());
+		statement.setString(18, textProgressNotes.getText().trim());
+		statement.setString(19, textId.getText().trim());
 		
 		 
 		System.out.println(updateQuery1); // this line is to ensure the query is formatted correctly 
