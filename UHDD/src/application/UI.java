@@ -177,6 +177,8 @@ public class UI {
 	
 	
 	static ObservableList<String> ddList;
+	static ObservableList<String> mmList;
+	static ObservableList<String> yyList;
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
@@ -228,7 +230,9 @@ public class UI {
 	
 	@FXML
     public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
-		ddList = FXCollections.observableArrayList("one", "two", "three");
+		ddList = FXCollections.observableArrayList("1", "2", "3");
+		mmList = FXCollections.observableArrayList("Jan", "Feb", "March");
+		yyList = FXCollections.observableArrayList("2020", "2021", "2023");
 		dd.getItems().addAll(ddList);
 		System.out.println(dd.getItems());
 		

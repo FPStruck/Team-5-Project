@@ -179,8 +179,8 @@
                         </Label>
                         <ComboBox fx:id="dd" layoutX="267.0" layoutY="368.0" prefHeight="25.0" prefWidth="63.0" promptText="dd" />
                         	
-                        <ComboBox layoutX="342.0" layoutY="368.0" prefHeight="25.0" prefWidth="65.0" promptText="mm" />
-                        <ComboBox layoutX="416.0" layoutY="368.0" prefHeight="25.0" prefWidth="54.0" promptText="yy" />
+                        <ComboBox fx:id="mm" layoutX="342.0" layoutY="368.0" prefHeight="25.0" prefWidth="65.0" promptText="mm" />
+                        <ComboBox fx:id="yy" layoutX="416.0" layoutY="368.0" prefHeight="25.0" prefWidth="54.0" promptText="yy" />
                         <Label alignment="CENTER" layoutX="16.0" layoutY="411.0" style="&#10;" text="Health Insurance number" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                            <font>
                               <Font size="18.0" fx:id="x1811" />
@@ -192,8 +192,8 @@
                            </font>
                         </Label>
                         <TextField fx:id="textEmail" layoutX="267.0" layoutY="326.0" />
-                        <TextField fx:id="textTelephone11" layoutX="267.0" layoutY="412.0" />
-                        <TextField fx:id="textTelephone111" layoutX="267.0" layoutY="452.0" />
+                        <TextField fx:id="textHealthInsuranceNumber" layoutX="267.0" layoutY="412.0" />
+                        <TextField fx:id="textEmergencyContactNumber" layoutX="267.0" layoutY="452.0" />
                         <Label layoutX="11.0" layoutY="14.0" text="Personal Information" textFill="#2e4450">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -229,11 +229,11 @@
                               <Font size="18.0" fx:id="x1111111" />
                            </font>
                         </Label>
-                        <TextField fx:id="textFirstName1" layoutX="268.0" layoutY="537.0" />
-                        <TextField fx:id="textFirstName2" layoutX="267.0" layoutY="572.0" />
-                        <TextField fx:id="textFirstName21" layoutX="268.0" layoutY="607.0" />
-                        <TextField fx:id="textFirstName22" layoutX="268.0" layoutY="644.0" />
-                        <TextField fx:id="textFirstName23" layoutX="268.0" layoutY="682.0" />
+                        <TextField fx:id="textAllergies" layoutX="268.0" layoutY="537.0" />
+                        <TextField fx:id="textPastMedicalConditions" layoutX="267.0" layoutY="572.0" />
+                        <TextField fx:id="textSurgeriesOrProcedures" layoutX="268.0" layoutY="607.0" />
+                        <TextField fx:id="textMedications" layoutX="268.0" layoutY="644.0" />
+                        <TextField fx:id="texImmunisations" layoutX="268.0" layoutY="682.0" />
                         <DatePicker layoutX="261.0" layoutY="486.0" />
               </children>
             </AnchorPane>
@@ -248,13 +248,13 @@
                         <Font size="18.0" fx:id="x19" />
                      </font>
                   </Label>
-                  <TextArea fx:id="textEmail1" layoutX="14.0" layoutY="415.0" prefHeight="150.0" prefWidth="271.0" wrapText="true" />
+                  <TextArea fx:id="textFamilyMedicalHistory" layoutX="14.0" layoutY="415.0" prefHeight="150.0" prefWidth="271.0" wrapText="true" />
                   <Label alignment="CENTER" layoutX="14.0" layoutY="584.0" style="&#10;" text="Progress Notes" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                      <font>
                         <Font size="18.0" fx:id="x191" />
                      </font>
                   </Label>
-                  <TextArea fx:id="textEmail11" layoutX="14.0" layoutY="624.0" prefHeight="150.0" prefWidth="271.0" wrapText="true" />
+                  <TextArea fx:id="textProgressNotes" layoutX="14.0" layoutY="624.0" prefHeight="150.0" prefWidth="271.0" wrapText="true" />
           </children>
         </AnchorPane>
       </items>

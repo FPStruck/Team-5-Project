@@ -43,9 +43,20 @@ public class PatientInformationController {
 	@FXML private TextField textTelephone = new TextField();
 	@FXML private Label labelEmail = new Label("Email");
 	@FXML private TextField textEmail = new TextField();
+	@FXML private TextField textHealthInsuranceNumber = new TextField();
+	@FXML private TextField textEmergencyContactNumber = new TextField();
+	@FXML private TextField textAllergies = new TextField();
+	@FXML private TextField textPastMedicalConditions = new TextField();
+	@FXML private TextField textSurgeriesOrProcedures = new TextField();
+	@FXML private TextField textMedications = new TextField();
+	@FXML private TextField textImmunisations = new TextField();
 	@FXML private TextArea textDetails = new TextArea();
+	@FXML private TextArea textFamilyMedicalHistory = new TextArea();
+	@FXML private TextArea textProgressNotes = new TextArea();
 	@FXML private ImageView QRCode = new ImageView();
 	@FXML private ComboBox<String> dd = new ComboBox();
+	@FXML private ComboBox<String> mm = new ComboBox();
+	@FXML private ComboBox<String> yy = new ComboBox();
 	
 	DBConnector dbConnection = new DBConnector();
 	
@@ -91,8 +102,18 @@ public class PatientInformationController {
 			textState.setText(results.getString(7));
 			textTelephone.setText(results.getString(8));
 			textEmail.setText(results.getString(9));
-			textDetails.setText(results.getString(10));
+			textHealthInsuranceNumber.setText(results.getString(10));
+			textEmergencyContactNumber.setText(results.getString(11));
+			textAllergies.setText(results.getString(12));
+			textPastMedicalConditions.setText(results.getString(13));
+			textSurgeriesOrProcedures.setText(results.getString(14));
+			textMedications.setText(results.getString(15));
+			textImmunisations.setText(results.getString(16));
+			textDetails.setText(results.getString(17));
+			textFamilyMedicalHistory.setText(results.getString(18));
+			textProgressNotes.setText(results.getString(19));
 			labelStatus.setText("Record found");
+			
 			labelStatus.setTextFill(Color.GREEN);
 		} else {
 			textLastName.setText("");
@@ -103,7 +124,16 @@ public class PatientInformationController {
 			textState.setText("");
 			textTelephone.setText("");
 			textEmail.setText("");
+			textHealthInsuranceNumber.setText("");
+			textEmergencyContactNumber.setText("");
+			textAllergies.setText("");
+			textPastMedicalConditions.setText("");
+			textSurgeriesOrProcedures.setText("");
+			textMedications.setText("");
+			textImmunisations.setText("");
 			textDetails.setText("");
+			textFamilyMedicalHistory.setText("");
+			textProgressNotes.setText("");
 			labelStatus.setText("Record not found");
 			labelStatus.setTextFill(Color.RED);
 		}
@@ -125,7 +155,10 @@ public class PatientInformationController {
 //		System.out.println(insertQuery); // this line is to ensure the query is formatted correctly 
 		
 		// new query easier to read
-		String insertQuery1 = "INSERT INTO `testdb`.`test3` (ID, FirstName, MiddleName, LastName, Address, City, State, Telephone, Email, Details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String insertQuery1 = "INSERT INTO `testdb`.`test3` (ID, FirstName, MiddleName, LastName, Address, City, "
+				+ "State, Telephone, Email, HealthInsuranceNumber, EmergencyContactNumber, Allergies, "
+				+ "PastMedicalConditions, SurgeriesOrProcedures, Medications, Immunisations, Details, FamilyMedicalHistory, ProgressNotes) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement statement = dbConnection.connection.prepareStatement(insertQuery1);
 		statement.setString(1, textId.getText().trim());
 		statement.setString(2, textFirstName.getText().trim());
@@ -136,7 +169,16 @@ public class PatientInformationController {
 		statement.setString(7, textState.getText().trim());
 		statement.setString(8, textTelephone.getText().trim());
 		statement.setString(9, textEmail.getText().trim());
-		statement.setString(10, textDetails.getText().trim());
+		statement.setString(10, textHealthInsuranceNumber.getText().trim());
+		statement.setString(11, textEmergencyContactNumber.getText().trim());
+		statement.setString(12, textAllergies.getText().trim());
+		statement.setString(13, textPastMedicalConditions.getText().trim());
+		statement.setString(14, textSurgeriesOrProcedures.getText().trim());
+		statement.setString(15, textMedications.getText().trim());
+		statement.setString(16, textImmunisations.getText().trim());
+		statement.setString(17, textDetails.getText().trim());
+		statement.setString(18, textFamilyMedicalHistory.getText().trim());
+		statement.setString(19, textProgressNotes.getText().trim());
 		 
 		System.out.println(insertQuery1); // this line is to ensure the query is formatted correctly 
 		
