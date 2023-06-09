@@ -266,16 +266,20 @@ public class UI {
 	    String host = "smtp.gmail.com";
 	    int port = 587;
 	    String username = "mina.gemian79@gmail.com";
-	    String password = "ecdxshtuimguqmom";
+	    String password = "yhgmqnodfoolhnmz";
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
 
 	    //email properties
 	    Properties properties = System.getProperties();  
-	    properties.setProperty("mail.smtp.host", host);
-	    properties.setProperty("mail.smtp.port", String.valueOf(port));
-	    properties.setProperty("mail.smtp.starttls.enable", "true");
-	    properties.setProperty("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.host", "smtp.gmail.com");
+	    properties.put("mail.smtp.socketFactory.port", "587");
+	    properties.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.port", "587");
+	    properties.put("mail.smtp.ssl.enable", "false");
+	    properties.put("mail.smtp.starttls.enable", "true");
+	    properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
 	    // Get the email session object  
 	    Session session = Session.getDefaultInstance(properties,  
@@ -320,7 +324,7 @@ public class UI {
 
 	        Optional<Integer> result = dialog.showAndWait();
 	        if (result.isPresent()) {
-	            inputCode = result.get();           
+	            inputCode = result.get();
 	        } else {
 	        	actionGrabber.setText("Email verification cancelled");
 				actionGrabber.setFill(Color.RED);
@@ -331,7 +335,7 @@ public class UI {
 	        if (inputCode == expectedCode) {
 	            System.out.println("Verification successful!");
 	            return true;
-	        }  else if (inputCode != expectedCode) {
+	        } else if (inputCode != expectedCode) {
 	        	dialog.close();
 	        	actionGrabber.setText("Wrong code input. Email verification cancelled");
 				actionGrabber.setFill(Color.RED);
@@ -362,8 +366,6 @@ public class UI {
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
-			} else if (loginSuccessful() == false) {
-				actionGrabber.setText("No Credentials Found");
 			}
 		}
 	}
@@ -555,7 +557,7 @@ public class UI {
 	                	System.out.println(part[2]);
 	                    scan.close();
 	                    return part[2]; // return email address
-	                }
+	                } 
 	            }
 	        }
 	        scan.close();

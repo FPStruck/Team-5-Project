@@ -17,5 +17,16 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javax.mail.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/smtp-1.6.2.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.media.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx.web.jar"/>
+	<classpathentry kind="lib" path="E:/Users/FPStruck/Desktop/javafx-sdk-19.0.2.1/lib/javafx-swt.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
