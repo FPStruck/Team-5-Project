@@ -147,7 +147,7 @@ public class UI {
 	//Toby's changes
 	static byte[] encryptedPassword; // for the encryption
 	static byte[] decryptedPassword; // for the decryption
-	static RSA_DSA rsa;
+	//static RSA_DSA rsa;
 	static byte[] tempByteArray;
 	static ObservableList<ObservableList> data;
 	static TableColumn col;
@@ -177,6 +177,8 @@ public class UI {
 	
 	
 	static ObservableList<String> ddList;
+	static ObservableList<String> mmList;
+	static ObservableList<String> yyList;
 	
 	// these objects will be used in querying the database and processing the results
 	private Connection connection;
@@ -228,7 +230,9 @@ public class UI {
 	
 	@FXML
     public void initialize() throws ClassNotFoundException, SQLException { // this will load all the variables in the fields referring to components  
-		ddList = FXCollections.observableArrayList("one", "two", "three");
+		ddList = FXCollections.observableArrayList("1", "2", "3");
+		mmList = FXCollections.observableArrayList("Jan", "Feb", "March");
+		yyList = FXCollections.observableArrayList("2020", "2021", "2023");
 		dd.getItems().addAll(ddList);
 		System.out.println(dd.getItems());
 		
@@ -694,6 +698,44 @@ public class UI {
 		}
 		
 	}
+
+  
+  	//Overview button actions
+	
+    @FXML
+    private void fetchDiagnoses() {
+        System.out.println("Hopefully gets 'diagnoses' info");
+    }
+    
+    // Other controller methods and variables
+    
+	
+	
+	@FXML
+	private void fetchHistory() {
+	    System.out.println("Get patient history");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchPerscription() {
+	    System.out.println("Get Patient perscription");
+	}
+	
+	// Other controller methods and variables
+	
+	
+	
+	@FXML
+	private void fetchReport() {
+	    System.out.println("Gets report");
+	}
+	
+	// Other controller methods and variables
+	
 	
 	private void loadFields(ResultSet results) throws SQLException {
 		

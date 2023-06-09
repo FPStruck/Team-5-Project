@@ -91,7 +91,7 @@ public class MySQL_test extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		initialDB();
+		//initialDB();
 		
 		buttonView.setOnAction(e -> view());
 		buttonInsert.setOnAction(e -> insert());
@@ -204,7 +204,7 @@ public class MySQL_test extends Application{
 			labelStatus.setText("Record not found");
 		}
 	}
-
+	/*
 	private void initialDB() throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		// loads and checks the driver
@@ -227,10 +227,9 @@ public class MySQL_test extends Application{
 			labelStatus.setText("Connection failed");
 		} 
 	}
-
+	*/
 	public static void main(String[] args) {
 		Application.launch();
 	}
 		
 }
-
