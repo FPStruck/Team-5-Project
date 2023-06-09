@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class PatientInfoViewController {
@@ -51,13 +53,18 @@ public class PatientInfoViewController {
 	private Text cityTXT;
 	@FXML
 	private Text emergencyNoTXT;
+	@FXML
+	private Button nextPatientBTN;
+	
+	private Integer patient = 1;
 	
 	DBConnector dbConnector = new DBConnector();
 	
 	public void setTextFieldsToPatientId(String Id) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
-			
+		ResultSetMetaData meta = patientDetails.getMetaData(); // not need at the moment, this will get the mata data such as column size
+		
 		if(patientDetails.next()) {
 			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
 			emailTXT.setText(patientDetails.getString("Email"));
@@ -78,16 +85,18 @@ public class PatientInfoViewController {
 //			} else {
 //				genderTXT.setText("Other");
 //			}
-			
-		}
-				
+	
+			patient++;
+		} else patient = 1;
+		
+		System.out.println(patient);
 		
 		dbConnector.closeConnection();
 	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
-		setTextFieldsToPatientId("3");
+		setTextFieldsToPatientId(patient.toString());
 	}
 	
 	@FXML 	
