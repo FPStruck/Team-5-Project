@@ -55,8 +55,12 @@ public class PatientInfoViewController {
 	private Text emergencyNoTXT;
 	@FXML
 	private Button nextPatientBTN;
+	@FXML
+	private Text viewPatientInfoBtn;
+	@FXML
+	private Text viewPatientInfoBtn2;
 	
-	private Integer patient = 1;
+	static Integer patient;
 	
 	DBConnector dbConnector = new DBConnector();
 	
@@ -73,10 +77,10 @@ public class PatientInfoViewController {
 			patientIdTXT.setText(patientDetails.getString("ID"));
 			phoneNoTXT.setText(patientDetails.getString("Telephone"));
 			addressTXT.setText(patientDetails.getString("Address"));
-			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
-			detailsTXT.setText(patientDetails.getString("Details"));
-			cityTXT.setText(patientDetails.getString("City"));
-			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+//			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
+//			detailsTXT.setText(patientDetails.getString("Details"));
+//			cityTXT.setText(patientDetails.getString("City"));
+//			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
 			
 //			if(patientDetails.getString("gender").equals("M")){
 //				genderTXT.setText("Male");
@@ -96,6 +100,14 @@ public class PatientInfoViewController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
+		if (patient == null) {
+			patient = 1;
+		} else patient--;
+		setTextFieldsToPatientId(patient.toString());
+	}
+	
+	@FXML
+	public void nextPatient() throws ClassNotFoundException, SQLException {
 		setTextFieldsToPatientId(patient.toString());
 	}
 	
@@ -117,6 +129,41 @@ public class PatientInfoViewController {
 		stage.show();
 	}
 	
+	@FXML	
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML	
+	public void switchToPatientInfoView2(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView2.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML	
+	public void switchToPatientInfoView3(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView3.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML	
+	public void switchToPatientInfoView4(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView4.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
 	
 	@FXML	
 	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {
