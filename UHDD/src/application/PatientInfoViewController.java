@@ -59,6 +59,10 @@ public class PatientInfoViewController {
 	private Text viewPatientInfoBtn;
 	@FXML
 	private Text viewPatientInfoBtn2;
+	@FXML
+	private Text familyMedicalHistoryTXT;
+	@FXML
+	private Text progressNotesTXT;
 	
 	static Integer patient;
 	
@@ -77,10 +81,12 @@ public class PatientInfoViewController {
 			patientIdTXT.setText(patientDetails.getString("ID"));
 			phoneNoTXT.setText(patientDetails.getString("Telephone"));
 			addressTXT.setText(patientDetails.getString("Address"));
-//			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
-//			detailsTXT.setText(patientDetails.getString("Details"));
-//			cityTXT.setText(patientDetails.getString("City"));
-//			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
+			detailsTXT.setText(patientDetails.getString("Details"));
+			cityTXT.setText(patientDetails.getString("City"));
+			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+			familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
+			progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
 			
 //			if(patientDetails.getString("gender").equals("M")){
 //				genderTXT.setText("Male");
