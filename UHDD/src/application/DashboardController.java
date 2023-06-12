@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 
 public class DashboardController {
 	private Stage stage;
+	private Stage calendarStage;
 	private Scene scene;
 	private Parent root;
+	private Parent calendarRoot;
+	
 	@FXML
 	private Pane patientDirectoryDBPane;
 	@FXML
@@ -63,6 +66,16 @@ public class DashboardController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
+        calendarRoot = (Parent) fxmlLoader.load();
+		calendarStage = new Stage();
+		calendarStage.setScene(new Scene(calendarRoot));
+		calendarStage.show();
+		CalendarApp myCalendar = new CalendarApp();
+		myCalendar.start(calendarStage);
 	}
 	
 	@FXML	
