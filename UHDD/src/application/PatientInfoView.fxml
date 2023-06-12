@@ -32,7 +32,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -88,7 +87,6 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="nextPatientBTN" layoutX="59.0" layoutY="413.0" onMouseClicked="#initialize" mnemonicParsing="false" style="-fx-background-color: white;" text="Next Patient" />
          </children>
       </Pane>
       <Pane layoutX="200.0" layoutY="39.0" prefHeight="467.0" prefWidth="216.0" style="-fx-background-color: #fcfcfc;">
@@ -111,7 +109,7 @@
             <Text fill="#9a9797" layoutX="28.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of birth:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="28.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="28.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Id:" wrappingWidth="75.0" />
-            <Text fill="#323232" layoutX="21.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis" wrappingWidth="165.0">
+            <Text fill="#323232" layoutX="25.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis" wrappingWidth="165.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -121,12 +119,10 @@
                   <Font size="11.0" />
                </font>
             </Text>
-            <Text fx:id="detailsTXT" fill="#9a9797" layoutX="25.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No current diagnosis" wrappingWidth="121.0" />
+            <Text fill="#9a9797" layoutX="28.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No current diagnosis" wrappingWidth="121.0" />
             <Text fx:id="dobTXT" fill="#282828" layoutX="110.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="dd/mm/yyyy" wrappingWidth="102.0" />
             <Text fx:id="locationTXT" fill="#282828" layoutX="110.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" wrappingWidth="102.0" />
             <Text fx:id="patientIdTXT" fill="#282828" layoutX="110.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Id" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="28.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Health Insurance #" wrappingWidth="75.0" />
-            <Text fx:id="insuranceNumberTXT" fill="#282828" layoutX="110.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insurance Number" wrappingWidth="102.0" />
          </children>
       </Pane>
       <Pane layoutX="200.0" prefHeight="40.0" prefWidth="716.0" style="-fx-background-color: #fcfcfc;">
@@ -158,7 +154,7 @@
             </Text>
          </children>
       </Pane>
-      <Pane layoutX="681.0" layoutY="263.0" prefHeight="217.0" prefWidth="225.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+      <Pane layoutX="681.0" layoutY="298.0" prefHeight="182.0" prefWidth="225.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
          <children>
             <Text fill="#323232" layoutX="19.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Info" wrappingWidth="165.0">
                <font>
@@ -168,13 +164,9 @@
             <Text fill="#9a9797" layoutX="26.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" wrappingWidth="75.0" />
-            <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
-            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="142.0" />
-            <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="75.0" />
-            <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency #:" wrappingWidth="75.0" />
-            <Text fx:id="emergencyNoTXT" fill="#282828" layoutX="103.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency no" wrappingWidth="102.0" />
+            <Text fx:id="phoneNoTXT" fill="#282828" layoutX="84.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
+            <Text fx:id="emailTXT" fill="#282828" layoutX="83.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="142.0" />
+            <Text fx:id="addressTXT" fill="#282828" layoutX="83.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
          </children>
       </Pane>
    </children>

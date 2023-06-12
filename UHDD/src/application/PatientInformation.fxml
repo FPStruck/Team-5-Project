@@ -95,9 +95,9 @@
     </MenuBar>
     <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <AnchorPane style="-fx-background-color: #063847;">
+        <AnchorPane style="-fx-background-color: #89dee2;">
           <children>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Patient ID" textAlignment="CENTER" textFill="WHITE" wrapText="false">
+            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Patient ID" textAlignment="CENTER" textFill="#10217d" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
               </font>
@@ -122,7 +122,7 @@
         </AnchorPane>
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
           <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="788.0" prefWidth="592.0" style="-fx-background-color: white;">
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="788.0" prefWidth="592.0" style="-fx-background-color: #89dee2;">
               <children>
                         <Label alignment="CENTER" layoutX="14.0" layoutY="49.0" style="&#10;" text="First name" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                            <font>
@@ -234,17 +234,17 @@
             </AnchorPane>
           </content>
         </ScrollPane>
-        <AnchorPane style="-fx-background-color: #063847;">
+        <AnchorPane style="-fx-background-color: #89dee2;">
           <children>
-            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" textFill="WHITE" wrapText="false" />
+            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" textFill="#10217d" wrapText="false" />
                   <TextArea fx:id="textDetails" layoutX="14.0" layoutY="41.0" prefHeight="320.0" prefWidth="271.0" wrapText="true" />
-                  <Label alignment="CENTER" layoutX="14.0" layoutY="381.0" style="&#10;" text="Family Medical History" textAlignment="CENTER" textFill="WHITE" wrapText="false">
+                  <Label alignment="CENTER" layoutX="14.0" layoutY="381.0" style="&#10;" text="Family Medical History" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                      <font>
                         <Font size="18.0" fx:id="x19" />
                      </font>
                   </Label>
                   <TextArea fx:id="textFamilyMedicalHistory" layoutX="14.0" layoutY="415.0" prefHeight="150.0" prefWidth="271.0" wrapText="true" />
-                  <Label alignment="CENTER" layoutX="14.0" layoutY="584.0" style="&#10;" text="Progress Notes" textAlignment="CENTER" textFill="WHITE" wrapText="false">
+                  <Label alignment="CENTER" layoutX="14.0" layoutY="584.0" style="&#10;" text="Progress Notes" textAlignment="CENTER" textFill="#10217d" wrapText="false">
                      <font>
                         <Font size="18.0" fx:id="x191" />
                      </font>
