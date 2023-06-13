@@ -89,9 +89,10 @@ public class DBConnector {
 	    }
 		
 		public ResultSet QueryReturnResultsFromPatientId(String patientId) throws SQLException {
-			String sql = "SELECT * FROM testdb.patient_data WHERE patientId = ?";
+			String sql = "SELECT * FROM testdb.test3 WHERE ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
+			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
 		

@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class PatientInfoViewController {
@@ -43,38 +45,58 @@ public class PatientInfoViewController {
 	private Text emailTXT;
 	@FXML
 	private Text addressTXT;
+	@FXML
+	private Text insuranceNumberTXT;
+	@FXML
+	private Text detailsTXT;
+	@FXML
+	private Text cityTXT;
+	@FXML
+	private Text emergencyNoTXT;
+	@FXML
+	private Button nextPatientBTN;
+	
+	private Integer patient = 1;
 	
 	DBConnector dbConnector = new DBConnector();
 	
 	public void setTextFieldsToPatientId(String Id) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
-			
-		if(patientDetails.next()) {
-			fullnameTXT.setText(patientDetails.getString("firstName") + " " + patientDetails.getString("middleName") + " " + patientDetails.getString("lastName"));
-			emailTXT.setText(patientDetails.getString("email"));
-			dobTXT.setText(patientDetails.getString("dateOfBirth"));
-			locationTXT.setText(patientDetails.getString("city"));
-			patientIdTXT.setText(patientDetails.getString("patientId"));
-			phoneNoTXT.setText(patientDetails.getString("telephone"));
-			addressTXT.setText(patientDetails.getString("address"));
-			if(patientDetails.getString("gender").equals("M")){
-				genderTXT.setText("Male");
-			} else if(patientDetails.getString("gender").equals("F")) {
-				genderTXT.setText("Female");
-			} else {
-				genderTXT.setText("Other");
-			}
-			
-		}
+		ResultSetMetaData meta = patientDetails.getMetaData(); // not need at the moment, this will get the mata data such as column size
 		
+		if(patientDetails.next()) {
+			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
+			emailTXT.setText(patientDetails.getString("Email"));
+			dobTXT.setText(patientDetails.getString("DateOfBirth"));
+			locationTXT.setText(patientDetails.getString("City"));
+			patientIdTXT.setText(patientDetails.getString("ID"));
+			phoneNoTXT.setText(patientDetails.getString("Telephone"));
+			addressTXT.setText(patientDetails.getString("Address"));
+			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
+			detailsTXT.setText(patientDetails.getString("Details"));
+			cityTXT.setText(patientDetails.getString("City"));
+			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+			
+//			if(patientDetails.getString("gender").equals("M")){
+//				genderTXT.setText("Male");
+//			} else if(patientDetails.getString("gender").equals("F")) {
+//				genderTXT.setText("Female");
+//			} else {
+//				genderTXT.setText("Other");
+//			}
+	
+			patient++;
+		} else patient = 1;
+		
+		System.out.println(patient);
 		
 		dbConnector.closeConnection();
 	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
-		setTextFieldsToPatientId("2");
+		setTextFieldsToPatientId(patient.toString());
 	}
 	
 	@FXML 	
