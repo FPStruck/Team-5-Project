@@ -2,10 +2,14 @@ package application;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Map;
 
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
 
 import javafx.application.Application;
@@ -84,6 +88,8 @@ public class CalendarApp extends Application {
 		}
 
 		public static Calendar<Object> getDoctors() {
+//			Map<LocalDate, List<Entry<?>>> entry = doctors.findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
+//			System.out.println(entry);
 			return doctors;
 		}
 
