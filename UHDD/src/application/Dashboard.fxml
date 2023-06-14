@@ -162,7 +162,7 @@
                   <Font size="11.0" />
                </font>
             </Button>
-            <Text fx:id="nextAppointment" fill="#063847" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nextAppointment" wrappingWidth="151.66665649414062">
+            <Text fx:id="nextAppointment" fill="#063847" layoutX="72.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empty" wrappingWidth="236.66665649414062">
                <font>
                   <Font size="17.0" />
                </font>

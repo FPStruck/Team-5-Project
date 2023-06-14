@@ -48,17 +48,24 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() {
-		
-		// this will set the next appointment text 
-//		if (myCalendar.getDoctors().getEarliestTimeUsed() == null){
-//			nextAppointment.setText("Emtpy");
-//			
-//		};
-		
+	
 		// trying to get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
 		System.out.println("This is the entry: " + entry);
+		for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
+			System.out.println("This is the list: " + l);
+			List<Entry<?>> e =  l.getValue();
+			System.out.println("This is entry: " + e);
+			for (Entry<?> ee: e) {
+				String nextA = ee.getTitle();
+				System.out.println("This is the titile: " + nextA);
+				// this will set the next appointment text 
+				nextAppointment.setText(nextA);
+					
+			}
+			
+		}
 	}
 	
 	@FXML 	
