@@ -77,7 +77,7 @@
             </Pane>
             <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@application.css" text="Patient Information" textFill="#063847" />
             <Button fx:id="tableCreator" layoutX="85.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@application.css" text="Table Creator" textFill="#063847" />
-            <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" onMouseClicked="#switchToCalendar" prefHeight="40.0" prefWidth="200.0">
+            <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseClicked="#switchToCalendar" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">
                      <font>
@@ -162,7 +162,7 @@
                   <Font size="11.0" />
                </font>
             </Button>
-            <Text fill="#063847" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3:45 PM 15/04/23" wrappingWidth="151.66665649414062">
+            <Text fx:id="nextAppointment" fill="#063847" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nextAppointment" wrappingWidth="151.66665649414062">
                <font>
                   <Font size="17.0" />
                </font>

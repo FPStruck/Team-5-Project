@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,14 +13,16 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class DashboardController {
 	private Stage stage;
-	private Stage calendarStage;
+	private static Stage calendarStage;
 	private Scene scene;
 	private Parent root;
-	private Parent calendarRoot;
+	private static Parent calendarRoot;
+	private static CalendarApp myCalendar = new CalendarApp();;
 	
 	@FXML
 	private Pane patientDirectoryDBPane;
@@ -31,6 +34,16 @@ public class DashboardController {
 	private Button viewPatientInfoBtn;
 	@FXML
 	private Button patientInformationBTN;
+	@FXML
+	private Text nextAppointment;
+	
+	
+	@FXML
+	public void initialize() {
+//		if (myCalendar.getDoctors().getEarliestTimeUsed() == null){
+//			nextAppointment.setText("Emtpy");
+//		};
+	}
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
@@ -74,7 +87,6 @@ public class DashboardController {
 		calendarStage = new Stage();
 		calendarStage.setScene(new Scene(calendarRoot));
 		calendarStage.show();
-		CalendarApp myCalendar = new CalendarApp();
 		myCalendar.start(calendarStage);
 	}
 	
