@@ -32,6 +32,11 @@ public class EmailManager {
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
 	    int port = 587;
+//	    String username = "jonoleo@gmail.com";
+//	    //Will require a password here
+//	    String password = "xx";
+	    
+	    // use my email
 	    String username = "mina.gemian79@gmail.com";
 	    String password = "yhgmqnodfoolhnmz";
 	      

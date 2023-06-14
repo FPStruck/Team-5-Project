@@ -88,7 +88,7 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="nextPatientBTN" layoutX="59.0" layoutY="413.0" onMouseClicked="#initialize" mnemonicParsing="false" style="-fx-background-color: white;" text="Next Patient" />
+            <Button fx:id="nextPatientBTN" layoutX="59.0" layoutY="413.0" mnemonicParsing="false" onMouseClicked="#nextPatient" style="-fx-background-color: white;" text="Next Patient" />
          </children>
       </Pane>
       <Pane layoutX="200.0" layoutY="39.0" prefHeight="467.0" prefWidth="216.0" style="-fx-background-color: #fcfcfc;">
@@ -141,17 +141,17 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <Text fill="#323232" layoutX="89.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
+            <Text fx:id="viewPatientInfoBtn2" fill="#323232" layoutX="89.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView2" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fill="#323232" layoutX="210.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
+            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView3" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fill="#323232" layoutX="322.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
+            <Text fx:id="viewPatientInfoBtn4" fill="#323232" layoutX="322.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView4" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -169,7 +169,7 @@
             <Text fill="#9a9797" layoutX="26.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" wrappingWidth="75.0" />
             <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
-            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="142.0" />
+            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="102.0" />
             <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="75.0" />
             <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="102.0" />
@@ -177,5 +177,7 @@
             <Text fx:id="emergencyNoTXT" fill="#282828" layoutX="103.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency no" wrappingWidth="102.0" />
          </children>
       </Pane>
+      <Text fx:id="familyMedicalHistoryTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" visible="false" wrappingWidth="466.13671875" />
+      <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />
    </children>
 </AnchorPane>

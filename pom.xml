@@ -109,6 +109,12 @@
     <artifactId>mysql-connector-j</artifactId>
     <version>8.0.32</version>
 </dependency>
+<!-- calendar -->
+<dependency>
+    <groupId>com.calendarfx</groupId>
+    <artifactId>view</artifactId>
+    <version>11.12.5</version>
+</dependency>
 
 
    </dependencies>
