@@ -96,4 +96,16 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 		
+		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
+			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			String[] name = patientName.split(" ");
+			String fName = name[0];
+			String lName = name[1];
+			statement.setString(1, fName);
+			statement.setString(2, lName);
+			System.out.println(statement);
+	        return statement.executeQuery();
+	    }
+		
 }
