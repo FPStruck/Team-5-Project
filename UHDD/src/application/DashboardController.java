@@ -31,7 +31,7 @@ public class DashboardController {
 	private Scene scene;
 	private Parent root;
 	private static Parent calendarRoot;
-	private static CalendarApp myCalendar = new CalendarApp();;
+	private static CalendarApp myCalendar;
 	
 	@FXML
 	private Pane patientDirectoryDBPane;
@@ -137,12 +137,16 @@ public class DashboardController {
 	}
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
-        calendarRoot = (Parent) fxmlLoader.load();
-		calendarStage = new Stage();
-		calendarStage.setScene(new Scene(calendarRoot));
-		calendarStage.show();
-		myCalendar.start(calendarStage);
+		if (myCalendar == null) {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
+	        calendarRoot = (Parent) fxmlLoader.load();
+			calendarStage = new Stage();
+			calendarStage.setScene(new Scene(calendarRoot));
+			calendarStage.show();
+		
+			myCalendar = new CalendarApp();
+			myCalendar.start(calendarStage);
+			} else calendarStage.show();
 	}
 	
 	@FXML	
