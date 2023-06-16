@@ -167,12 +167,12 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <Text fill="#063847" layoutX="53.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Robert Hugh Grant" wrappingWidth="151.66665649414062">
+            <Text fx:id="fullName" fill="#063847" layoutX="53.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name" wrappingWidth="151.66665649414062">
                <font>
                   <Font size="13.0" />
                </font>
             </Text>
-            <Text fill="#063847" layoutX="190.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+61 423 187 804" wrappingWidth="106.99996948242188">
+            <Text fx:id="phoneNumber" fill="#063847" layoutX="190.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" wrappingWidth="106.99996948242188">
                <font>
                   <Font size="13.0" />
                </font>

@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,10 +45,17 @@ public class DashboardController {
 	private Button patientInformationBTN;
 	@FXML
 	private Text nextAppointment;
+	@FXML
+	private Text fullName;
+	@FXML
+	private Text phoneNumber;
+	
+	DBConnector dbConnector = new DBConnector();
+	String nextA;
 	
 	
 	@FXML
-	public void initialize() {
+	public void initialize() throws ClassNotFoundException, SQLException {
 	
 		// trying to get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
@@ -58,7 +66,7 @@ public class DashboardController {
 			List<Entry<?>> e =  l.getValue();
 			System.out.println("This is entry: " + e);
 			for (Entry<?> ee: e) {
-				String nextA = ee.getTitle();
+				nextA = ee.getTitle();
 				System.out.println("This is the titile: " + nextA);
 				// this will set the next appointment text 
 				nextAppointment.setText(nextA);
@@ -66,6 +74,19 @@ public class DashboardController {
 			}
 			
 		}
+		if (nextA != null) {
+			dbConnector.initialiseDB();
+			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
+			System.out.println("This is the patient details: " + patientDetails);
+			if(patientDetails.next()) {
+				String name =  patientDetails.getString("FirstName") + " " 
+						+ patientDetails.getString("MiddleName") + " " 
+						+ patientDetails.getString("LastName");
+				fullName.setText(name);
+				phoneNumber.setText(patientDetails.getString("Telephone"));
+			}
+		}
+		
 	}
 	
 	@FXML 	
