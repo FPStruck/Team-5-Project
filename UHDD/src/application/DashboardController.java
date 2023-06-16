@@ -49,6 +49,10 @@ public class DashboardController {
 	private Text fullName;
 	@FXML
 	private Text phoneNumber;
+	@FXML
+	private Text pastMedicalConditions;
+	@FXML
+	private Text progressNotes;
 	
 	DBConnector dbConnector = new DBConnector();
 	String nextA;
@@ -84,6 +88,8 @@ public class DashboardController {
 						+ patientDetails.getString("LastName");
 				fullName.setText(name);
 				phoneNumber.setText(patientDetails.getString("Telephone"));
+				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+				progressNotes.setText(patientDetails.getString("ProgressNotes"));
 			}
 		}
 		
