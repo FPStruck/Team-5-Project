@@ -60,38 +60,41 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
-	
 		// trying to get the next appointment 
-		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
-		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
-		System.out.println("This is the entry: " + entry);
-		for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
-			System.out.println("This is the list: " + l);
-			List<Entry<?>> e =  l.getValue();
-			System.out.println("This is entry: " + e);
-			for (Entry<?> ee: e) {
-				nextA = ee.getTitle();
-				System.out.println("This is the titile: " + nextA);
-				// this will set the next appointment text 
-				nextAppointment.setText(nextA);
-					
-			}
-			
-		}
-		if (nextA != null) {
-			dbConnector.initialiseDB();
-			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
-			System.out.println("This is the patient details: " + patientDetails);
-			if(patientDetails.next()) {
-				String name =  patientDetails.getString("FirstName") + " " 
-						+ patientDetails.getString("MiddleName") + " " 
-						+ patientDetails.getString("LastName");
-				fullName.setText(name);
-				phoneNumber.setText(patientDetails.getString("Telephone"));
-				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-				progressNotes.setText(patientDetails.getString("ProgressNotes"));
-			}
-		}
+		
+		// this breaks if you try to open the calendar again 
+//		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
+//		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
+//		System.out.println("This is the entry: " + entry);	
+//			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
+//				System.out.println("This is the list: " + l);
+//				List<Entry<?>> e =  l.getValue();
+//				System.out.println("This is entry: " + e);
+//				for (Entry<?> ee: e) {
+//					nextA = ee.getTitle();
+//					System.out.println("This is the titile: " + nextA);
+//					// this will set the next appointment text 
+//					nextAppointment.setText(nextA);		// this is where it breaks
+//				}
+//			}
+//		System.out.println("After loop: " + nextA);	
+//		System.out.println("After loop next apppointment: " + nextAppointment);	
+		
+		
+//		if (nextA != null) {
+//			dbConnector.initialiseDB();
+//			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
+//			System.out.println("This is the patient details: " + patientDetails);
+//			if(patientDetails.next()) {
+//				String name =  patientDetails.getString("FirstName") + " " 
+//						+ patientDetails.getString("MiddleName") + " " 
+//						+ patientDetails.getString("LastName");
+//				fullName.setText(name);
+//				phoneNumber.setText(patientDetails.getString("Telephone"));
+//				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+//				progressNotes.setText(patientDetails.getString("ProgressNotes"));
+//			}
+//		}
 		
 	}
 	
