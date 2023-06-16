@@ -59,26 +59,28 @@ public class DashboardController {
 	
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException {
+	public void initialize() throws ClassNotFoundException, SQLException{
 		// trying to get the next appointment 
 		
 		// this breaks if you try to open the calendar again 
-//		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
-//		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
-//		System.out.println("This is the entry: " + entry);	
-//			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
-//				System.out.println("This is the list: " + l);
-//				List<Entry<?>> e =  l.getValue();
-//				System.out.println("This is entry: " + e);
-//				for (Entry<?> ee: e) {
-//					nextA = ee.getTitle();
-//					System.out.println("This is the titile: " + nextA);
-//					// this will set the next appointment text 
-//					nextAppointment.setText(nextA);		// this is where it breaks
-//				}
-//			}
-//		System.out.println("After loop: " + nextA);	
-//		System.out.println("After loop next apppointment: " + nextAppointment);	
+		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
+		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
+		System.out.println("This is the entry: " + entry);	
+			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
+				System.out.println("This is the list: " + l);
+				List<Entry<?>> e =  l.getValue();
+				System.out.println("This is entry: " + e);
+				for (Entry<?> ee: e) {
+					nextA = ee.getTitle();
+					System.out.println("This is the titile: " + nextA);
+					// this will set the next appointment text 
+					if (nextAppointment != null) { // this fixed the bug 
+						nextAppointment.setText(nextA);
+					}		// this is where it breaks because nestAppointment was null
+				}
+			}
+		System.out.println("After loop: " + nextA);	
+		System.out.println("After loop next apppointment: " + nextAppointment);	
 		
 		
 //		if (nextA != null) {
