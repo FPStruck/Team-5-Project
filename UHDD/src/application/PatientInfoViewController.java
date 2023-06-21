@@ -12,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -59,6 +61,10 @@ public class PatientInfoViewController {
 	private Text viewPatientInfoBtn;
 	@FXML
 	private Text viewPatientInfoBtn2;
+	@FXML
+	private Text viewPatientInfoBtn3;
+	@FXML
+	private Text viewPatientInfoBtn4;
 	@FXML
 	private Text familyMedicalHistoryTXT;
 	@FXML
@@ -169,6 +175,52 @@ public class PatientInfoViewController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	@FXML
+	public void switchToOverviewTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", FontWeight.BOLD, 14));
+		viewPatientInfoBtn2.setFont(Font.font("System",  14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(false);
+		// overview tab has no text to view as of code written 
+	}
+	
+	@FXML
+	public void switchToPatientProgressAndPlanTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", FontWeight.BOLD, 14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(true);
+		progressNotesTXT.setVisible(false);;
+	}
+	
+	@FXML
+	public void switchToPatientNotesTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", 14));
+		viewPatientInfoBtn3.setFont(Font.font("System",FontWeight.BOLD , 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(true);;
+	}
+	
+	@FXML
+	public void switchToPatientDocumentsTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", 14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System",FontWeight.BOLD , 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(false);;
+		// document tab has no text to view as of code written 
 	}
 	
 	@FXML	
