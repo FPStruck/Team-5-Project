@@ -265,17 +265,27 @@ public class UI {
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
 	    int port = 587;
-	    String username = "mina.gemian79@gmail.com";
-	    String password = "ecdxshtuimguqmom";
+	    String username = "tobez103@gmail.com";
+	    String password = "xx"; // the app does not use this setting, use EmailManager.java 
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
 
 	    //email properties
 	    Properties properties = System.getProperties();  
-	    properties.setProperty("mail.smtp.host", host);
-	    properties.setProperty("mail.smtp.port", String.valueOf(port));
-	    properties.setProperty("mail.smtp.starttls.enable", "true");
-	    properties.setProperty("mail.smtp.auth", "true");
+//	    properties.setProperty("mail.smtp.host", host);
+//	    properties.setProperty("mail.smtp.port", String.valueOf(port));
+//	    properties.setProperty("mail.smtp.starttls.enable", "true");
+//	    properties.setProperty("mail.smtp.auth", "true");
+	    
+	    // toby's email properties
+	    properties.put("mail.smtp.host", "smtp.gmail.com");
+	    properties.put("mail.smtp.socketFactory.port", "587");
+	    properties.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.port", "587");
+	    properties.put("mail.smtp.ssl.enable", "false");
+	    properties.put("mail.smtp.starttls.enable", "true");
+	    properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
 	    // Get the email session object  
 	    Session session = Session.getDefaultInstance(properties,  
