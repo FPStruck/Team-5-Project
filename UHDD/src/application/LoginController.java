@@ -110,7 +110,7 @@ public class LoginController {
 	}
 
 	@FXML public void bypassUserLogin(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard, testing nurse
+		Parent root = FXMLLoader.load(getClass().getResource("Nurse_Dashboard.fxml")); // change to dashboard, testing nurse
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

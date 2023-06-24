@@ -82,21 +82,21 @@ public class DashboardController {
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);	
 		
-		
-//		if (nextA != null) {
-//			dbConnector.initialiseDB();
-//			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
-//			System.out.println("This is the patient details: " + patientDetails);
-//			if(patientDetails.next()) {
-//				String name =  patientDetails.getString("FirstName") + " " 
-//						+ patientDetails.getString("MiddleName") + " " 
-//						+ patientDetails.getString("LastName");
-//				fullName.setText(name);
-//				phoneNumber.setText(patientDetails.getString("Telephone"));
-//				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-//				progressNotes.setText(patientDetails.getString("ProgressNotes"));
-//			}
-//		}
+		// this will display the next patient appointment details
+		if (nextA != null) {
+			dbConnector.initialiseDB();
+			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
+			System.out.println("This is the patient details: " + patientDetails);
+			if(patientDetails.next()) {
+				String name =  patientDetails.getString("FirstName") + " " 
+						+ patientDetails.getString("MiddleName") + " " 
+						+ patientDetails.getString("LastName");
+				fullName.setText(name);
+				phoneNumber.setText(patientDetails.getString("Telephone"));
+				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+				progressNotes.setText(patientDetails.getString("ProgressNotes"));
+			}
+		}
 		
 	}
 	
