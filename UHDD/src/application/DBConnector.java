@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import javafx.scene.paint.Color;
 
@@ -108,5 +111,25 @@ public class DBConnector {
 			System.out.println(statement);
 	        return statement.executeQuery();
 	    }
+		
+		public void createCalendarEventQuery(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
+				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,
+				Boolean nextRecurring, String nextRRule, Boolean nextRecurrence) throws SQLException {
+			String sql = "INSERT INTO doctor_calendar (Title, Id, FullDay, StartDate, EndDate, StartTime, EndTime, ZoneId, Recurring, "
+					+ "RRule, Recurrence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, nextTitle);
+			statement.setString(2, nextId);
+			statement.setString(3, nextFullDay.toString());
+			statement.setString(4, nextStartDate.toString());
+			statement.setString(5, nextEndDate.toString());
+			statement.setString(6, nextStartTime.toString());
+			statement.setString(7, nextEndTime.toString());
+			statement.setString(8, nextZoneId.toString());
+			statement.setString(9, nextRecurring.toString());
+			statement.setString(10, nextRRule);
+			statement.setString(11, nextRecurrence.toString());
+			statement.executeUpdate();
+		}
 		
 }

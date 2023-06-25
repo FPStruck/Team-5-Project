@@ -8,8 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +66,22 @@ public class Nurse_DashboardController {
 	
 	DBConnector dbConnector = new DBConnector();
 	String nextA;
-	
+	String nextTitle;
+	String nextId;
+	Boolean nextFullDay;
+	LocalDate nextStartDate;
+	LocalDate nextEndDate;
+	LocalTime nextStartTime;
+	LocalTime nextEndTime;
+	ZoneId nextZoneId;
+	Boolean nextRecurring;
+	String nextRRule;
+	Boolean nextRecurrence;
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
+		
+		dbConnector.initialiseDB();
 		// trying to get the next appointment 
 		
 		// this breaks if you try to open the calendar again 
@@ -86,22 +100,39 @@ public class Nurse_DashboardController {
 					nextAppointment.setText(nextA);
 				}		// this is where it breaks because nestAppointment was null
 				
-				// no need to loop through
-//				for (Entry<?> ee: e) {
-//					nextA = ee.getTitle();
-//					System.out.println("This is the title: " + nextA);
-//					// this will set the next appointment text 
-//					if (nextAppointment != null) { // this fixed the bug 
-//						nextAppointment.setText(nextA);
-//					}		// this is where it breaks because nestAppointment was null
-//				}
+				// loop through to add to database
+				for (Entry<?> ee: e) {
+					nextTitle = ee.getTitle();
+					nextId = ee.getId();
+					nextFullDay = ee.isFullDay();
+					nextStartDate = ee.getStartDate();
+					nextEndDate = ee.getEndDate();
+					nextStartTime = ee.getStartTime();
+					nextEndTime = ee.getEndTime();
+					nextZoneId = ee.getZoneId();
+					nextRecurring = ee.isRecurring();
+					nextRRule = ee.recurrenceRuleProperty().getValue();
+					nextRecurrence = ee.isRecurrence();
+					
+					System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
+					+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
+					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
+					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
+					
+					try {dbConnector.createCalendarEventQuery(nextTitle, nextId, nextFullDay, nextStartDate, 
+							nextEndDate, nextStartTime,	nextEndTime, nextZoneId,
+							nextRecurring, nextRRule, nextRecurrence); 
+					} catch (SQLIntegrityConstraintViolationException error) {
+						System.out.println(error);
+						
+					}
+				}
 			}
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);	
 		
 		// this will display the next patient appointment details
 		if (nextA != null) {
-			dbConnector.initialiseDB();
 			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
 			System.out.println("This is the patient details: " + patientDetails);
 			if(patientDetails.next()) {
