@@ -70,14 +70,22 @@ public class DashboardController {
 				System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
 				System.out.println("This is entry: " + e);
-				for (Entry<?> ee: e) {
-					nextA = ee.getTitle();
-					System.out.println("This is the titile: " + nextA);
-					// this will set the next appointment text 
-					if (nextAppointment != null) { // this fixed the bug 
-						nextAppointment.setText(nextA);
-					}		// this is where it breaks because nestAppointment was null
-				}
+				nextA = e.get(0).getTitle();
+				System.out.println("First entry: " + nextA);
+				// this will set the next appointment text 
+				if (nextAppointment != null) { // this fixed the bug 
+					nextAppointment.setText(nextA);
+				}		// this is where it breaks because nestAppointment was null
+				
+				// no need to loop through
+//				for (Entry<?> ee: e) {
+//					nextA = ee.getTitle();
+//					System.out.println("This is the title: " + nextA);
+//					// this will set the next appointment text 
+//					if (nextAppointment != null) { // this fixed the bug 
+//						nextAppointment.setText(nextA);
+//					}		// this is where it breaks because nestAppointment was null
+//				}
 			}
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);	

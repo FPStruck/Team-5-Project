@@ -1,6 +1,11 @@
 package application;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -10,7 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
+import com.calendarfx.model.LoadEvent;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,18 +74,27 @@ public class Nurse_DashboardController {
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
 		System.out.println("This is the entry: " + entry);	
+		System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
 			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
 				System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
 				System.out.println("This is entry: " + e);
-				for (Entry<?> ee: e) {
-					nextA = ee.getTitle();
-					System.out.println("This is the titile: " + nextA);
-					// this will set the next appointment text 
-					if (nextAppointment != null) { // this fixed the bug 
-						nextAppointment.setText(nextA);
-					}		// this is where it breaks because nestAppointment was null
-				}
+				nextA = e.get(0).getTitle();
+				System.out.println("First entry: " + nextA);
+				// this will set the next appointment text 
+				if (nextAppointment != null) { // this fixed the bug 
+					nextAppointment.setText(nextA);
+				}		// this is where it breaks because nestAppointment was null
+				
+				// no need to loop through
+//				for (Entry<?> ee: e) {
+//					nextA = ee.getTitle();
+//					System.out.println("This is the title: " + nextA);
+//					// this will set the next appointment text 
+//					if (nextAppointment != null) { // this fixed the bug 
+//						nextAppointment.setText(nextA);
+//					}		// this is where it breaks because nestAppointment was null
+//				}
 			}
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);	
@@ -97,6 +114,25 @@ public class Nurse_DashboardController {
 				progressNotes.setText(patientDetails.getString("ProgressNotes"));
 			}
 		}
+		
+		// serialize and save the file to desktop, not serializable (only works with Events
+//		try {
+//			serialize("C:\\Users\\User\\Desktop\\test.ser", entry);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		// de-serialize the file from the desktop, not serializable
+//		try {
+//			System.out.println("Return deserialize: " + deserialize("C:\\Users\\User\\Desktop\\test.ser"));
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 	}
 	
@@ -177,5 +213,24 @@ public class Nurse_DashboardController {
 	@FXML	
 	public void highlightPatientNotesPaneOnExit(MouseEvent mouseEvent) throws IOException {
 		patientNotesDBPane.setStyle("-fx-background-color:  #063847");
+	}
+	
+	// de-serialize the file
+	public Map<LocalDate, List<Entry<?>>> deserialize(String file) throws IOException, ClassNotFoundException {
+		FileInputStream fIs = new FileInputStream(file);
+		ObjectInputStream objectIn = new ObjectInputStream(fIs);
+		System.out.println("Returning the object: " + objectIn);
+		Map<LocalDate, List<Entry<?>>> listOfEvents = (Map<LocalDate, List<Entry<?>>>) objectIn.readObject();
+		objectIn.close();
+		return listOfEvents;
+	}
+	
+	// serialize the file
+	public void serialize(String f, Map<LocalDate, List<Entry<?>>> entry) throws IOException {
+		FileOutputStream fOs = new FileOutputStream(f);
+		ObjectOutputStream objectOut = new ObjectOutputStream(fOs);
+		objectOut.writeObject(entry);
+		System.out.println("This is the object: " + objectOut);
+		objectOut.close();
 	}
 }
