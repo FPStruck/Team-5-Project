@@ -111,7 +111,7 @@ public class DashboardController {
 					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
 					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
 					
-					try {dbConnector.createCalendarEventQuery(nextTitle, nextId, nextFullDay, nextStartDate, 
+					try {dbConnector.addCalendarEvent(nextTitle, nextId, nextFullDay, nextStartDate, 
 							nextEndDate, nextStartTime,	nextEndTime, nextZoneId,
 							nextRecurring, nextRRule, nextRecurrence); 
 					} catch (SQLIntegrityConstraintViolationException error) {

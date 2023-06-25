@@ -112,7 +112,7 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 		
-		public void createCalendarEventQuery(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
+		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,
 				Boolean nextRecurring, String nextRRule, Boolean nextRecurrence) throws SQLException {
 			String sql = "INSERT INTO doctor_calendar (Title, Id, FullDay, StartDate, EndDate, StartTime, EndTime, ZoneId, Recurring, "
