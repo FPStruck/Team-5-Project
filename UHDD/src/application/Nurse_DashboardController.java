@@ -79,12 +79,10 @@ public class Nurse_DashboardController {
 	Boolean nextRecurrence;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException{
+	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
 		
 		dbConnector.initialiseDB();
-		// trying to get the next appointment 
-		
-		// this breaks if you try to open the calendar again 
+		// get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
 		System.out.println("This is the entry: " + entry);	
@@ -98,7 +96,7 @@ public class Nurse_DashboardController {
 				// this will set the next appointment text 
 				if (nextAppointment != null) { // this fixed the bug 
 					nextAppointment.setText(nextA);
-				}		// this is where it breaks because nestAppointment was null
+				}		// this is where it previously breaks because nestAppointment was null
 				
 				// loop through to add to database
 				for (Entry<?> ee: e) {
@@ -132,7 +130,7 @@ public class Nurse_DashboardController {
 		System.out.println("After loop next apppointment: " + nextAppointment);	
 		
 		// this will display the next patient appointment details
-		if (nextA != null) {
+		if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
 			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
 			System.out.println("This is the patient details: " + patientDetails);
 			if(patientDetails.next()) {
@@ -145,6 +143,7 @@ public class Nurse_DashboardController {
 				progressNotes.setText(patientDetails.getString("ProgressNotes"));
 			}
 		}
+		
 		
 		// serialize and save the file to desktop, not serializable (only works with Events
 //		try {
@@ -164,6 +163,46 @@ public class Nurse_DashboardController {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		
+		
+		String query = "SELECT * FROM testdb.doctor_calendar";
+		ResultSet rs = dbConnector.executeQueryReturnResults(query);
+		System.out.println(rs.getRow());
+		while (rs.next()) {
+			nextTitle = rs.getString("Title");
+			nextId = rs.getString("Id");
+			nextFullDay = Boolean.valueOf(rs.getString("FullDay"));
+			nextStartDate = LocalDate.parse(rs.getString("StartDate"));
+			nextEndDate = LocalDate.parse(rs.getString("EndDate"));
+			nextStartTime = LocalTime.parse(rs.getString("StartTime"));
+			nextEndTime = LocalTime.parse(rs.getString("StartTime"));
+			nextZoneId = ZoneId.of(rs.getString("ZoneId"));
+			nextRecurring = Boolean.valueOf(rs.getString("Recurring"));
+			nextRRule = rs.getString("RRule");
+			nextRecurrence = Boolean.valueOf(rs.getString("Recurrence"));
+			
+			System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
+			+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
+			+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
+			+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
+			
+			// need to add amap list
+			Map<LocalDate, List<Entry<?>>> newMapEntry = null;
+			Entry newEntry = new Entry<Object>();
+			newEntry.setTitle(nextTitle);
+			newEntry.setId(nextId);
+			newEntry.setFullDay(nextFullDay);
+			newEntry.changeStartDate(nextStartDate);
+			newEntry.changeEndDate(nextEndDate);
+			newEntry.changeStartTime(nextStartTime);
+			newEntry.changeEndTime(nextEndTime);
+			newEntry.changeZoneId(nextZoneId);
+			newEntry.setRecurrenceRule(nextRRule);
+			
+			System.out.println("New Entry: " + newEntry);
+			 // add the new entry to the doctor calendar
+			CalendarApp.getDoctors().addEntry(newEntry);
+		} 
 		
 	}
 	

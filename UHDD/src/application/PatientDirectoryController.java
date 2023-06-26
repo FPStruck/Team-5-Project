@@ -65,33 +65,33 @@ public class PatientDirectoryController {
             String SQL = "SELECT * from `testdb`.`test3`";
             //ResultSet
             ResultSet rs = dbConnection.executeQueryReturnResults(SQL);
-            System.out.println("55");
+            System.out.println("After result set obtained");
             // add table column dynamically
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
                 final int j = i;
                 col = new TableColumn(rs.getMetaData().getColumnName(i + 1)); // loops through the results and grabs the column name
-                System.out.println("64");
+                System.out.println("j: " + j);
                 col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { // makes the columns ready for population
                     public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
                         
                     }
                 });
-                System.out.println("68");
+                System.out.println("After column is prepared");
                 tableView.getColumns().addAll(col);
                 System.out.println("Column [" + i + "] ");
             }
 
             // add to observation list
-            System.out.println("74");
+            System.out.println("Starting observation list...");
             while (rs.next()) {
                 //Iterate Row
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     //Iterate Column
                     row.add(rs.getString(i));
-                    System.out.println("81");
+                    System.out.println("Counting column...");
                 }
                 System.out.println("Row [1] added " + row);
                 data.add(row);
