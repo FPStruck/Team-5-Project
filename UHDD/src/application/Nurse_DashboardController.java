@@ -80,7 +80,7 @@ public class Nurse_DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-		
+		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		// get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
@@ -124,26 +124,36 @@ public class Nurse_DashboardController {
 						System.out.println(error);
 						
 					}
+					
+					int value = nextEndTime.compareTo(LocalTime.now()); // ensure that the time is more than the local time for the next appointment 
+					int value2 = nextEndTime.compareTo(LastEndTime); // ensure that the current appointment is not later than the next appointment 
+					
+					if (value > 0 && value2 < 0) { // ensure that the event is more than the local time and less than the next appointment(remember the next appointment must be more than the local time
+						if (nextAppointment != null) {
+							nextAppointment.setText(nextTitle);
+						}
+						LastEndTime = nextEndTime;
+						// this will display the next patient appointment details
+						if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
+							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextTitle);
+							System.out.println("This is the patient details: " + patientDetails);
+							if(patientDetails.next()) {
+								String name =  patientDetails.getString("FirstName") + " " 
+										+ patientDetails.getString("MiddleName") + " " 
+										+ patientDetails.getString("LastName");
+								fullName.setText(name);
+								phoneNumber.setText(patientDetails.getString("Telephone"));
+								pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+								progressNotes.setText(patientDetails.getString("ProgressNotes"));
+							}
+						}
+					}		// this is where it previously breaks because nestAppointment was null
+					
+					
 				}
 			}
 		System.out.println("After loop: " + nextA);	
-		System.out.println("After loop next apppointment: " + nextAppointment);	
-		
-		// this will display the next patient appointment details
-		if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
-			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
-			System.out.println("This is the patient details: " + patientDetails);
-			if(patientDetails.next()) {
-				String name =  patientDetails.getString("FirstName") + " " 
-						+ patientDetails.getString("MiddleName") + " " 
-						+ patientDetails.getString("LastName");
-				fullName.setText(name);
-				phoneNumber.setText(patientDetails.getString("Telephone"));
-				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-				progressNotes.setText(patientDetails.getString("ProgressNotes"));
-			}
-		}
-		
+		System.out.println("After loop next apppointment: " + nextAppointment);			
 		
 		// serialize and save the file to desktop, not serializable (only works with Events
 //		try {
@@ -164,7 +174,7 @@ public class Nurse_DashboardController {
 //			e.printStackTrace();
 //		}
 		
-		
+		// grabs all the rows from the doctor_calendar DB
 		String query = "SELECT * FROM testdb.doctor_calendar";
 		ResultSet rs = dbConnector.executeQueryReturnResults(query);
 		System.out.println(rs.getRow());
