@@ -84,7 +84,7 @@ public class Nurse_DashboardController {
 		dbConnector.initialiseDB();
 		
 		// grabs the events from the database and inserts to the calendar
-		dbConnector.getCalendarEvents();
+		dbConnector.getCalendarEvents(); // this will ensure that the next appointment is displayed 
 		
 		// get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
