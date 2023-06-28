@@ -9,6 +9,10 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Map;
+
+import com.calendarfx.model.Entry;
 
 import javafx.scene.paint.Color;
 
@@ -17,7 +21,18 @@ public class DBConnector {
 		Connection connection; // the controllers needs to use this connection 
 		private Statement statement;
 		private ResultSet resultSet;
-		
+		String nextA;
+		String nextTitle;
+		String nextId;
+		Boolean nextFullDay;
+		LocalDate nextStartDate;
+		LocalDate nextEndDate;
+		LocalTime nextStartTime;
+		LocalTime nextEndTime;
+		ZoneId nextZoneId;
+		Boolean nextRecurring;
+		String nextRRule;
+		Boolean nextRecurrence;		
 		
 		public void initialiseDB() throws ClassNotFoundException, SQLException {
 		
@@ -130,6 +145,49 @@ public class DBConnector {
 			statement.setString(10, nextRRule);
 			statement.setString(11, nextRecurrence.toString());
 			statement.executeUpdate();
+		}
+		
+		public void getCalendarEvents() throws SQLException {
+			// grabs all the rows from the doctor_calendar DB
+			String query = "SELECT * FROM testdb.doctor_calendar";
+			ResultSet rs = this.executeQueryReturnResults(query);
+			System.out.println(rs.getRow());
+			while (rs.next()) {
+				nextTitle = rs.getString("Title");
+				nextId = rs.getString("Id");
+				nextFullDay = Boolean.valueOf(rs.getString("FullDay"));
+				nextStartDate = LocalDate.parse(rs.getString("StartDate"));
+				nextEndDate = LocalDate.parse(rs.getString("EndDate"));
+				nextStartTime = LocalTime.parse(rs.getString("StartTime"));
+				nextEndTime = LocalTime.parse(rs.getString("StartTime"));
+				nextZoneId = ZoneId.of(rs.getString("ZoneId"));
+				nextRecurring = Boolean.valueOf(rs.getString("Recurring"));
+				nextRRule = rs.getString("RRule");
+				nextRecurrence = Boolean.valueOf(rs.getString("Recurrence"));
+				
+				System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
+				+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
+				+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
+				+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
+				
+				// need to add amap list
+				Map<LocalDate, List<Entry<?>>> newMapEntry = null;
+				Entry newEntry = new Entry<Object>();
+				newEntry.setTitle(nextTitle);
+				newEntry.setId(nextId);
+				newEntry.setFullDay(nextFullDay);
+				newEntry.changeStartDate(nextStartDate);
+				newEntry.changeEndDate(nextEndDate);
+				newEntry.changeStartTime(nextStartTime);
+				newEntry.changeEndTime(nextEndTime);
+				newEntry.changeZoneId(nextZoneId);
+				newEntry.setRecurrenceRule(nextRRule);
+				
+				System.out.println("New Entry: " + newEntry);
+				 // add the new entry to the doctor calendar
+				CalendarApp.getDoctors().addEntry(newEntry);
+			} 
+			
 		}
 		
 }
