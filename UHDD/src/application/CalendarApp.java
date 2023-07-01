@@ -1,5 +1,6 @@
 package application;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -19,7 +20,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.layout.BackgroundImage;
 
-public class CalendarApp extends Application {
+public class CalendarApp extends Application implements Serializable {
 	 	// add calendars, this will not save the default calendar 
 		static Calendar<Object> doctors = new Calendar<Object>("Doctor's"); 
 		static Calendar<Object> nurses = new Calendar<Object>("Nurse's");

@@ -3,8 +3,10 @@ package application;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 
 import com.calendarfx.model.Entry;
 
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,46 +59,117 @@ public class DashboardController {
 	
 	DBConnector dbConnector = new DBConnector();
 	String nextA;
-	
+	String nextTitle;
+	String nextId;
+	Boolean nextFullDay;
+	LocalDate nextStartDate;
+	LocalDate nextEndDate;
+	LocalTime nextStartTime;
+	LocalTime nextEndTime;
+	ZoneId nextZoneId;
+	Boolean nextRecurring;
+	String nextRRule;
+	Boolean nextRecurrence;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException{
-		// trying to get the next appointment 
+	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
+		dbConnector.initialiseDB();
 		
-		// this breaks if you try to open the calendar again 
+		// grabs the events from the database and inserts to the calendar
+		dbConnector.getCalendarEvents(); // this will ensure that the next appointment is displayed 
+		
+		// get the next appointment 
 		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
 		System.out.println("This is the entry: " + entry);	
+		System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
 			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
 				System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
 				System.out.println("This is entry: " + e);
+				nextA = e.get(0).getTitle();
+				System.out.println("First entry: " + nextA);
+				// this will set the next appointment text 
+				if (nextAppointment != null) { // this fixed the bug 
+					nextAppointment.setText(nextA);
+				}		// this is where it previously breaks because nestAppointment was null
+				
+				// loop through to add to database
 				for (Entry<?> ee: e) {
-					nextA = ee.getTitle();
-					System.out.println("This is the titile: " + nextA);
-					// this will set the next appointment text 
-					if (nextAppointment != null) { // this fixed the bug 
-						nextAppointment.setText(nextA);
-					}		// this is where it breaks because nestAppointment was null
+					nextTitle = ee.getTitle();
+					nextId = ee.getId();
+					nextFullDay = ee.isFullDay();
+					nextStartDate = ee.getStartDate();
+					nextEndDate = ee.getEndDate();
+					nextStartTime = ee.getStartTime();
+					nextEndTime = ee.getEndTime();
+					nextZoneId = ee.getZoneId();
+					nextRecurring = ee.isRecurring();
+					nextRRule = ee.recurrenceRuleProperty().getValue();
+					nextRecurrence = ee.isRecurrence();
+					
+					System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
+					+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
+					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
+					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
+					
+					// adds the event to the database
+					try {dbConnector.addCalendarEvent(nextTitle, nextId, nextFullDay, nextStartDate, 
+							nextEndDate, nextStartTime,	nextEndTime, nextZoneId,
+							nextRecurring, nextRRule, nextRecurrence); 
+					} catch (SQLIntegrityConstraintViolationException error) {
+						System.out.println(error);
+						
+					}
+					
+					int value = nextEndTime.compareTo(LocalTime.now()); // ensure that the time is more than the local time for the next appointment 
+					int value2 = nextEndTime.compareTo(LastEndTime); // ensure that the current appointment is not later than the next appointment 
+					
+					if (value > 0 && value2 < 0) { // ensure that the event is more than the local time and less than the next appointment(remember the next appointment must be more than the local time
+						if (nextAppointment != null) {
+							nextAppointment.setText(nextTitle);
+						}
+						LastEndTime = nextEndTime;
+						// this will display the next patient appointment details
+						if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
+							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextTitle);
+							System.out.println("This is the patient details: " + patientDetails);
+							if(patientDetails.next()) {
+								String name =  patientDetails.getString("FirstName") + " " 
+										+ patientDetails.getString("MiddleName") + " " 
+										+ patientDetails.getString("LastName");
+								fullName.setText(name);
+								phoneNumber.setText(patientDetails.getString("Telephone"));
+								pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+								progressNotes.setText(patientDetails.getString("ProgressNotes"));
+							}
+						}
+					}		// this is where it previously breaks because nestAppointment was null
+					
+					
 				}
 			}
 		System.out.println("After loop: " + nextA);	
-		System.out.println("After loop next apppointment: " + nextAppointment);	
+		System.out.println("After loop next apppointment: " + nextAppointment);			
 		
-		
-//		if (nextA != null) {
-//			dbConnector.initialiseDB();
-//			ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextA);
-//			System.out.println("This is the patient details: " + patientDetails);
-//			if(patientDetails.next()) {
-//				String name =  patientDetails.getString("FirstName") + " " 
-//						+ patientDetails.getString("MiddleName") + " " 
-//						+ patientDetails.getString("LastName");
-//				fullName.setText(name);
-//				phoneNumber.setText(patientDetails.getString("Telephone"));
-//				pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-//				progressNotes.setText(patientDetails.getString("ProgressNotes"));
-//			}
+		// serialize and save the file to desktop, not serializable (only works with Events
+//		try {
+//			serialize("C:\\Users\\User\\Desktop\\test.ser", entry);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		// de-serialize the file from the desktop, not serializable
+//		try {
+//			System.out.println("Return deserialize: " + deserialize("C:\\Users\\User\\Desktop\\test.ser"));
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 //		}
 		
 	}
