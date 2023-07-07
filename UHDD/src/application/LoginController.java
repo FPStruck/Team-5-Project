@@ -17,6 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class LoginController {
 	private Stage stage;
 	private Scene scene;
@@ -36,7 +39,7 @@ public class LoginController {
 	    String passLog = passGrabber.getText();
 	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
 	    if(to == null) {
-	    	actionGrabber.setText("no match found");
+	    	actionGrabber.setText("No user match found");
 			actionGrabber.setFill(Color.RED);
 	    }
 	    EmailManager emailManager = new EmailManager();
@@ -62,6 +65,9 @@ public class LoginController {
 	}
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
+		String formattedDateTime = currentDateTime.format(formatter);
 		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
@@ -74,13 +80,18 @@ public class LoginController {
 			actionGrabber.setFill(Color.RED);
 		} 
 		else {
-			if(loginSuccessful() == true) {
+			if (loginSuccessful() == false) {
+				System.out.println("A failed login attempt has been established with user: " + userGrabber.getText() + " At: " + formattedDateTime);
+			}
+			else if(loginSuccessful() == true) {
+				System.out.println("A user: " + userGrabber.getText() + " has successfully logged in at: " + formattedDateTime);
 				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
 				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
 			}
+			
 		}
 	}
 

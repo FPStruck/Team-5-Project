@@ -81,6 +81,7 @@ public class EmailManager {
 	        transport.connect(host, username, password);
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
+	        
 	        System.out.println("Verification code sent to " + toAddress);  
 
 	        // Display the dialog box for verification code

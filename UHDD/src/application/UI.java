@@ -321,7 +321,9 @@ public class UI {
 	            }
 	            return null;
 	        });
-
+	        
+	        
+	        
 	        Optional<Integer> result = dialog.showAndWait();
 	        if (result.isPresent()) {
 	            inputCode = result.get();
@@ -349,6 +351,9 @@ public class UI {
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
 		
+		String username = userGrabber.getText();
+		String password = passGrabber.getText();
+		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
 			actionGrabber.setFill(Color.RED);
@@ -358,15 +363,17 @@ public class UI {
 		} else if(passGrabber.getText().equals("")) {
 			actionGrabber.setText("Password cannot be empty");
 			actionGrabber.setFill(Color.RED);
-		} 
-		else {
+		}
+		else { 
 			if(loginSuccessful() == true) {
+				System.out.println("A login attempt has been established with user:" + userGrabber.getText());
 				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
 				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
 			}
+			
 		}
 	}
 	
@@ -374,7 +381,7 @@ public class UI {
 @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
 		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("All fields cannot be empty");
+			actionGrabberCreator.setText("Username and Password fields cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} else if(userGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Username cannot be empty");
@@ -385,7 +392,7 @@ public class UI {
 		} else if(emailGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Email cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
-		} 
+		}
 		else {
 			actionGrabberCreator.setText("User Creation Successful");
 			actionGrabberCreator.setFill(Color.GREEN);
@@ -561,7 +568,7 @@ public class UI {
 	            }
 	        }
 	        scan.close();
-	        actionGrabber.setText("no match found");
+	        actionGrabber.setText("No user match found");
 			actionGrabber.setFill(Color.RED);
 	    } catch (IOException e) {
 	        e.printStackTrace();
