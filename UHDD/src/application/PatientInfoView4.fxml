@@ -61,7 +61,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane fx:id="patientDirectoryIVPane" layoutY="149.0" onMouseClicked="#switchToPatientDirectory" onMouseEntered="#highlightPatientDirectoryPane" onMouseExited="#highlightPatientDirectoryPaneOnExit" prefHeight="40.0" prefWidth="200.0">
+            <Pane fx:id="patientDirectoryIVPane" layoutY="149.0" onMouseClicked="#switchToPatientInformation" onMouseEntered="#highlightPatientDirectoryPane" onMouseExited="#highlightPatientDirectoryPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Directory" wrappingWidth="133.0">
                      <font>
@@ -136,24 +136,24 @@
       </Pane>
       <Pane layoutX="416.0" layoutY="40.0" prefHeight="40.0" prefWidth="500.0" style="-fx-background-color: #e0e0e0;">
          <children>
-            <Text fx:id="viewPatientInfoBtn" fill="#323232" layoutX="14.0" layoutY="25.0" onMouseClicked="#switchToOverviewTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Overview" wrappingWidth="75.0">
+            <Text fx:id="viewPatientInfoBtn" fill="#323232" layoutX="14.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView" strokeType="OUTSIDE" strokeWidth="0.0" text="Overview" wrappingWidth="75.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="viewPatientInfoBtn2" fill="#323232" layoutX="89.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView2" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView3" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="viewPatientInfoBtn4" fill="#323232" layoutX="322.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView4" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
                <font>
                   <Font name="System Bold" size="14.0" />
-               </font>
-            </Text>
-            <Text fx:id="viewPatientInfoBtn2" fill="#323232" layoutX="89.0" layoutY="25.0" onMouseClicked="#switchToPatientProgressAndPlanTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientNotesTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fx:id="viewPatientInfoBtn4" fill="#323232" layoutX="322.0" layoutY="25.0" onMouseClicked="#switchToPatientDocumentsTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
-               <font>
-                  <Font size="14.0" />
                </font>
             </Text>
          </children>
@@ -169,7 +169,7 @@
             <Text fill="#9a9797" layoutX="26.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" wrappingWidth="75.0" />
             <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
-            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="102.0" />
+            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="102.0" />
             <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="75.0" />
             <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="102.0" />

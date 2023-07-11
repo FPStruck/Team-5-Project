@@ -52,7 +52,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="838.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PatientInformationController">
+<VBox prefHeight="838.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Nurse_PatientInformationController">
   <children>
     <MenuBar prefWidth="1141.0" style="-fx-background-color: #527c88;" VBox.vgrow="NEVER">
       <menus>
@@ -95,7 +95,7 @@
     </MenuBar>
     <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <AnchorPane style="-fx-background-color: #063847;">
+        <AnchorPane style="-fx-background-color: #4B0082;">
           <children>
             <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Patient ID" textAlignment="CENTER" textFill="WHITE" wrapText="false">
               <font>

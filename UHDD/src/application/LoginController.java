@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import application.EmailManager.LoginResult;
@@ -29,6 +30,8 @@ public class LoginController {
 	@FXML private TextField passGrabberCreator;
 	@FXML private TextField emailGrabberCreator;
 	@FXML private Button btnLogin;
+	
+	DBConnector dbConnector = new DBConnector();
 	
 	public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
 		CredentialManager credentialManager = new CredentialManager();
@@ -75,11 +78,25 @@ public class LoginController {
 		} 
 		else {
 			if(loginSuccessful() == true) {
-				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
-				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-				scene = new Scene(root);
-				stage.setScene(scene);
-				stage.show();
+				System.out.println(userGrabber.getText());
+				dbConnector.initialiseDB(); // we need to inistialise the connection to the database
+				ResultSet rs = dbConnector.QueryReturnResultsFromUser(userGrabber.getText());
+				rs.next(); // we need to start on the first row
+				System.out.println(rs.getString("role"));
+				String role = rs.getString("role");
+				if (role.equals(new String("Doctor"))) {
+					Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
+					stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+					scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
+				} else if (role.equals(new String("Nurse"))) {
+					Parent root = FXMLLoader.load(getClass().getResource("Nurse_Dashboard.fxml")); // change to dashboard
+					stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+					scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
+				} else System.out.println("No role found");
 			}
 		}
 	}
@@ -93,7 +110,7 @@ public class LoginController {
 	}
 
 	@FXML public void bypassUserLogin(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
+		Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard, testing nurse
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
