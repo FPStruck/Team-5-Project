@@ -3,22 +3,15 @@ package application;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.Map;
-
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.scene.layout.BackgroundImage;
 
 public class CalendarApp extends Application implements Serializable {
 	 	// add calendars, this will not save the default calendar 

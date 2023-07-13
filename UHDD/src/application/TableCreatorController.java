@@ -50,7 +50,7 @@ public class TableCreatorController {
     }
 	
 	public void switchToMySQL(ActionEvent event) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Test.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -62,7 +62,7 @@ public class TableCreatorController {
 	@FXML 
 	public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -72,7 +72,7 @@ public class TableCreatorController {
 	@FXML 
 	public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

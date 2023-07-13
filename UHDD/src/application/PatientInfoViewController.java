@@ -125,7 +125,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -134,7 +134,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToDasboard(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Dashboard.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -143,7 +143,7 @@ public class PatientInfoViewController {
 	
 	@FXML 
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientDirectory.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -152,7 +152,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInfoView.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -161,7 +161,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView2(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView2.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInfoView2.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -170,7 +170,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView3(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView3.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInfoView3.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -179,7 +179,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView4(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView4.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInfoView4.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

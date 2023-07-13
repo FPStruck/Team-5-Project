@@ -2,14 +2,8 @@
 
 package application;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
-
-import javafx.scene.paint.Color;
 
 public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();

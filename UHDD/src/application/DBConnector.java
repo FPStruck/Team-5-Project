@@ -14,13 +14,9 @@ import java.util.Map;
 
 import com.calendarfx.model.Entry;
 
-import javafx.scene.paint.Color;
-
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
 		Connection connection; // the controllers needs to use this connection 
-		private Statement statement;
-		private ResultSet resultSet;
 		String nextA;
 		String nextTitle;
 		String nextId;
@@ -56,9 +52,7 @@ public class DBConnector {
 				connection = DriverManager.getConnection(url, username, password);
 				System.out.println("Database connected:");
 				
-				//labelStatus.setText("Database connected");
-				//labelStatus.setTextFill(Color.GREEN);
-				statement = connection.createStatement();
+				connection.createStatement();
 			} catch (SQLException ex) {
 				System.out.println(ex.getMessage());
 				//labelStatus.setText("Connection failed");

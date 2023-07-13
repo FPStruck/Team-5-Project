@@ -186,7 +186,7 @@ public class UI {
 	private ResultSet results;
 
 	public void switchToCreateUser(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\UserCreation.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -194,7 +194,7 @@ public class UI {
 	}
 	
 	public void switchToHomepage(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Login.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -202,7 +202,7 @@ public class UI {
 	}
 	
 	public void switchToTableCreator(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\TableCreator.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -210,7 +210,7 @@ public class UI {
 	}
 	
 	public void switchToMySQL(ActionEvent event) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Test.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -221,7 +221,7 @@ public class UI {
 	
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -241,7 +241,7 @@ public class UI {
 	
 	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -251,7 +251,7 @@ public class UI {
 	}
 	
 	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\DashBoard.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -367,7 +367,7 @@ public class UI {
 		} 
 		else {
 			if(loginSuccessful() == true) {
-				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
+				Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Dashboard.fxml")); // change to dashboard
 				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);

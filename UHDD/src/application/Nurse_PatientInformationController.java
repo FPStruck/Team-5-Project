@@ -80,7 +80,7 @@ public class Nurse_PatientInformationController {
 	}
 
 	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Nurse_DashBoard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Nurse_DashBoard.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -88,7 +88,7 @@ public class Nurse_PatientInformationController {
 	}
 	
 	public void switchToPatientDirectory(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Nurse_PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Nurse_PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
