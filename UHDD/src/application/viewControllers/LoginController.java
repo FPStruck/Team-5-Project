@@ -88,13 +88,13 @@ public class LoginController {
 				System.out.println(rs.getString("role"));
 				String role = rs.getString("role");
 				if (role.equals(new String("Doctor"))) {
-					Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Dashboard.fxml")); // change to dashboard
+					Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Dashboard.fxml")); // change to dashboard
 					stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 					scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
 				} else if (role.equals(new String("Nurse"))) {
-					Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Nurse_Dashboard.fxml")); // change to dashboard
+					Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Nurse_Dashboard.fxml")); // change to dashboard
 					stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 					scene = new Scene(root);
 					stage.setScene(scene);
@@ -105,7 +105,7 @@ public class LoginController {
 	}
 
 @FXML public void switchToCreateUser(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\UserCreation.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/UserCreation.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -113,7 +113,7 @@ public class LoginController {
 	}
 
 	@FXML public void bypassUserLogin(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Dashboard.fxml")); // change to dashboard, testing nurse
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Dashboard.fxml")); // change to dashboard, testing nurse
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
