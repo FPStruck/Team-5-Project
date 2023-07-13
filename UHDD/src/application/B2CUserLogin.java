@@ -31,6 +31,7 @@ public class B2CUserLogin {
             System.out.println("Access Token - " + result.getAccessToken());
             System.out.println("Refresh Token - " + result.getRefreshToken());
             System.out.println("ID Token - " + result.getIdToken());
+            System.out.println("ID Token expires on - " + result.getExpiresOnDate());
         }
     }
 

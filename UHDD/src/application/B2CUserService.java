@@ -47,4 +47,35 @@ public class B2CUserService {
                 .buildRequest()
                 .post(user);
 	}
+    
+    public void createUser(String username, String password) {
+        final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+            .clientId(clientId)
+            .clientSecret(clientSecret) //required for web apps, do not set for native apps
+            .tenantId(tenantId)
+            .build();
+
+        final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(Arrays.asList(scope), clientSecretCredential);
+
+        GraphServiceClient graphClient = GraphServiceClient.builder()
+                        .authenticationProvider(tokenCredentialAuthProvider)
+                        .buildClient();
+
+        User user = new User();
+        user.accountEnabled = true;
+        user.displayName = username;
+        user.mailNickname = username;
+        user.userPrincipalName = username + "@uhdbitc309.onmicrosoft.com"; // abc is the AD B2C name
+        System.out.println(user.userPrincipalName);
+        user.passwordPolicies = "DisablePasswordExpiration"; // optional
+        PasswordProfile passwordProfile = new PasswordProfile();
+        passwordProfile.forceChangePasswordNextSignIn = false; // false if the user does not need to change password
+        passwordProfile.password = password;
+        user.passwordProfile = passwordProfile;
+        
+        graphClient.users()
+            .buildRequest()
+            .post(user);
+    }
+    
 }
