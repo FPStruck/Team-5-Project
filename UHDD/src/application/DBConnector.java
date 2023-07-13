@@ -16,7 +16,7 @@ import com.calendarfx.model.Entry;
 
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
-		Connection connection; // the controllers needs to use this connection 
+		public Connection connection; // the controllers needs to use this connection 
 		String nextA;
 		String nextTitle;
 		String nextId;

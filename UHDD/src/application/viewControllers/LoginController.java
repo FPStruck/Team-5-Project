@@ -1,9 +1,12 @@
-package application;
+package application.viewControllers;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.CredentialManager;
+import application.DBConnector;
+import application.EmailManager;
 import application.EmailManager.LoginResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

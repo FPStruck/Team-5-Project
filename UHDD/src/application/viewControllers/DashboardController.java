@@ -1,4 +1,4 @@
-package application;
+package application.viewControllers;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -12,6 +12,8 @@ import java.util.Map;
 
 import com.calendarfx.model.Entry;
 
+import application.CalendarApp;
+import application.DBConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

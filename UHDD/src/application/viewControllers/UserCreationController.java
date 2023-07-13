@@ -1,8 +1,9 @@
-package application;
+package application.viewControllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
+import application.CredentialManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

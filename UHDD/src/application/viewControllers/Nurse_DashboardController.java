@@ -1,4 +1,4 @@
-package application;
+package application.viewControllers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,8 @@ import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.LoadEvent;
 
+import application.CalendarApp;
+import application.DBConnector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
