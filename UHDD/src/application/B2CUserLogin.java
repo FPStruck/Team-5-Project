@@ -17,7 +17,7 @@ public class B2CUserLogin {
 	private final static String CLIENT_ID = "93622b73-f524-4e0a-abd5-c484ed4cf9bf";
     private final static String RESOURCE = "https://graph.windows.net";
 
-    public static void main(String args[]) throws Exception {
+    public static void main() throws Exception {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 System.in))) {
@@ -35,7 +35,7 @@ public class B2CUserLogin {
         }
     }
 
-    private static AuthenticationResult getAccessTokenFromUserCredentials(
+    public static AuthenticationResult getAccessTokenFromUserCredentials(
             String username, String password) throws Exception {
         AuthenticationContext context = null;
         AuthenticationResult result = null;

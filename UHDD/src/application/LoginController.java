@@ -34,9 +34,19 @@ public class LoginController {
 	DBConnector dbConnector = new DBConnector();
 	
 	public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
+		
 		CredentialManager credentialManager = new CredentialManager();
 		String userLog = userGrabber.getText();
+		String userLogin = userLog + "@uhdbitc309.onmicrosoft.com";
 	    String passLog = passGrabber.getText();
+	    
+	    try {
+			B2CUserLogin.getAccessTokenFromUserCredentials(userLogin, passLog);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
 	    if(to == null) {
 	    	actionGrabber.setText("no match found");
