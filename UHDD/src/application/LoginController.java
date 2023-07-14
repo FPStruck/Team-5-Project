@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.microsoft.aad.adal4j.AuthenticationResult;
+
 import application.EmailManager.LoginResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +43,11 @@ public class LoginController {
 	    String passLog = passGrabber.getText();
 	    
 	    try {
-			B2CUserLogin.getAccessTokenFromUserCredentials(userLogin, passLog);
+	    	AuthenticationResult result = B2CUserLogin.getAccessTokenFromUserCredentials(userLogin, passLog);
+	    	System.out.println("Access Token - " + result.getAccessToken());
+            System.out.println("Refresh Token - " + result.getRefreshToken());
+            System.out.println("ID Token - " + result.getIdToken());
+            System.out.println("ID Token expires on - " + result.getExpiresOnDate());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

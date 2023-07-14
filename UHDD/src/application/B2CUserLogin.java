@@ -17,24 +17,6 @@ public class B2CUserLogin {
 	private final static String CLIENT_ID = "93622b73-f524-4e0a-abd5-c484ed4cf9bf";
     private final static String RESOURCE = "https://graph.windows.net";
 
-    public static void main() throws Exception {
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(
-                System.in))) {
-            System.out.print("Enter username: ");
-            String username = br.readLine();
-            System.out.print("Enter password: ");
-            String password = br.readLine();
-
-            AuthenticationResult result = getAccessTokenFromUserCredentials(
-                    username, password);
-            System.out.println("Access Token - " + result.getAccessToken());
-            System.out.println("Refresh Token - " + result.getRefreshToken());
-            System.out.println("ID Token - " + result.getIdToken());
-            System.out.println("ID Token expires on - " + result.getExpiresOnDate());
-        }
-    }
-
     public static AuthenticationResult getAccessTokenFromUserCredentials(
             String username, String password) throws Exception {
         AuthenticationContext context = null;

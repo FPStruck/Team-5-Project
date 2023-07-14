@@ -19,35 +19,6 @@ public class B2CUserService {
     private static String tenantId = "d57abc1a-51fe-44f9-919f-e8f214330064";
     private static String scope = "https://graph.microsoft.com/.default"; // this is for any tenant 
     
-//    public static void main(String[] args){
-//    	final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-//                .clientId(clientId)
-//                .clientSecret(clientSecret) //required for web apps, do not set for native apps
-//                .tenantId(tenantId)
-//                .build();
-//
-//            final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(Arrays.asList(scope), clientSecretCredential);
-//
-//            GraphServiceClient graphClient = GraphServiceClient.builder()
-//                            .authenticationProvider(tokenCredentialAuthProvider)
-//                            .buildClient();
-//
-//            User user = new User();
-//            user.accountEnabled = true;
-//            user.displayName = "Jim";
-//            user.mailNickname = "JA";
-//            user.userPrincipalName = "Jim@uhdbitc309.onmicrosoft.com"; // this needs to be @uhdbitc309.onmicrosoft.com
-//            user.passwordPolicies = "DisablePasswordExpiration"; // optional
-//            PasswordProfile passwordProfile = new PasswordProfile();
-//            passwordProfile.forceChangePasswordNextSignIn = false; // false if the user does not need to change password
-//            passwordProfile.password = "xWwvJ]6NMw+bWH-d"; // the user needs to login to the azure portal and change the password first https://azure.microsoft.com/en-us/get-started/azure-portal
-//            user.passwordProfile = passwordProfile;
-//            
-//            graphClient.users()
-//                .buildRequest()
-//                .post(user);
-//	}
-    
     public void createUser(String username, String password) {
         final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
             .clientId(clientId)
