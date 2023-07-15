@@ -1,6 +1,8 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -18,8 +20,9 @@ public class B2CUserService {
     private static String clientSecret = "Z1a8Q~LuPsWAkbs0r1L-ajhC-h_2zEdewDyDJblF"; // this is the value not the ID
     private static String tenantId = "d57abc1a-51fe-44f9-919f-e8f214330064";
     private static String scope = "https://graph.microsoft.com/.default"; // this is for any tenant 
+    List<String> emails = new ArrayList();
     
-    public void createUser(String username, String password) {
+    public void createUser(String username, String password, String email) {
         final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
             .clientId(clientId)
             .clientSecret(clientSecret) //required for web apps, do not set for native apps
@@ -27,7 +30,8 @@ public class B2CUserService {
             .build();
 
         final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(Arrays.asList(scope), clientSecretCredential);
-
+        
+        // from https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=java
         GraphServiceClient graphClient = GraphServiceClient.builder()
                         .authenticationProvider(tokenCredentialAuthProvider)
                         .buildClient();
@@ -43,6 +47,10 @@ public class B2CUserService {
         passwordProfile.forceChangePasswordNextSignIn = false; // false if the user does not need to change password
         passwordProfile.password = password; // A password that's at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols.
         user.passwordProfile = passwordProfile;
+        
+        emails.add(email);
+        System.out.println("Emails: " + emails);
+        user.otherMails = emails;
         
         graphClient.users()
             .buildRequest()

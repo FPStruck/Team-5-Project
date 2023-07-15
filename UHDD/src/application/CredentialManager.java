@@ -23,7 +23,7 @@ public class CredentialManager {
 		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role);
 		dbConnector.closeConnection();
 		B2CUserService newB2C = new B2CUserService();
-		newB2C.createUser(username, password);
+		newB2C.createUser(username, password, email);
 	}
 	
 	
