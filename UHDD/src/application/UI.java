@@ -186,7 +186,7 @@ public class UI {
 	private ResultSet results;
 
 	public void switchToCreateUser(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("UserCreation.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\UserCreation.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -194,7 +194,7 @@ public class UI {
 	}
 	
 	public void switchToHomepage(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Login.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -202,7 +202,7 @@ public class UI {
 	}
 	
 	public void switchToTableCreator(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("TableCreator.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\TableCreator.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -210,7 +210,7 @@ public class UI {
 	}
 	
 	public void switchToMySQL(ActionEvent event) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Test.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -221,7 +221,7 @@ public class UI {
 	
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInformation.fxml"));		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -241,7 +241,7 @@ public class UI {
 	
 	@FXML public void switchToPatientDirectory(ActionEvent event) throws Exception {
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -251,7 +251,7 @@ public class UI {
 	}
 	
 	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\DashBoard.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -265,13 +265,19 @@ public class UI {
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
 	    int port = 587;
-	    String username = "mina.gemian79@gmail.com";
-	    String password = "yhgmqnodfoolhnmz";
+	    String username = "tobez103@gmail.com";
+	    String password = "xx"; // the app does not use this setting, use EmailManager.java 
 	    int expectedCode = (int) (Math.random() * 1000000);
 	    int inputCode = 0;
 
 	    //email properties
 	    Properties properties = System.getProperties();  
+//	    properties.setProperty("mail.smtp.host", host);
+//	    properties.setProperty("mail.smtp.port", String.valueOf(port));
+//	    properties.setProperty("mail.smtp.starttls.enable", "true");
+//	    properties.setProperty("mail.smtp.auth", "true");
+	    
+	    // toby's email properties
 	    properties.put("mail.smtp.host", "smtp.gmail.com");
 	    properties.put("mail.smtp.socketFactory.port", "587");
 	    properties.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
@@ -321,9 +327,7 @@ public class UI {
 	            }
 	            return null;
 	        });
-	        
-	        
-	        
+
 	        Optional<Integer> result = dialog.showAndWait();
 	        if (result.isPresent()) {
 	            inputCode = result.get();
@@ -351,9 +355,6 @@ public class UI {
 	
 	@FXML protected void handleSignInAction(ActionEvent event) throws IOException {
 		
-		String username = userGrabber.getText();
-		String password = passGrabber.getText();
-		
 		if(userGrabber.getText().equals("") & passGrabber.getText().equals("")) {
 			actionGrabber.setText("Username and Password cannot be empty");
 			actionGrabber.setFill(Color.RED);
@@ -363,17 +364,15 @@ public class UI {
 		} else if(passGrabber.getText().equals("")) {
 			actionGrabber.setText("Password cannot be empty");
 			actionGrabber.setFill(Color.RED);
-		}
-		else { 
+		} 
+		else {
 			if(loginSuccessful() == true) {
-				System.out.println("A login attempt has been established with user:" + userGrabber.getText());
-				Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml")); // change to dashboard
+				Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Dashboard.fxml")); // change to dashboard
 				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);
 				stage.show();
 			}
-			
 		}
 	}
 	
@@ -381,7 +380,7 @@ public class UI {
 @FXML protected void handleCreateNewUsernAction(ActionEvent event) {
 		
 		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
-			actionGrabberCreator.setText("Username and Password fields cannot be empty");
+			actionGrabberCreator.setText("All fields cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
 		} else if(userGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Username cannot be empty");
@@ -392,7 +391,7 @@ public class UI {
 		} else if(emailGrabberCreator.getText().equals("")) {
 			actionGrabberCreator.setText("Email cannot be empty");
 			actionGrabberCreator.setFill(Color.RED);
-		}
+		} 
 		else {
 			actionGrabberCreator.setText("User Creation Successful");
 			actionGrabberCreator.setFill(Color.GREEN);
@@ -568,7 +567,7 @@ public class UI {
 	            }
 	        }
 	        scan.close();
-	        actionGrabber.setText("No user match found");
+	        actionGrabber.setText("no match found");
 			actionGrabber.setFill(Color.RED);
 	    } catch (IOException e) {
 	        e.printStackTrace();

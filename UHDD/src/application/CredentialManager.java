@@ -2,30 +2,24 @@
 
 package application;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
-
-import javafx.scene.paint.Color;
 
 public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	protected void addNewUserToDB(String username, String password, String email) throws ClassNotFoundException, SQLException {
+	public void addNewUserToDB(String username, String password, String email, String role) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();		
 		PasswordHash passwordHash = passwordHasher.hashPassword(password);
 		String passwordHashAsString = passwordHash.getHashAsString();		
 		String paramsAsString = passwordHash.getParamsAsString();	
-		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email);
+		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role);
 		dbConnector.closeConnection();
 	}
 	
 	
-	protected String checkCredentialsInFile(String username, String password) throws ClassNotFoundException, SQLException {
+	public String checkCredentialsInFile(String username, String password) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {

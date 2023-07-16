@@ -6,15 +6,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Map;
 
-import javafx.scene.paint.Color;
+import com.calendarfx.model.Entry;
 
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
-		Connection connection; // the controllers needs to use this connection 
-		private Statement statement;
-		private ResultSet resultSet;
-		
+		public Connection connection; // the controllers needs to use this connection 
+		String nextA;
+		String nextTitle;
+		String nextId;
+		Boolean nextFullDay;
+		LocalDate nextStartDate;
+		LocalDate nextEndDate;
+		LocalTime nextStartTime;
+		LocalTime nextEndTime;
+		ZoneId nextZoneId;
+		Boolean nextRecurring;
+		String nextRRule;
+		Boolean nextRecurrence;		
 		
 		public void initialiseDB() throws ClassNotFoundException, SQLException {
 		
@@ -38,9 +52,7 @@ public class DBConnector {
 				connection = DriverManager.getConnection(url, username, password);
 				System.out.println("Database connected:");
 				
-				//labelStatus.setText("Database connected");
-				//labelStatus.setTextFill(Color.GREEN);
-				statement = connection.createStatement();
+				connection.createStatement();
 			} catch (SQLException ex) {
 				System.out.println(ex.getMessage());
 				//labelStatus.setText("Connection failed");
@@ -71,13 +83,14 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-		public void createUserExecuteQuery(String username, String passwordHash, String params, String email) throws SQLException {
-			String sql = "INSERT INTO user_details (username, password_hash, password_params, email) VALUES (?, ?, ?, ?)";
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role) throws SQLException {
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setString(2, passwordHash);
 			statement.setString(3, params);
 			statement.setString(4, email);
+			statement.setString(5, role);
 			statement.executeUpdate();
 		}
 		
@@ -95,5 +108,80 @@ public class DBConnector {
 			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
+		
+		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
+			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			String[] name = patientName.split(" ");
+			String fName = name[0];
+			String lName = name[1];
+			statement.setString(1, fName);
+			statement.setString(2, lName);
+			System.out.println(statement);
+	        return statement.executeQuery();
+	    }
+		
+		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
+				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,
+				Boolean nextRecurring, String nextRRule, Boolean nextRecurrence) throws SQLException {
+			String sql = "INSERT INTO doctor_calendar (Title, Id, FullDay, StartDate, EndDate, StartTime, EndTime, ZoneId, Recurring, "
+					+ "RRule, Recurrence) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, nextTitle);
+			statement.setString(2, nextId);
+			statement.setString(3, nextFullDay.toString());
+			statement.setString(4, nextStartDate.toString());
+			statement.setString(5, nextEndDate.toString());
+			statement.setString(6, nextStartTime.toString());
+			statement.setString(7, nextEndTime.toString());
+			statement.setString(8, nextZoneId.toString());
+			statement.setString(9, nextRecurring.toString());
+			statement.setString(10, nextRRule);
+			statement.setString(11, nextRecurrence.toString());
+			statement.executeUpdate();
+		}
+		
+		public void getCalendarEvents() throws SQLException {
+			// grabs all the rows from the doctor_calendar DB
+			String query = "SELECT * FROM testdb.doctor_calendar";
+			ResultSet rs = this.executeQueryReturnResults(query);
+			System.out.println(rs.getRow());
+			while (rs.next()) {
+				nextTitle = rs.getString("Title");
+				nextId = rs.getString("Id");
+				nextFullDay = Boolean.valueOf(rs.getString("FullDay"));
+				nextStartDate = LocalDate.parse(rs.getString("StartDate"));
+				nextEndDate = LocalDate.parse(rs.getString("EndDate"));
+				nextStartTime = LocalTime.parse(rs.getString("StartTime"));
+				nextEndTime = LocalTime.parse(rs.getString("StartTime"));
+				nextZoneId = ZoneId.of(rs.getString("ZoneId"));
+				nextRecurring = Boolean.valueOf(rs.getString("Recurring"));
+				nextRRule = rs.getString("RRule");
+				nextRecurrence = Boolean.valueOf(rs.getString("Recurrence"));
+				
+				System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
+				+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
+				+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
+				+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
+				
+				// need to add amap list
+				Map<LocalDate, List<Entry<?>>> newMapEntry = null;
+				Entry newEntry = new Entry<Object>();
+				newEntry.setTitle(nextTitle);
+				newEntry.setId(nextId);
+				newEntry.setFullDay(nextFullDay);
+				newEntry.changeStartDate(nextStartDate);
+				newEntry.changeEndDate(nextEndDate);
+				newEntry.changeStartTime(nextStartTime);
+				newEntry.changeEndTime(nextEndTime);
+				newEntry.changeZoneId(nextZoneId);
+				newEntry.setRecurrenceRule(nextRRule);
+				
+				System.out.println("New Entry: " + newEntry);
+				 // add the new entry to the doctor calendar
+				CalendarApp.getDoctors().addEntry(newEntry);
+			} 
+			
+		}
 		
 }
