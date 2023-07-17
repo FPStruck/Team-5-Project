@@ -29,9 +29,9 @@ class LoginControllerTest {
 
 	@Test
 	void testHandleSignInAction() {
-//		fail("Not yet implemented");
 		LoginController lc = new LoginController();
 		
+		// we need injectors
 		TextField userGrabber = null;
 		userGrabber.setText("toby");
 		TextField passGrabber = null;
