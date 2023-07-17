@@ -58,6 +58,8 @@ public class DBConnector {
 				//labelStatus.setText("Connection failed");
 				//labelStatus.setTextFill(Color.RED);
 			} 
+			
+			
 		}
 		
 		public void closeConnection() throws SQLException {
@@ -67,6 +69,20 @@ public class DBConnector {
 				
 			}
 		}
+		
+		public void logout(String username) throws SQLException {
+	        String sql = "UPDATE user_details SET logged_in = 0 WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setString(1, username);
+	        statement.executeUpdate();
+	    }
+
+	    public void logoutAllSessions(String username) throws SQLException {
+	        String sql = "UPDATE user_details SET logged_in = 0 WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setString(1, username);
+	        statement.executeUpdate();
+	    }
 		
 		public ResultSet executeQueryReturnResults(String sql) throws SQLException {
 	        Statement statement = connection.createStatement();
@@ -92,12 +108,14 @@ public class DBConnector {
 			statement.setString(4, email);
 			statement.setString(5, role);
 			statement.executeUpdate();
+			
 		}
 		
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
+
 	        return statement.executeQuery();
 	    }
 		
