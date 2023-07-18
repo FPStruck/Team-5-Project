@@ -18,7 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+
 
 public class EmailManager {
 	public enum LoginResult {
