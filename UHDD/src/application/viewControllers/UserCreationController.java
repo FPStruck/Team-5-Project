@@ -50,13 +50,22 @@ public class UserCreationController {
 			} else if(userGrabberCreator.getText().equals("")) {
 				actionGrabberCreator.setText("Username cannot be empty");
 				actionGrabberCreator.setFill(Color.RED);
-			} else if(passGrabberCreator.getText().equals("") || checkPasswordRequirements(passGrabberCreator.getText()) < 3) {
-				actionGrabberCreator.setText("Password cannot be empty or at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols.");
+			} else if(passGrabberCreator.getText().equals("")) {
+				actionGrabberCreator.setText("Password cannot be empty");
 				actionGrabberCreator.setFill(Color.RED);
-			} else if(emailGrabberCreator.getText().equals("") || !(matcher.matches())) {
-				actionGrabberCreator.setText("Email cannot be empty or not a valid email address");
+			} else if(checkPasswordRequirements(passGrabberCreator.getText()) < 3) {
+				actionGrabberCreator.setText("Password has to be at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols");
 				actionGrabberCreator.setFill(Color.RED);
-			} 
+			} else if(emailGrabberCreator.getText().equals("")) {
+				actionGrabberCreator.setText("Email cannot be empty");
+				actionGrabberCreator.setFill(Color.RED);
+			} else if(!(matcher.matches())) {
+				actionGrabberCreator.setText("Email is not a valid email address");
+				actionGrabberCreator.setFill(Color.RED);
+			} else if(cbRole.getValue() == null) {
+				actionGrabberCreator.setText("Role cannot be empty");
+				actionGrabberCreator.setFill(Color.RED);
+			}  
 			else {
 				actionGrabberCreator.setText("User Creation Successful");
 				actionGrabberCreator.setFill(Color.GREEN);
