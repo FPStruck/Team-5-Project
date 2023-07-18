@@ -182,6 +182,11 @@
                   <Font size="13.0" />
                </font>
             </Text>
+            <Text fx:id="userText" fill="#063847" layoutX="83.0" layoutY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name" wrappingWidth="92.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
       <Pane layoutX="562.0" layoutY="5.0" prefHeight="253.0" prefWidth="358.0">
@@ -208,5 +213,10 @@
             </Text>
          </children>
       </Pane>
+      <Text fill="#063847" layoutX="200.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" wrappingWidth="78.66665649414062">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
 </children>
 </AnchorPane>

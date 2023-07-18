@@ -70,6 +70,39 @@ public class DBConnector {
 			}
 		}
 		
+	    public void setLoggedInStatus(String username, int loggedIn) throws SQLException {
+	        String sql = "UPDATE user_details SET logged_in = ? WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setInt(1, loggedIn);
+	        statement.setString(2, username);
+	        statement.executeUpdate();
+	    }
+
+	    public int getLoggedInStatus(String username) throws SQLException {
+	        String sql = "SELECT logged_in FROM user_details WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setString(1, username);
+	        ResultSet resultSet = statement.executeQuery();
+	        if (resultSet.next()) {
+	            return resultSet.getInt("logged_in");
+	        }
+	        return 0;
+	    }
+		
+		public boolean isAnyUserLoggedIn(String username) throws SQLException {
+		    String query = "SELECT COUNT(*) FROM user_details WHERE username != ? AND logged_in = 1";
+		    try (PreparedStatement statement = connection.prepareStatement(query)) {
+		        statement.setString(1, username);
+		        try (ResultSet resultSet = statement.executeQuery()) {
+		            if (resultSet.next()) {
+		                int count = resultSet.getInt(1);
+		                return count > 0;
+		            }
+		        }
+		    }
+		    return false;
+		}
+		
 		public void logout(String username) throws SQLException {
 	        String sql = "UPDATE user_details SET logged_in = 0 WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);

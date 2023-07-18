@@ -41,6 +41,9 @@ public class EmailManager {
 	    String password = "yhgmqnodfoolhnmz";
 	      
 	    int expectedCode = (int) (Math.random() * 1000000);
+	    
+	    System.out.println(expectedCode);
+	    
 	    int inputCode = 0;
 	    
 	    //email properties
