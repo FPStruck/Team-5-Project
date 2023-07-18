@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.microsoft.aad.adal4j.AuthenticationResult;
+
+import application.B2CUserLogin;
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
@@ -37,9 +40,23 @@ public class LoginController {
 	DBConnector dbConnector = new DBConnector();
 	
 	public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
+		
 		CredentialManager credentialManager = new CredentialManager();
 		String userLog = userGrabber.getText();
+		String userLogin = userLog + "@uhdbitc309.onmicrosoft.com";
 	    String passLog = passGrabber.getText();
+	    
+	    try {
+	    	AuthenticationResult result = B2CUserLogin.getAccessTokenFromUserCredentials(userLogin, passLog);
+	    	System.out.println("Access Token - " + result.getAccessToken());
+            System.out.println("Refresh Token - " + result.getRefreshToken());
+            System.out.println("ID Token - " + result.getIdToken());
+            System.out.println("ID Token expires on - " + result.getExpiresOnDate());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	    String to = credentialManager.checkCredentialsInFile(userLog, passLog);
 	    if(to == null) {
 	    	actionGrabber.setText("no match found");
