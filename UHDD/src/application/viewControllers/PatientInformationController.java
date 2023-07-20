@@ -280,7 +280,7 @@ public class PatientInformationController {
 			// execute statement
 //			dbConnection.executeUpdate(updateQuery); // old query
 			statement.executeUpdate();
-			labelStatus.setText("Update completed or does not exist please view the ID");
+			labelStatus.setText("Update completed");
 			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Update suceeded");
 			

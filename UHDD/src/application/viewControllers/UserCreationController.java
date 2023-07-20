@@ -2,6 +2,8 @@ package application.viewControllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import application.CredentialManager;
 import javafx.collections.FXCollections;
@@ -30,9 +32,17 @@ public class UserCreationController {
 	@FXML private ComboBox<String> cbRole;
 	
 	static ObservableList<String> roles;
+	private static final String regex = "^(.+)@(.+)$"; // ensure that it is a valid email address *@*
+	Pattern specialCharPattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE); // not a lower or upper case letter or number
+    Pattern upperCasePattern = Pattern.compile("[A-Z ]"); // upper case regex
+    Pattern lowerCasePattern = Pattern.compile("[a-z ]"); // lower case regex
+    Pattern digitCasePattern = Pattern.compile("[0-9 ]"); // number regex
 	
 	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws ClassNotFoundException, SQLException {
 		System.out.println(cbRole.getValue());
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());
+		System.out.println("Matcher: " + matcher);
 		CredentialManager CredentialManager = new CredentialManager();
 			if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
 				actionGrabberCreator.setText("All fields cannot be empty");
@@ -43,10 +53,19 @@ public class UserCreationController {
 			} else if(passGrabberCreator.getText().equals("")) {
 				actionGrabberCreator.setText("Password cannot be empty");
 				actionGrabberCreator.setFill(Color.RED);
+			} else if(checkPasswordRequirements(passGrabberCreator.getText()) < 3) {
+				actionGrabberCreator.setText("Password has to be at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols");
+				actionGrabberCreator.setFill(Color.RED);
 			} else if(emailGrabberCreator.getText().equals("")) {
 				actionGrabberCreator.setText("Email cannot be empty");
 				actionGrabberCreator.setFill(Color.RED);
-			} 
+			} else if(!(matcher.matches())) {
+				actionGrabberCreator.setText("Email is not a valid email address");
+				actionGrabberCreator.setFill(Color.RED);
+			} else if(cbRole.getValue() == null) {
+				actionGrabberCreator.setText("Role cannot be empty");
+				actionGrabberCreator.setFill(Color.RED);
+			}  
 			else {
 				actionGrabberCreator.setText("User Creation Successful");
 				actionGrabberCreator.setFill(Color.GREEN);
@@ -57,6 +76,28 @@ public class UserCreationController {
 				CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate);
 			}
 		}
+	
+	public int checkPasswordRequirements(String password) {
+		int passwordCount = 0;
+		if (password.length() >= 8) {
+			if (upperCasePattern.matcher(password).find()) {
+				passwordCount++;
+			}
+			if (lowerCasePattern.matcher(password).find()) {
+				passwordCount++;
+			}
+			if (specialCharPattern.matcher(password).find() ) {
+				passwordCount++;
+			}
+			if (digitCasePattern.matcher(password).find()) {
+				passwordCount++;
+			}
+		}
+		
+		System.out.println("Password count requirement: " + passwordCount);
+		return passwordCount;
+		
+	}
 	
 	public void switchToHomepage(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Login.fxml"));
