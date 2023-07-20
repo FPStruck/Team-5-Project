@@ -40,7 +40,7 @@ public class DBConnector {
 			// connect to Jonathan's cloud
 			String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
 			String username = "itc303admin";
-			String password = "L3cr3X2bNCtcvf";
+			String password = "L3cr3X2bNCtcvf"; // Hash this password using a function and unhash it when it's called for this line so its not stored in plain text (makes it harder for people to access DB)
 			
 			// connect to local database
 //			String url = "jdbc:mysql://127.0.0.1:3306/testdb";
@@ -102,20 +102,6 @@ public class DBConnector {
 		    }
 		    return false;
 		}
-		
-		public void logout(String username) throws SQLException {
-	        String sql = "UPDATE user_details SET logged_in = 0 WHERE username = ?";
-	        PreparedStatement statement = connection.prepareStatement(sql);
-	        statement.setString(1, username);
-	        statement.executeUpdate();
-	    }
-
-	    public void logoutAllSessions(String username) throws SQLException {
-	        String sql = "UPDATE user_details SET logged_in = 0 WHERE username = ?";
-	        PreparedStatement statement = connection.prepareStatement(sql);
-	        statement.setString(1, username);
-	        statement.executeUpdate();
-	    }
 		
 		public ResultSet executeQueryReturnResults(String sql) throws SQLException {
 	        Statement statement = connection.createStatement();

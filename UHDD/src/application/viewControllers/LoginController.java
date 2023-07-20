@@ -107,7 +107,9 @@ public class LoginController {
             actionGrabber.setFill(Color.RED);
             System.out.println("A user: " + username + " has attempted access from another device (all users logged out): " + formattedDateTime);
             dbConnector.setLoggedInStatus(username, 0);
-        } else { if (loginSuccessful()) {
+        } else { 
+        	
+        	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
                 dbConnector.setLoggedInStatus(username, 1);
 
