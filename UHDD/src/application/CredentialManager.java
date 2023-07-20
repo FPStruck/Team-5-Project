@@ -2,17 +2,25 @@ package application;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
 	public void addNewUserToDB(String username, String password, String email, String role) throws ClassNotFoundException, SQLException {
-		dbConnector.initialiseDB();		
+		dbConnector.initialiseDB();
+		//Get the current date and time
+		LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(formatter);
+		//Hash the password
 		PasswordHash passwordHash = passwordHasher.hashPassword(password);
 		String passwordHashAsString = passwordHash.getHashAsString();		
 		String paramsAsString = passwordHash.getParamsAsString();	
-		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role);
+		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime);
 		dbConnector.closeConnection();
 		B2CUserService newB2C = new B2CUserService();
 		newB2C.createUser(username, password, email);

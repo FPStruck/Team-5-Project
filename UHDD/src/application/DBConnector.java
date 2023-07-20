@@ -118,14 +118,17 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role) throws SQLException {
-			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role) VALUES (?, ?, ?, ?, ?)";
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString)
+		  throws SQLException {
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setString(2, passwordHash);
 			statement.setString(3, params);
 			statement.setString(4, email);
 			statement.setString(5, role);
+			statement.setString(6, dateString);
+			statement.setString(7, dateString);
 			statement.executeUpdate();
 			
 		}
