@@ -84,7 +84,7 @@ public class LoginController {
     @FXML
     protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
