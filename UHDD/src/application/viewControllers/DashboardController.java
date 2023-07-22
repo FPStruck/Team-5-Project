@@ -177,7 +177,7 @@ public class DashboardController {
 //			e.printStackTrace();
 //		}
 		
-		startLoggedInStatusTimer();
+		//startLoggedInStatusTimer();
 	}
 	
 	public void setUserText(String username) {
