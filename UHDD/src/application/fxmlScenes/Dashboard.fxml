@@ -76,8 +76,8 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@/application.css" text="Patient Information" textFill="#063847" />
-            <Button fx:id="tableCreator" layoutX="85.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@/application.css" text="Table Creator" textFill="#063847" />
+            <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@application.css" text="Patient Information" textFill="#063847" />
+            <Button fx:id="tableCreator" layoutX="85.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@application.css" text="Table Creator" textFill="#063847" />
             <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseClicked="#switchToCalendar" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">
@@ -105,7 +105,7 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <TableView fx:id="patientDirectoryDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@/application.css">
+            <TableView fx:id="patientDirectoryDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
               <columns>
                 <TableColumn prefWidth="44.0" text="Id" />
                 <TableColumn prefWidth="106.0" text="Family name" />
@@ -133,8 +133,8 @@
                   </DropShadow>
                </effect>
             </Rectangle>
-            <Button layoutX="46.0" layoutY="190.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="92.0" style="-fx-background-color: #063847;" stylesheets="@/application.css" text="Quick notes" textFill="#fcfcfc" />
-            <Button layoutX="182.0" layoutY="190.0" mnemonicParsing="false" prefWidth="92.0" style="-fx-background-color: #fcfcfc;" stylesheets="@/application.css" text="View notes" />
+            <Button layoutX="46.0" layoutY="190.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="92.0" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Quick notes" textFill="#fcfcfc" />
+            <Button layoutX="182.0" layoutY="190.0" mnemonicParsing="false" prefWidth="92.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View notes" />
             <Text fx:id="pastMedicalConditions" layoutX="42.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Past Medical Conditions" wrappingWidth="236.66665649414062" />
             <Text fx:id="progressNotes" layoutX="42.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" wrappingWidth="236.66665649414062" />
             <Label layoutX="42.0" layoutY="40.0" style="-fx-font-weight: bold;" text="Past Medical Conditions" />
@@ -157,12 +157,12 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <Button fx:id="viewPatientInfoBtn" layoutX="103.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInfoView" prefHeight="22.0" prefWidth="138.0" style="-fx-background-color: #fcfcfc;" stylesheets="@/application.css" text="View Patient Records">
+            <Button fx:id="viewPatientInfoBtn" layoutX="103.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInfoView" prefHeight="22.0" prefWidth="138.0" style="-fx-background-color: #fcfcfc;" stylesheets="@application.css" text="View Patient Records">
                <font>
                   <Font size="11.0" />
                </font>
             </Button>
-            <Button layoutX="103.0" layoutY="147.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="137.0" style="-fx-background-color: #063847;" stylesheets="@/application.css" text="Edit Appointment" textFill="#fcfcfc">
+            <Button layoutX="103.0" layoutY="147.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="137.0" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Edit Appointment" textFill="#fcfcfc">
                <font>
                   <Font size="11.0" />
                </font>
@@ -196,7 +196,7 @@
       </Pane>
       <Pane layoutX="562.0" layoutY="5.0" prefHeight="253.0" prefWidth="358.0">
          <children>
-            <TableView fx:id="prescribedMedsDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@/application.css">
+            <TableView fx:id="prescribedMedsDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
                <columns>
                   <TableColumn prefWidth="44.0" text="Id" />
                   <TableColumn prefWidth="106.0" text="Medication" />
