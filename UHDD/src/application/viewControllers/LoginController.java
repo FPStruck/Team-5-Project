@@ -51,16 +51,16 @@ public class LoginController {
         CredentialManager credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
-        String to = credentialManager.checkCredentialsInFile(userLog, passLog);
+        String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
 
-        if (to == null) {
+        if (emailTo == null) {
             actionGrabber.setText("No user match found");
             actionGrabber.setFill(Color.RED);
             return false;
         }
 
         EmailManager emailManager = new EmailManager();
-        LoginResult result = emailManager.verifyLogin(userLog, passLog, to);
+        LoginResult result = emailManager.verifyLogin(emailTo);
 
         if (result == LoginResult.SUCCESSFUL) {
             // Handle successful login

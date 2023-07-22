@@ -27,7 +27,7 @@ public class EmailManager {
 	    CANCELLED
 	}
 	
-	public LoginResult verifyLogin(String userLog, String passLog, String toAddress) {
+	public LoginResult verifyLogin(String toAddress) {
 		
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
