@@ -16,7 +16,11 @@ import com.calendarfx.model.Entry;
 
 import application.CalendarApp;
 import application.DBConnector;
+import application.Main;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -177,7 +181,7 @@ public class DashboardController {
 //			e.printStackTrace();
 //		}
 		
-		startLoggedInStatusTimer();
+		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
 	}
 	
 	public void setUserText(String username) {
@@ -206,12 +210,38 @@ public class DashboardController {
 	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 	                alert.setTitle("Login Attempt Detected");
 	                alert.setHeaderText("Another User Has Attempted to Access This Account:");
-	                alert.setContentText("Do you want to continue the session?");
+	                alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 10 seconds if an option is not chosen)");
 	                dbConnector.setLoggedInStatus(currentUser, 1);
 	                ButtonType continueButton = new ButtonType("Continue");
 	                ButtonType logoutButton = new ButtonType("Logout");
 	                alert.getButtonTypes().setAll(continueButton, logoutButton);
+	                
+	             // Create the timer task to automatically select the logoutButton after 10 seconds
+	                Task<Void> timerTask = new Task<Void>() {
+	                    @Override
+	                    protected Void call() throws Exception {
+	                        try {
+	                            Thread.sleep(10000); // 10 seconds
+	                        } catch (InterruptedException e) {
+	                            // Timer interrupted, no need to handle it
+	                        }
+	                        return null;
+	                    }
+	                };
 
+	                // When the timer task completes, select the logoutButton response
+	                timerTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+	                    @Override
+	                    public void handle(WorkerStateEvent event) {
+	                        if (!alert.isShowing()) return; // Alert might be closed by the user
+	                        alert.hide();
+	                        Platform.runLater(() -> alert.setResult(logoutButton));
+	                    }
+	                });
+
+	                // Start the timer task
+	                new Thread(timerTask).start();
+	                
 	                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 	                alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
 
@@ -244,11 +274,12 @@ public class DashboardController {
     
     @FXML
     private void switchToLoginScreen() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Login.fxml"));
-        stage = (Stage) userText.getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    	Stage currentStage = (Stage) userText.getScene().getWindow();
+        currentStage.close();
+
+        // Start a new instance of the Main class to run the program again from the beginning
+        Main mainApp = new Main();
+        mainApp.start(new Stage());
     }
 	
 	@FXML 	
