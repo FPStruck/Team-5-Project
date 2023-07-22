@@ -87,7 +87,6 @@ public class CredentialManager {
 			if (userDetails.next()) {  				
 				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));				
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
-					System.out.println("35");
 		            String email = userDetails.getString("email");
 		            dbConnector.closeConnection();
 		            return email;

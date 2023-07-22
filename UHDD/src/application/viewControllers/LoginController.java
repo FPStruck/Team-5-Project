@@ -111,7 +111,7 @@ public class LoginController {
         dbConnector.initialiseDB();
 
         String username = userGrabber.getText();
-
+        UserSession.initInstance(username);
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {
