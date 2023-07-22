@@ -52,31 +52,36 @@ public class LoginController {
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
         String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
+        if(!credentialManager.checkPasswordLastSetDate(userLog)){
+            if (emailTo == null) {
+                actionGrabber.setText("No user match found");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            }
 
-        if (emailTo == null) {
-            actionGrabber.setText("No user match found");
-            actionGrabber.setFill(Color.RED);
-            return false;
-        }
+            //2FA verification
+            EmailManager emailManager = new EmailManager();
+            LoginResult result = emailManager.verifyLogin(emailTo);
 
-        EmailManager emailManager = new EmailManager();
-        LoginResult result = emailManager.verifyLogin(emailTo);
-
-        if (result == LoginResult.SUCCESSFUL) {
-            // Handle successful login
-            return true;
-        } else if (result == LoginResult.WRONG_CODE) {
-            // Handle wrong code scenario
-            actionGrabber.setText("Wrong code input. Email verification cancelled");
-            actionGrabber.setFill(Color.RED);
-            return false;
-        } else if (result == LoginResult.CANCELLED) {
-            // Handle login cancelled scenario
-            actionGrabber.setText("Email verification cancelled");
-            actionGrabber.setFill(Color.RED);
-            return false;
+            if (result == LoginResult.SUCCESSFUL) {
+                // Handle successful login
+                return true;
+            } else if (result == LoginResult.WRONG_CODE) {
+                // Handle wrong code scenario
+                actionGrabber.setText("Wrong code input. Email verification cancelled");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            } else if (result == LoginResult.CANCELLED) {
+                // Handle login cancelled scenario
+                actionGrabber.setText("Email verification cancelled");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            } else {
+                // Handle any other result if necessary
+                return false;
+            }
         } else {
-            // Handle any other result if necessary
+            actionGrabber.setText("Password has expired. Please reset your password");
             return false;
         }
     }
