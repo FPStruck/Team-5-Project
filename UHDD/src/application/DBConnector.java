@@ -133,6 +133,18 @@ public class DBConnector {
 			
 		}
 		
+		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
+				  throws SQLException {
+					String sql = "UPDATE user_details SET password_hash = ?, password_params = ?, password_last_modified = ? WHERE username = ?";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, passwordHash);
+					statement.setString(2, params);
+					statement.setString(3, dateString);
+					statement.setString(4, username);
+					statement.executeUpdate();
+					
+				}
+
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
