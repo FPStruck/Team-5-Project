@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
@@ -33,21 +34,20 @@ public class LoginController {
 
     @FXML
     private TextField userGrabber;
-
     @FXML
     private TextField passGrabber;
-
     @FXML
     private Text actionGrabber;
-
     @FXML
     private Button btnLogin;
+    @FXML
+    private Button btnPwdReset;
 
     public void setDbConnector(DBConnector dbConnector) {
         this.dbConnector = dbConnector;
     }
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
+    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException {
         CredentialManager credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
@@ -82,8 +82,24 @@ public class LoginController {
             }
         } else {
             actionGrabber.setText("Password has expired. Please reset your password");
+            //Open popup window
+            Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PopUpPwdExpired.fxml"));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
             return false;
         }
+    }
+
+    @FXML
+    protected void handlePwdResetAction(ActionEvent event) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PasswordReset.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
