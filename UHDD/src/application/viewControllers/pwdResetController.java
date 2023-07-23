@@ -30,8 +30,7 @@ public class pwdResetController {
     @FXML
     private Text txtStatus;
 
-    DBConnector dbConnector = new DBConnector();
-	PasswordHasher passwordHasher = new PasswordHasher();
+  
 
     
     public void resetPwd() throws SQLException, ClassNotFoundException {
@@ -40,11 +39,6 @@ public class pwdResetController {
         String verifyPwd = txtVerifyPwd.getText();
         String username = UserSession.getInstance().getUserName();
         System.out.println(username + " is the username");
-        dbConnector.initialiseDB();
-        System.out.println("DB initialised");
-        ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username);
-        userDetails.next();
-        PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));
         CredentialManager credentialManager = new CredentialManager();
     
 
@@ -56,11 +50,13 @@ public class pwdResetController {
             txtStatus.setText("New password cannot be the same as old password");
         } else if (newPwd.length() < 8 || newPwd.length() > 64) {
             txtStatus.setText("New password must be between 8 and 64 characters");
-        } else if (passwordHasher.verifyPassword(oldPwd, passwordHash)){
+        } else if (credentialManager.verifyPassword(username, oldPwd)){
             credentialManager.changePasswordInDB(username, newPwd);
             txtStatus.setText("Password Updated");
         }
-        dbConnector.closeConnection();
+        else {
+            txtStatus.setText("Old password is incorrect");
+        }
     }
 
     @FXML

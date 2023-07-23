@@ -28,6 +28,37 @@ public class CredentialManager {
 		B2CUserService newB2C = new B2CUserService();
 		newB2C.createUser(username, password, email);
 	}
+
+	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
+		dbConnector.initialiseDB();
+		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
+			if (userDetails.next()) {
+				// Retrieve the "password_hash" and "password_params" fields from the database
+				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));
+	
+				// Verify the password
+				if (passwordHasher.verifyPassword(password, passwordHash)) {
+					// The password is correct
+					System.out.println("Password is correct");
+					return true;
+				} else {
+					// The password is incorrect
+					System.out.println("Password is incorrect");
+					return false;
+				}
+			} else {
+				// The user was not found in the database
+				System.out.println("User not found");
+				return false;
+			}
+		} catch (SQLException e) {
+			// Handle the exception that occurred while accessing the database
+		}
+	
+		// Close the database connection
+		dbConnector.closeConnection();
+		return false;
+	}
 	
 	public void changePasswordInDB(String username, String password) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
