@@ -10,11 +10,14 @@ import application.CredentialManager;
 import application.DBConnector;
 import application.PasswordHash;
 import application.PasswordHasher;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class pwdResetController {
     @FXML
@@ -53,6 +56,15 @@ public class pwdResetController {
         } else if (credentialManager.verifyPassword(username, oldPwd)){
             credentialManager.changePasswordInDB(username, newPwd);
             txtStatus.setText("Password Updated");
+            txtStatus.setStroke(javafx.scene.paint.Color.GREEN);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
+            delay.setOnFinished( event -> {
+                // Closes the window after the pause
+                Stage stage = (Stage) txtStatus.getScene().getWindow(); 
+                stage.close();
+            });
+            delay.play();
         }
         else {
             txtStatus.setText("Old password is incorrect");
