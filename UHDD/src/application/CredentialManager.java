@@ -25,8 +25,6 @@ public class CredentialManager {
 		String paramsAsString = passwordHash.getParamsAsString();	
 		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime);
 		dbConnector.closeConnection();
-		B2CUserService newB2C = new B2CUserService();
-		newB2C.createUser(username, password, email);
 	}
 
 	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {

@@ -256,7 +256,7 @@
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" prefWidth="1183.0" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" textFill="#0d0d0d" HBox.hgrow="ALWAYS">
+        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="UHDD status" textFill="#0d0d0d" HBox.hgrow="ALWAYS">
           <font>
             <Font size="11.0" fx:id="x3" />
           </font>

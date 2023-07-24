@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LoginController {
+
     private Stage stage;
     private Scene scene;
     private DBConnector dbConnector;
