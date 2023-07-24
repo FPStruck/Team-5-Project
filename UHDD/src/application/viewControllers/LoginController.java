@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
 
-import application.B2CUserLogin;
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
