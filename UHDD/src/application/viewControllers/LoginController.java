@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.microsoft.aad.adal4j.AuthenticationResult;
-
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
