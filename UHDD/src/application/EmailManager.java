@@ -27,7 +27,7 @@ public class EmailManager {
 	    CANCELLED
 	}
 	
-	public LoginResult verifyLogin(String userLog, String passLog, String toAddress) {
+	public LoginResult verifyLogin(String toAddress) {
 		
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
@@ -37,10 +37,13 @@ public class EmailManager {
 //	    String password = "xx";
 	    
 	    // use my email
-	    final String username = "tobez103@gmail.com";
-	    final String password = "xx";
+	    String username = "mina.gemian79@gmail.com";
+	    String password = "yhgmqnodfoolhnmz";
 	      
 	    int expectedCode = (int) (Math.random() * 1000000);
+	    
+	    System.out.println(expectedCode);
+	    
 	    int inputCode = 0;
 	    
 	    //email properties
@@ -81,6 +84,7 @@ public class EmailManager {
 	        transport.connect(host, username, password);
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
+	        
 	        System.out.println("Verification code sent to " + toAddress);  
 
 	        // Display the dialog box for verification code

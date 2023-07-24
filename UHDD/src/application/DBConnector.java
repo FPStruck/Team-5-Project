@@ -40,7 +40,7 @@ public class DBConnector {
 			// connect to Jonathan's cloud
 			String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
 			String username = "itc303admin";
-			String password = "L3cr3X2bNCtcvf";
+			String password = "L3cr3X2bNCtcvf"; // Hash this password using a function and unhash it when it's called for this line so its not stored in plain text (makes it harder for people to access DB)
 			
 			// connect to local database
 //			String url = "jdbc:mysql://127.0.0.1:3306/testdb";
@@ -58,6 +58,8 @@ public class DBConnector {
 				//labelStatus.setText("Connection failed");
 				//labelStatus.setTextFill(Color.RED);
 			} 
+			
+			
 		}
 		
 		public void closeConnection() throws SQLException {
@@ -66,6 +68,39 @@ public class DBConnector {
 			} catch (SQLException ex) {
 				
 			}
+		}
+		
+	    public void setLoggedInStatus(String username, int loggedIn) throws SQLException {
+	        String sql = "UPDATE user_details SET logged_in = ? WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setInt(1, loggedIn);
+	        statement.setString(2, username);
+	        statement.executeUpdate();
+	    }
+
+	    public int getLoggedInStatus(String username) throws SQLException {
+	        String sql = "SELECT logged_in FROM user_details WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setString(1, username);
+	        ResultSet resultSet = statement.executeQuery();
+	        if (resultSet.next()) {
+	            return resultSet.getInt("logged_in");
+	        }
+	        return 0;
+	    }
+		
+		public boolean isAnyUserLoggedIn(String username) throws SQLException {
+		    String query = "SELECT COUNT(*) FROM user_details WHERE username != ? AND logged_in = 1";
+		    try (PreparedStatement statement = connection.prepareStatement(query)) {
+		        statement.setString(1, username);
+		        try (ResultSet resultSet = statement.executeQuery()) {
+		            if (resultSet.next()) {
+		                int count = resultSet.getInt(1);
+		                return count > 0;
+		            }
+		        }
+		    }
+		    return false;
 		}
 		
 		public ResultSet executeQueryReturnResults(String sql) throws SQLException {
@@ -83,21 +118,38 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role) throws SQLException {
-			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role) VALUES (?, ?, ?, ?, ?)";
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString)
+		  throws SQLException {
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setString(2, passwordHash);
 			statement.setString(3, params);
 			statement.setString(4, email);
 			statement.setString(5, role);
+			statement.setString(6, dateString);
+			statement.setString(7, dateString);
 			statement.executeUpdate();
+			
 		}
 		
+		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
+				  throws SQLException {
+					String sql = "UPDATE user_details SET password_hash = ?, password_params = ?, password_last_modified = ? WHERE username = ?";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, passwordHash);
+					statement.setString(2, params);
+					statement.setString(3, dateString);
+					statement.setString(4, username);
+					statement.executeUpdate();
+					
+				}
+
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
+
 	        return statement.executeQuery();
 	    }
 		

@@ -9,17 +9,22 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.calendarfx.model.Entry;
 
 import application.CalendarApp;
 import application.DBConnector;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -31,6 +36,8 @@ public class DashboardController {
 	private Scene scene;
 	private static Parent calendarRoot;
 	private static CalendarApp myCalendar;
+	private String currentUser;
+	private Timer timer;
 	
 	@FXML
 	private Pane patientDirectoryDBPane;
@@ -46,6 +53,8 @@ public class DashboardController {
 	private Text nextAppointment;
 	@FXML
 	private Text fullName;
+	@FXML
+	private Text userText;
 	@FXML
 	private Text phoneNumber;
 	@FXML
@@ -168,7 +177,79 @@ public class DashboardController {
 //			e.printStackTrace();
 //		}
 		
+		//startLoggedInStatusTimer();
 	}
+	
+	public void setUserText(String username) {
+	    userText.setText(username);
+	    currentUser = username;
+	}
+	
+	private void startLoggedInStatusTimer() {
+	    Timer timer = new Timer();
+	    timer.schedule(new TimerTask() {
+	        @Override
+	        public void run() {
+	            checkLoggedInStatus(timer);
+	        }
+	    }, 0, 5000); // Run the task every 5 seconds
+	}
+	
+	private void checkLoggedInStatus(Timer timer) {
+	    Platform.runLater(() -> {
+	        try {
+	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
+	            if (loggedInStatus == 0) {
+	                // User has been logged out, show alert and provide options to continue or logout
+	                timer.cancel(); // Stop the timer after detecting the change to 0
+
+	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	                alert.setTitle("Login Attempt Detected");
+	                alert.setHeaderText("Another User Has Attempted to Access This Account:");
+	                alert.setContentText("Do you want to continue the session?");
+	                dbConnector.setLoggedInStatus(currentUser, 1);
+	                ButtonType continueButton = new ButtonType("Continue");
+	                ButtonType logoutButton = new ButtonType("Logout");
+	                alert.getButtonTypes().setAll(continueButton, logoutButton);
+
+	                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+	                alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
+
+	                alert.showAndWait().ifPresent(response -> {
+	                    if (response == continueButton) {
+	                        // User chose to continue, set logged_in status to 1
+	                        try {
+	                            dbConnector.setLoggedInStatus(currentUser, 1);
+	                            startLoggedInStatusTimer(); // Restart the timer
+	                        } catch (SQLException e) {
+	                            e.printStackTrace();
+	                        }
+	                    } else if (response == logoutButton) {
+	                        // User chose to logout, set logged_in status to 0 and go back to the login screen
+	                        try {
+	                        	timer.cancel();
+	                            dbConnector.setLoggedInStatus(currentUser, 0);
+	                            switchToLoginScreen();
+	                        } catch (SQLException | IOException e) {
+	                            e.printStackTrace();
+	                        }
+	                    }
+	                });
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    });
+	}
+    
+    @FXML
+    private void switchToLoginScreen() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Login.fxml"));
+        stage = (Stage) userText.getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
