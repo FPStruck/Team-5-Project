@@ -53,6 +53,7 @@ public class LoginController {
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
         String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
+        UserSession.initInstance(userLog,emailTo);
         if(!credentialManager.checkPasswordLastSetDate(userLog)){
             if (emailTo == null) {
                 actionGrabber.setText("No user match found");
@@ -112,7 +113,7 @@ public class LoginController {
         dbConnector.initialiseDB();
 
         String username = userGrabber.getText();
-        UserSession.initInstance(username);
+        
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {

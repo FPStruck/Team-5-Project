@@ -27,6 +27,30 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 	}
 
+	//get user email from db
+	public String getUserEmail(String username) throws ClassNotFoundException, SQLException {
+		dbConnector.initialiseDB();
+		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
+			if (userDetails.next()) {
+				// Retrieve the "email" field from the database
+				String email = userDetails.getString("email");
+				dbConnector.closeConnection();
+				return email;
+			} else {
+				// The user was not found in the database
+				dbConnector.closeConnection();
+				return null;
+			}
+		} catch (SQLException e) {
+			// Handle the exception that occurred while accessing the database
+			dbConnector.closeConnection();
+		}
+	
+		// Close the database connection and return false as the default result if any exception occurred
+		dbConnector.closeConnection();
+		return null;
+	}
+
 	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
