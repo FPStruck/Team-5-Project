@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.EncryptionController;
+import application.CalendarApp;
 
-class EncryptionControllerTest {
+class CalendarAppTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -24,15 +24,13 @@ class EncryptionControllerTest {
 	}
 
 	@Test
-	void testHashTag() {
+	void test() {
 //		fail("Not yet implemented");
-		EncryptionController ec = new EncryptionController();
-		String test = ec.hashData("toby");
-		System.out.println(test);
-		
-		EncryptionController ec2 = new EncryptionController();
-		String test2 = ec2.hashData("1234");
-		System.out.println(test2);
+		CalendarApp ca = new CalendarApp();
+		System.out.println(ca.getMyCalendarSource());
+		System.out.println(ca.getDoctors());
+		System.out.println(ca.getNurses());	
+		System.out.println(ca.getParameters());
 	}
 
 }
