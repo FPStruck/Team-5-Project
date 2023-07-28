@@ -98,7 +98,7 @@ public class CredentialManager {
 			dbConnector.initialiseDB();
 			ResultSet OTPSecretKey = dbConnector.QueryReturnOTPSecretKeyFromUser(username);
 			if(OTPSecretKey.next()){
-				return OTPSecretKey.getString("otp_secret_key");
+				return OTPSecretKey.getString("OTPSecretKey");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			System.out.println(e.getClass().getName());

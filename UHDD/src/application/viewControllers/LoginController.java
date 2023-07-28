@@ -9,6 +9,7 @@ import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
 import application.EmailManager.LoginResult;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +19,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -27,6 +33,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class LoginController {
 
@@ -47,11 +54,54 @@ public class LoginController {
     @FXML
     private Button btnPwdReset;
 
+    public enum LoginResult {
+		SUCCESSFUL,
+	    WRONG_CODE,
+	    CANCELLED
+	}
+
     public void setDbConnector(DBConnector dbConnector) {
         this.dbConnector = dbConnector;
     }
 
-    
+    public LoginResult verifyMFA(String username) throws NoSuchAlgorithmException{
+            credentialManager = new CredentialManager();    
+            int inputCode = 0;
+        
+            // Display the dialog box for verification code
+	        Dialog<Integer> dialog = new Dialog<>();
+	        dialog.setTitle("Verification Code");
+	        //dialog.setHeaderText("Enter the verification code:");
+
+	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
+
+	        TextField verificationCodeField = new TextField();
+	        Platform.runLater(() -> verificationCodeField.requestFocus());
+	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == submitButton) {
+	                return Integer.parseInt(verificationCodeField.getText());
+	            }
+	            return null;
+	        });
+
+	        Optional<Integer> result = dialog.showAndWait();
+	        if (result.isPresent()) {
+	            inputCode = result.get();
+	        } else {
+	        	return LoginResult.CANCELLED;
+	        }
+
+            if (credentialManager.verifyOTP(username, inputCode)) {
+	            System.out.println("Verification successful!");
+	            return LoginResult.SUCCESSFUL;
+	        } else if (!credentialManager.verifyOTP(username, inputCode)) {
+	        	dialog.close();	  
+	        	return LoginResult.WRONG_CODE;
+	        }
+            return LoginResult.CANCELLED;
+    }
 
     public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException, InvalidKeyException, NoSuchAlgorithmException {
         credentialManager = new CredentialManager();
@@ -66,8 +116,12 @@ public class LoginController {
             }
 
             //2FA verification
-            EmailManager emailManager = new EmailManager();
-            LoginResult result = emailManager.verifyLogin(emailTo);
+            
+
+
+            //EmailManager emailManager = new EmailManager();
+            //LoginResult result = emailManager.verifyLogin(emailTo);
+            LoginResult result = verifyMFA(userLog);
 
             if (result == LoginResult.SUCCESSFUL) {
                 // Handle successful login
