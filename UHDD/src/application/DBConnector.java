@@ -118,9 +118,9 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString)
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString, String OTPSecretKey)
 		  throws SQLException {
-			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified, OTPSecretKey) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setString(2, passwordHash);
@@ -129,6 +129,7 @@ public class DBConnector {
 			statement.setString(5, role);
 			statement.setString(6, dateString);
 			statement.setString(7, dateString);
+			statement.setString(8, OTPSecretKey);
 			statement.executeUpdate();
 			
 		}
@@ -142,8 +143,16 @@ public class DBConnector {
 					statement.setString(3, dateString);
 					statement.setString(4, username);
 					statement.executeUpdate();
-					
-				}
+			
+		}
+
+		public ResultSet QueryReturnOTPSecretKeyFromUser(String username) throws SQLException {
+			String sql = "SELECT OTPSecretKey FROM testdb.user_details WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+
+	        return statement.executeQuery();
+	    }
 
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";

@@ -1,6 +1,8 @@
 package application.viewControllers;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import application.CredentialManager;
@@ -31,6 +33,7 @@ public class LoginController {
     private Stage stage;
     private Scene scene;
     private DBConnector dbConnector;
+    private CredentialManager credentialManager;
     private static String currentUser;
 
     @FXML
@@ -48,8 +51,10 @@ public class LoginController {
         this.dbConnector = dbConnector;
     }
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException {
-        CredentialManager credentialManager = new CredentialManager();
+    
+
+    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException, InvalidKeyException, NoSuchAlgorithmException {
+        credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
         String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
@@ -104,7 +109,7 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
+    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException, InvalidKeyException, NoSuchAlgorithmException {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);

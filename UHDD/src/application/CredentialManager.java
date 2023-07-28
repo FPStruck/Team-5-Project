@@ -13,7 +13,7 @@ public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	public void addNewUserToDB(String username, String password, String email, String role) throws ClassNotFoundException, SQLException {
+	public void addNewUserToDB(String username, String password, String email, String role, String OTPSecretKey) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 		//Get the current date and time
 		LocalDateTime now = LocalDateTime.now();
@@ -23,7 +23,7 @@ public class CredentialManager {
 		PasswordHash passwordHash = passwordHasher.hashPassword(password);
 		String passwordHashAsString = passwordHash.getHashAsString();		
 		String paramsAsString = passwordHash.getParamsAsString();	
-		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime);
+		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime, OTPSecretKey);
 		dbConnector.closeConnection();
 	}
 

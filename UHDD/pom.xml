@@ -66,6 +66,13 @@
     	<artifactId>totp</artifactId>
     	<version>1.0</version>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.eatthepath/java-otp -->
+	<dependency>
+		<groupId>com.eatthepath</groupId>
+		<artifactId>java-otp</artifactId>
+		<version>0.4.0</version>
+	</dependency>
+
 	<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
 	<dependency>
 	    <groupId>javax.xml.bind</groupId>
@@ -78,6 +85,20 @@
     	<groupId>org.openjfx</groupId>
     	<artifactId>javafx-base</artifactId>
     	<version>19-ea+2</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+	<dependency>
+		<groupId>org.openjfx</groupId>
+		<artifactId>javafx-swing</artifactId>
+		<version>19-ea+2</version>
+	</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-core</artifactId>
+		<version>4.6.1</version>
+		
 	</dependency>
 
 	<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
@@ -107,18 +128,17 @@
     	<artifactId>mysql-connector-j</artifactId>
     	<version>8.0.32</version>
 	</dependency>
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter</artifactId>
+		<version>5.9.3</version>
+	
+	</dependency>
 	<!-- calendar -->
 	<dependency>
 	    <groupId>com.calendarfx</groupId>
 	    <artifactId>view</artifactId>
     	<version>11.12.5</version>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-	<dependency>
-	    <groupId>org.mockito</groupId>
-	    <artifactId>mockito-core</artifactId>
-	    <version>5.4.0</version>
-	    <scope>test</scope>
 	</dependency>
 		
   </dependencies>

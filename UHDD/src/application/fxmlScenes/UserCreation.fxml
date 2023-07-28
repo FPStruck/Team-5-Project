@@ -73,5 +73,6 @@
             <Font size="15.0" />
          </font>
       </Text>
+      <ImageView fx:id="qrCodeView" fitHeight="194.0" fitWidth="238.0" layoutX="38.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
