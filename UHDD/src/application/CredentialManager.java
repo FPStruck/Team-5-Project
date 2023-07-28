@@ -6,10 +6,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
 
 public class CredentialManager {
+
+	
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
@@ -57,6 +61,52 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 		return false;
 	}
+
+	public boolean verifyOTP(String username, int OTP) throws NoSuchAlgorithmException{
+		OTPService otpService;
+		try {
+			otpService = new OTPService();
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("OTP Service not found");
+			e.printStackTrace();
+			return false;
+		}
+	
+		String secretKey = getOTPSecretKeyFromDatabase(username);
+		if(secretKey == null){
+			System.out.println("No secret key found for user: " + username);
+			return false;
+		}
+	
+		try {
+			if(otpService.validateOTP(secretKey, OTP)) {
+				System.out.println("OTP is correct");
+				return true;
+			} else {
+				System.out.println("OTP is incorrect");
+				return false;
+			}
+		} catch (InvalidKeyException e) {
+			System.out.println("Invalid Key");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String getOTPSecretKeyFromDatabase(String username){
+		try {
+			dbConnector.initialiseDB();
+			ResultSet OTPSecretKey = dbConnector.QueryReturnOTPSecretKeyFromUser(username);
+			if(OTPSecretKey.next()){
+				return OTPSecretKey.getString("otp_secret_key");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println(e.getClass().getName());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public void changePasswordInDB(String username, String password) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
@@ -137,5 +187,7 @@ public class CredentialManager {
 		return null;
 	    
 	}
+
+
 	
 }
