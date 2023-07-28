@@ -29,6 +29,9 @@
          </effect>
       </Rectangle>
       <TextField fx:id="userGrabberCreator" layoutX="435.0" layoutY="191.0" promptText="enter new username" stylesheets="@application.css" />
+      <PasswordField fx:id="passGrabberCreator" layoutX="435.0" layoutY="236.0" promptText="enter new password" stylesheets="@application.css" />
+      <TextField fx:id="emailGrabberCreator" layoutX="435.0" layoutY="281.0" promptText="enter an email" stylesheets="@application.css" />
+      <ComboBox fx:id="cbRole" layoutX="435.0" layoutY="317.0" prefWidth="150.0" />
       <Text fill="#063847" layoutX="353.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" wrappingWidth="70.552734375">
          <font>
             <Font size="15.0" />
@@ -60,14 +63,11 @@
          </font>
       </Button>
       <Text fx:id="actionGrabberCreator" fill="#b50f0f" layoutX="364.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="223.0" />
-      <PasswordField fx:id="passGrabberCreator" layoutX="435.0" layoutY="236.0" promptText="enter new password" stylesheets="@application.css" />
       <Text fill="#063847" layoutX="353.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
          <font>
             <Font size="15.0" /> 
          </font>
       </Text>
-      <TextField fx:id="emailGrabberCreator" layoutX="435.0" layoutY="281.0" promptText="enter new username" stylesheets="@application.css" />
-      <ComboBox fx:id="cbRole" layoutX="435.0" layoutY="317.0" prefWidth="150.0" />
       <Text fill="#063847" layoutX="356.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Role:">
          <font>
             <Font size="15.0" />

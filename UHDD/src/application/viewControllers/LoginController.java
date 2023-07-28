@@ -86,6 +86,7 @@ public class LoginController {
 	            return null;
 	        });
 
+            //Get the result from the dialog box
 	        Optional<Integer> result = dialog.showAndWait();
 	        if (result.isPresent()) {
 	            inputCode = result.get();
@@ -93,6 +94,7 @@ public class LoginController {
 	        	return LoginResult.CANCELLED;
 	        }
 
+            //Verify the code
             if (credentialManager.verifyOTP(username, inputCode)) {
 	            System.out.println("Verification successful!");
 	            return LoginResult.SUCCESSFUL;
@@ -116,9 +118,6 @@ public class LoginController {
             }
 
             //2FA verification
-            
-
-
             //EmailManager emailManager = new EmailManager();
             //LoginResult result = emailManager.verifyLogin(emailTo);
             LoginResult result = verifyMFA(userLog);
