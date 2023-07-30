@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
-import application.EmailManager.LoginResult;
+import application.LoginResult;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,56 +54,13 @@ public class LoginController {
     @FXML
     private Button btnPwdReset;
 
-    public enum LoginResult {
-		SUCCESSFUL,
-	    WRONG_CODE,
-	    CANCELLED
-	}
+    
 
     public void setDbConnector(DBConnector dbConnector) {
         this.dbConnector = dbConnector;
     }
 
-    public LoginResult verifyMFA(String username) throws NoSuchAlgorithmException{
-            credentialManager = new CredentialManager();    
-            int inputCode = 0;
-        
-            // Display the dialog box for verification code
-	        Dialog<Integer> dialog = new Dialog<>();
-	        dialog.setTitle("Verification Code");
-	        //dialog.setHeaderText("Enter the verification code:");
-
-	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
-	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
-
-	        TextField verificationCodeField = new TextField();
-	        Platform.runLater(() -> verificationCodeField.requestFocus());
-	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
-	        dialog.setResultConverter(dialogButton -> {
-	            if (dialogButton == submitButton) {
-	                return Integer.parseInt(verificationCodeField.getText());
-	            }
-	            return null;
-	        });
-
-            //Get the result from the dialog box
-	        Optional<Integer> result = dialog.showAndWait();
-	        if (result.isPresent()) {
-	            inputCode = result.get();
-	        } else {
-	        	return LoginResult.CANCELLED;
-	        }
-
-            //Verify the code
-            if (credentialManager.verifyOTP(username, inputCode)) {
-	            System.out.println("Verification successful!");
-	            return LoginResult.SUCCESSFUL;
-	        } else if (!credentialManager.verifyOTP(username, inputCode)) {
-	        	dialog.close();	  
-	        	return LoginResult.WRONG_CODE;
-	        }
-            return LoginResult.CANCELLED;
-    }
+    
 
     public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException, InvalidKeyException, NoSuchAlgorithmException {
         credentialManager = new CredentialManager();
@@ -118,21 +75,19 @@ public class LoginController {
             }
 
             //2FA verification
-            //EmailManager emailManager = new EmailManager();
-            //LoginResult result = emailManager.verifyLogin(emailTo);
-            LoginResult result = verifyMFA(userLog);
+            LoginResult result = credentialManager.verifyMFA(userLog);
 
             if (result == LoginResult.SUCCESSFUL) {
                 // Handle successful login
                 return true;
             } else if (result == LoginResult.WRONG_CODE) {
                 // Handle wrong code scenario
-                actionGrabber.setText("Wrong code input. Email verification cancelled");
+                actionGrabber.setText("Wrong code input. MFA verification cancelled");
                 actionGrabber.setFill(Color.RED);
                 return false;
             } else if (result == LoginResult.CANCELLED) {
                 // Handle login cancelled scenario
-                actionGrabber.setText("Email verification cancelled");
+                actionGrabber.setText("MFA verification cancelled");
                 actionGrabber.setFill(Color.RED);
                 return false;
             } else {

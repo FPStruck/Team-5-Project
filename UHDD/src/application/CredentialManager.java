@@ -5,10 +5,22 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
+import application.LoginResult;
+import javafx.application.Platform;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
 import java.time.LocalDate;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+
 
 
 public class CredentialManager {
@@ -121,6 +133,46 @@ public class CredentialManager {
 		dbConnector.changePasswordExecuteQuery(username, passwordHashAsString, paramsAsString, formatDateTime);
 		dbConnector.closeConnection();
 	}
+
+	public LoginResult verifyMFA(String username) throws NoSuchAlgorithmException{
+            int inputCode = 0;
+        
+            // Display the dialog box for verification code
+	        Dialog<Integer> dialog = new Dialog<>();
+	        dialog.setTitle("Verification Code");
+	        //dialog.setHeaderText("Enter the verification code:");
+
+	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
+
+	        TextField verificationCodeField = new TextField();
+	        Platform.runLater(() -> verificationCodeField.requestFocus());
+	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == submitButton) {
+	                return Integer.parseInt(verificationCodeField.getText());
+	            }
+	            return null;
+	        });
+
+            //Get the result from the dialog box
+	        Optional<Integer> result = dialog.showAndWait();
+	        if (result.isPresent()) {
+	            inputCode = result.get();
+	        } else {
+	        	return LoginResult.CANCELLED;
+	        }
+
+            //Verify the code
+            if (verifyOTP(username, inputCode)) {
+	            System.out.println("Verification successful!");
+	            return LoginResult.SUCCESSFUL;
+	        } else if (!verifyOTP(username, inputCode)) {
+	        	dialog.close();	  
+	        	return LoginResult.WRONG_CODE;
+	        }
+            return LoginResult.CANCELLED;
+    }
 
 	//Check if password last set date was more than 30 days ago
 	public boolean checkPasswordLastSetDate(String username) throws ClassNotFoundException, SQLException {
