@@ -258,10 +258,7 @@ public class PatientInfoViewController {
 		patientNotesDBPane.setStyle("-fx-background-color: #02181f");
 	}
 	
-	@FXML	
-	public void highlightPatientNotesPaneOnExit(MouseEvent mouseEvent) throws IOException {
-		patientNotesDBPane.setStyle("-fx-background-color:  #063847");
-	}
+	
 	
 	@FXML	
 	public void highlightIVDashboardPaneOnEnter(MouseEvent mouseEvent) throws IOException {
