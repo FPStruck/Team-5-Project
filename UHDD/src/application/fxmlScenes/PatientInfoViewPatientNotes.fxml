@@ -81,7 +81,7 @@
             </Pane>
             <Pane fx:id="patientNotesDBPane" layoutX="-1.0" layoutY="255.0" onMouseEntered="#highlightPatientNotesPaneOnEnter" onMouseExited="#highlightPatientNotesPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
-                  <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="133.0">
+                  <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Details" wrappingWidth="133.0">
                      <font>
                         <Font size="17.0" />
                      </font>
