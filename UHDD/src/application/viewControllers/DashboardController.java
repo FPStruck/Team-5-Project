@@ -109,12 +109,10 @@ public class DashboardController {
 	public void updatePatientDirectoryDBTableView() throws ClassNotFoundException, SQLException{
 		ObservableList<Patient> patientOL = FXCollections.observableArrayList();
 		
-		
 		patientDirectoryDBTVId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		patientDirectoryDBTVFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
 		patientDirectoryDBTVGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
-		
-		
+			
 		dbConnector.initialiseDB();
 		ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
 		while (rs.next()) {
