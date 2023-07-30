@@ -16,7 +16,11 @@ import com.calendarfx.model.Entry;
 
 import application.CalendarApp;
 import application.DBConnector;
+import application.Medication;
+import application.Patient;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,6 +29,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -39,8 +46,18 @@ public class DashboardController {
 	private String currentUser;
 	private Timer timer;
 	
-	@FXML
-	private Pane patientDirectoryDBPane;
+	@FXML private TableView<Patient> patientDirectoryDBTV;
+	@FXML private TableColumn<Patient, Integer> patientDirectoryDBTVId;
+	@FXML private TableColumn<Patient, String> patientDirectoryDBTVFamilyName;
+	@FXML private TableColumn<Patient, String> patientDirectoryDBTVGivenName;
+
+	@FXML private TableView<Medication> prescribedMedsDBTV;
+	@FXML private TableColumn<Medication, Integer> prescribedMedsDBTVScriptId;
+	@FXML private TableColumn<Medication, String> prescribedMedsDBTVMedicationName;
+	@FXML private TableColumn<Medication, LocalDate> prescribedMedsDBTVPrescribedDate;
+	@FXML private TableColumn<Medication, LocalDate> prescribedMedsDBTVExpiredDate;
+
+	@FXML private Pane patientDirectoryDBPane;
 	@FXML
 	private Pane appointmentsDBPane;
 	@FXML
@@ -78,6 +95,60 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+		updateNextAppointment();
+		updatePatientDirectoryDBTableView();
+		updatePrescribedMedsDBTableView();
+	}
+
+	public void updatePatientDirectoryDBTableView() throws ClassNotFoundException, SQLException{
+		ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+		
+		
+		patientDirectoryDBTVId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		patientDirectoryDBTVFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
+		patientDirectoryDBTVGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
+		
+		
+		dbConnector.initialiseDB();
+		ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
+		while (rs.next()) {
+			int id = rs.getInt("patientId");
+			String familyName = rs.getString("lastName");
+			String givenName = rs.getString("firstName");
+			Patient patient = new Patient(id, familyName, givenName);
+			patientOL.add(patient);
+			System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+		}
+		patientDirectoryDBTV.setItems(patientOL);
+		dbConnector.closeConnection();
+
+	}
+	
+	public void updatePrescribedMedsDBTableView() throws ClassNotFoundException, SQLException{
+		ObservableList<Medication> medicationOL = FXCollections.observableArrayList();
+		
+		prescribedMedsDBTVScriptId.setCellValueFactory(new PropertyValueFactory<>("scriptId"));
+		prescribedMedsDBTVMedicationName.setCellValueFactory(new PropertyValueFactory<>("medicationName"));
+		prescribedMedsDBTVPrescribedDate.setCellValueFactory(new PropertyValueFactory<>("prescribedDate"));
+		prescribedMedsDBTVExpiredDate.setCellValueFactory(new PropertyValueFactory<>("expiredDate"));		
+		
+		dbConnector.initialiseDB();
+		ResultSet rs = dbConnector.QueryReturnResultsFromMedication();
+		while (rs.next()) {
+			int scriptId = rs.getInt("scriptId");
+			int patientId = rs.getInt("patientId");
+			String medicationName = rs.getString("medication_name");
+			LocalDate prescribedDate = rs.getDate("prescribed_date").toLocalDate();
+			LocalDate expiredDate = rs.getDate("expired_date").toLocalDate();
+			Medication medication = new Medication(scriptId,patientId, medicationName, prescribedDate, expiredDate);
+			medicationOL.add(medication);
+		}
+		prescribedMedsDBTV.setItems(medicationOL);
+		dbConnector.closeConnection();
+
+	}
+
+	public void updateNextAppointment() throws ClassNotFoundException, SQLException{
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		
@@ -179,7 +250,7 @@ public class DashboardController {
 		
 		//startLoggedInStatusTimer();
 	}
-	
+
 	public void setUserText(String username) {
 	    userText.setText(username);
 	    currentUser = username;
