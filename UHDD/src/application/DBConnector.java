@@ -161,6 +161,18 @@ public class DBConnector {
 
 	        return statement.executeQuery();
 	    }
+
+		public ResultSet QueryReturnResultsFromPatients() throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_data";
+			PreparedStatement statement = connection.prepareStatement(sql);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsFromMedication() throws SQLException {
+			String sql = "SELECT * FROM testdb.medication_data";
+			PreparedStatement statement = connection.prepareStatement(sql);
+	        return statement.executeQuery();
+	    }
 		
 		public ResultSet QueryReturnResultsFromPatientId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.test3 WHERE ID = ?";

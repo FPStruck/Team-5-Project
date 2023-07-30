@@ -105,12 +105,12 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <TableView fx:id="patientDirectoryDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
+            <TableView fx:id="patientDirectoryDBTV" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
               <columns>
-                <TableColumn prefWidth="44.0" text="Id" />
-                <TableColumn prefWidth="106.0" text="Family name" />
-                  <TableColumn prefWidth="96.0" text="Given name" />
-                  <TableColumn prefWidth="79.0" text="Accessed" />
+                <TableColumn fx:id="patientDirectoryDBTVId" prefWidth="44.0" text="Id" />
+                <TableColumn fx:id="patientDirectoryDBTVFamilyName" prefWidth="106.0" text="Family name" />
+                  <TableColumn fx:id="patientDirectoryDBTVGivenName" prefWidth="96.0" text="Given name" />
+                  <TableColumn fx:id="patientDirectoryDBTVAccessed" prefWidth="79.0" text="Accessed" />
               </columns>
                <effect>
                   <DropShadow>
@@ -182,7 +182,7 @@
                   <Font size="13.0" />
                </font>
             </Text>
-            <Text fx:id="userText" fill="#063847" layoutX="103.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="92.0">
+            <Text fx:id="userText" fill="#063847" layoutX="104.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="186.0">
                <font>
                   <Font size="17.0" />
                </font>
@@ -196,12 +196,12 @@
       </Pane>
       <Pane layoutX="562.0" layoutY="5.0" prefHeight="253.0" prefWidth="358.0">
          <children>
-            <TableView fx:id="prescribedMedsDBTableView" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
+            <TableView fx:id="prescribedMedsDBTV" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="322.0" stylesheets="@application.css">
                <columns>
-                  <TableColumn prefWidth="44.0" text="Id" />
-                  <TableColumn prefWidth="106.0" text="Medication" />
-                  <TableColumn prefWidth="96.0" text="Prescribed" />
-                  <TableColumn prefWidth="79.0" text="Expires" />
+                  <TableColumn fx:id="prescribedMedsDBTVScriptId" prefWidth="44.0" text="Id" />
+                  <TableColumn fx:id="prescribedMedsDBTVMedicationName" prefWidth="106.0" text="Medication" />
+                  <TableColumn fx:id="prescribedMedsDBTVPrescribedDate" prefWidth="96.0" text="Prescribed" />
+                  <TableColumn fx:id="prescribedMedsDBTVExpiredDate" prefWidth="79.0" text="Expires" />
                </columns>
                <effect>
                   <DropShadow>
