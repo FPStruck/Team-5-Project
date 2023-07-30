@@ -95,9 +95,15 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-		updateNextAppointment();
-		updatePatientDirectoryDBTableView();
-		updatePrescribedMedsDBTableView();
+		Platform.runLater(() -> {
+	        try {
+	            updateNextAppointment();
+	            updatePatientDirectoryDBTableView();
+	            updatePrescribedMedsDBTableView();
+	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
+	            e.printStackTrace();
+	        }
+	    });
 	}
 
 	public void updatePatientDirectoryDBTableView() throws ClassNotFoundException, SQLException{
