@@ -10,6 +10,7 @@ public class Patient {
     private final SimpleStringProperty middleName;
     private final SimpleStringProperty gender;
     private final SimpleStringProperty address;
+    private final SimpleStringProperty city;
     private final SimpleStringProperty state;
     private final SimpleStringProperty telephone;
     private final SimpleStringProperty email;
@@ -24,6 +25,7 @@ public class Patient {
         this.middleName = new SimpleStringProperty("");
         this.gender = new SimpleStringProperty("");
         this.address = new SimpleStringProperty("");
+        this.city = new SimpleStringProperty("");
         this.state = new SimpleStringProperty("");
         this.telephone = new SimpleStringProperty("");
         this.email = new SimpleStringProperty("");
@@ -32,13 +34,14 @@ public class Patient {
         this.emergencyContactNumber = new SimpleStringProperty("");
     }
 
-    public Patient(int id, String familyName, String givenName, String middleName, String gender, String address, String state, String telephone, String email, String dateOfBirth, String healthInsuranceNumber, String emergencyContactNumber) {
+    public Patient(int id, String familyName, String givenName, String middleName, String gender, String address, String city, String state, String telephone, String email, String dateOfBirth, String healthInsuranceNumber, String emergencyContactNumber) {
         this.id = new SimpleIntegerProperty(id);
         this.familyName = new SimpleStringProperty(familyName);
         this.givenName = new SimpleStringProperty(givenName);
         this.middleName = new SimpleStringProperty(middleName);
         this.gender = new SimpleStringProperty(gender);
         this.address = new SimpleStringProperty(address);
+        this.city = new SimpleStringProperty(city);
         this.state = new SimpleStringProperty(state);
         this.telephone = new SimpleStringProperty(telephone);
         this.email = new SimpleStringProperty(email);
@@ -93,6 +96,14 @@ public class Patient {
 
     public void setAddress(String address) {
         this.address.set(address);
+    }
+
+    public String getCity() {
+        return city.get();
+    }
+
+    public void setCity(String city) {
+        this.city.set(city);
     }
 
     public String getState() {

@@ -5,7 +5,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import com.google.protobuf.StringValue;
+
 import application.DBConnector;
+import application.Patient;
+import application.PatientService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -110,13 +114,24 @@ public class PatientInfoViewController {
 		
 		dbConnector.closeConnection();
 	}
+
+	public void setPatientOverviewTxtFields (Patient patient){
+		fullnameTXT.setText(patient.getGivenName() + " " + patient.getMiddleName() + " " + patient.getFamilyName());
+		genderTXT.setText(patient.getGender());
+		dobTXT.setText(patient.getDateOfBirth());
+		locationTXT.setText(patient.getCity());
+		patientIdTXT.setText(String.valueOf(patient.getId()));
+		insuranceNumberTXT.setText(patient.getHealthInsuranceNumber());
+	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
 		if (patient == null) {
 			patient = 1;
 		} else patient--;
-		setTextFieldsToPatientId(patient.toString());
+		//setTextFieldsToPatientId(patient.toString());
+		Patient patientNew = PatientService.getInstance().getCurrentPatient();
+		setPatientOverviewTxtFields(patientNew);
 	}
 	
 	@FXML
