@@ -1,4 +1,3 @@
-/*
 package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,10 +7,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.EncryptionController;
+import application.UserSession;
 
-class EncryptionControllerTest {
-
+class UserSessionTest {
+	UserSession us = new UserSession("500");
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -25,16 +25,9 @@ class EncryptionControllerTest {
 	}
 
 	@Test
-	void testHashTag() {
+	void test() {
 //		fail("Not yet implemented");
-		EncryptionController ec = new EncryptionController();
-		String test = ec.hashData("toby");
-		System.out.println(test);
-		
-		EncryptionController ec2 = new EncryptionController();
-		String test2 = ec2.hashData("1234");
-		System.out.println(test2);
+		System.out.println(us.getUserId());
 	}
 
 }
-*/
