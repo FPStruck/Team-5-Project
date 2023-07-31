@@ -147,7 +147,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientNotesTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
+            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoViewPatientNotes" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
                <font>
                   <Font size="14.0" />
                </font>

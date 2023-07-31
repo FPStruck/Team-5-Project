@@ -148,12 +148,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView3" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
+            <Text fx:id="viewPatientInfoBtn3" fill="#323232" layoutX="210.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoViewPatientNotes" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Notes" wrappingWidth="109.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fx:id="viewPatientInfoBtn4" fill="#323232" layoutX="322.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoView4" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
+            <Text fx:id="viewPatientInfoBtn4" fill="#323232" layoutX="322.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoViewDocuments" strokeType="OUTSIDE" strokeWidth="0.0" text="Documents" wrappingWidth="121.0">
                <font>
                   <Font size="14.0" />
                </font>

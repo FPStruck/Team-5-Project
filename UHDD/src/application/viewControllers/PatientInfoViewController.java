@@ -170,7 +170,7 @@ public class PatientInfoViewController {
 	}
 	
 	@FXML	
-	public void switchToPatientInfoView3(MouseEvent mouseEvent) throws IOException {
+	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewPatientNotes.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
@@ -179,7 +179,7 @@ public class PatientInfoViewController {
 	}
 	
 	@FXML	
-	public void switchToPatientInfoView4(MouseEvent mouseEvent) throws IOException {
+	public void switchToPatientInfoViewDocuments(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewDocuments.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
