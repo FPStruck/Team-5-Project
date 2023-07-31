@@ -82,16 +82,16 @@ public class PatientInfoViewController {
 		
 		if(patientDetails.next()) {
 			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
-			emailTXT.setText(patientDetails.getString("Email"));
+			//emailTXT.setText(patientDetails.getString("Email"));
 			dobTXT.setText(patientDetails.getString("DateOfBirth"));
 			locationTXT.setText(patientDetails.getString("City"));
 			patientIdTXT.setText(patientDetails.getString("ID"));
-			phoneNoTXT.setText(patientDetails.getString("Telephone"));
-			addressTXT.setText(patientDetails.getString("Address"));
+			//phoneNoTXT.setText(patientDetails.getString("Telephone"));
+			//addressTXT.setText(patientDetails.getString("Address"));
 			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
 			detailsTXT.setText(patientDetails.getString("Details"));
-			cityTXT.setText(patientDetails.getString("City"));
-			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+			//cityTXT.setText(patientDetails.getString("City"));
+			//emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
 			familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
 			progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
 			
@@ -161,7 +161,7 @@ public class PatientInfoViewController {
 	}
 	
 	@FXML	
-	public void switchToPatientInfoView2(MouseEvent mouseEvent) throws IOException {
+	public void switchToPatientInfoViewProgressPlan(MouseEvent mouseEvent) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewProgressPlan.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);

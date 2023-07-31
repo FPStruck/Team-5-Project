@@ -35,6 +35,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -141,7 +142,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <Text fx:id="viewPatientInfoBtn2" fill="#323232" layoutX="89.0" layoutY="25.0" onMouseClicked="#switchToPatientProgressAndPlanTab" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
+            <Text fx:id="viewPatientInfoBtn2" fill="#323232" layoutX="89.0" layoutY="25.0" onMouseClicked="#switchToPatientInfoViewProgressPlan" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress &amp; Plan" wrappingWidth="109.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -156,9 +157,10 @@
                   <Font size="14.0" />
                </font>
             </Text>
+            <Line endX="112.0" layoutX="285.0" layoutY="33.0" startX="-272.0" stroke="#a4a4a4" />
          </children>
       </Pane>
-      <Pane layoutX="681.0" layoutY="263.0" prefHeight="217.0" prefWidth="225.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+      <Pane layoutX="426.0" layoutY="273.0" prefHeight="209.0" prefWidth="253.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
          <children>
             <Text fill="#323232" layoutX="19.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Info" wrappingWidth="165.0">
                <font>
@@ -168,16 +170,57 @@
             <Text fill="#9a9797" layoutX="26.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="75.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" wrappingWidth="75.0" />
-            <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
-            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="102.0" />
-            <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
+            <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="140.0" />
+            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="140.0" />
+            <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="140.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="75.0" />
-            <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="102.0" />
+            <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="140.0" />
             <Text fill="#9a9797" layoutX="26.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency #:" wrappingWidth="75.0" />
-            <Text fx:id="emergencyNoTXT" fill="#282828" layoutX="103.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency no" wrappingWidth="102.0" />
+            <Text fx:id="emergencyNoTXT" fill="#282828" layoutX="103.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency no" wrappingWidth="140.0" />
          </children>
       </Pane>
       <Text fx:id="familyMedicalHistoryTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" visible="false" wrappingWidth="466.13671875" />
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />
+      <Pane layoutX="426.0" layoutY="89.0" prefHeight="177.0" prefWidth="200.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+         <children>
+            <Text fill="#323232" layoutX="18.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent daignoses" wrappingWidth="165.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT1" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
+            <Text fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT11" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
+            <Text fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT111" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="695.0" layoutY="274.0" prefHeight="209.0" prefWidth="208.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+         <children>
+            <Text fill="#323232" layoutX="18.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prescribed Medication" wrappingWidth="165.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 1" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT11" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 1" wrappingWidth="102.0" />
+            <Text fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 2" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT111" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 2" wrappingWidth="102.0" />
+            <Text fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 3" wrappingWidth="92.0" />
+            <Text fx:id="phoneNoTXT1111" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 3" wrappingWidth="102.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="639.0" layoutY="89.0" prefHeight="177.0" prefWidth="260.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+         <children>
+            <Text fill="#323232" layoutX="18.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Next Appointment" wrappingWidth="165.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="#9a9797" layoutX="18.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="appointment date" wrappingWidth="121.0" />
+            <Text fx:id="phoneNoTXT11" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doctor" wrappingWidth="102.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
