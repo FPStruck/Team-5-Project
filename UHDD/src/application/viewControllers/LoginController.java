@@ -7,6 +7,7 @@ import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
 import application.EmailManager.LoginResult;
+import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,8 +33,9 @@ public class LoginController {
     private Scene scene;
     private DBConnector dbConnector;
     private static String currentUser;
+    public static String username = "";
 
-    @FXML
+	@FXML
     private TextField userGrabber;
     @FXML
     private TextField passGrabber;
@@ -111,7 +113,7 @@ public class LoginController {
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
 
-        String username = userGrabber.getText();
+        username = userGrabber.getText();
         UserSession.initInstance(username);
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
