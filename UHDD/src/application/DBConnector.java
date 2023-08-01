@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,32 +81,117 @@ public class DBConnector {
 	        statement.setString(2, username);
 	        statement.executeUpdate();
 	    }
-
-	    public int getLoggedInStatus(String username) throws SQLException {
-	        String sql = "SELECT logged_in FROM user_details WHERE username = ?";
+	    
+	    public void setLastLoggedInTime(String username, Timestamp timestamp) throws SQLException {
+	        String sql = "UPDATE user_details SET last_logged_in_date = ? WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
-	        statement.setString(1, username);
-	        ResultSet resultSet = statement.executeQuery();
-	        if (resultSet.next()) {
-	            return resultSet.getInt("logged_in");
-	        }
-	        return 0;
+	        statement.setTimestamp(1, timestamp);
+	        statement.setString(2, username);
+	        statement.executeUpdate();
 	    }
-		
-		public boolean isAnyUserLoggedIn(String username) throws SQLException {
-		    String query = "SELECT COUNT(*) FROM user_details WHERE username != ? AND logged_in = 1";
-		    try (PreparedStatement statement = connection.prepareStatement(query)) {
-		        statement.setString(1, username);
-		        try (ResultSet resultSet = statement.executeQuery()) {
-		            if (resultSet.next()) {
-		                int count = resultSet.getInt(1);
-		                return count > 0;
-		            }
-		        }
-		    }
-		    return false;
-		}
-		
+	    
+	    public int getLoggedInStatus(String username) throws SQLException {
+	        int loggedInStatus = -1;
+	        String sql = "SELECT logged_in FROM user_details WHERE username = ?";
+
+	        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+	            statement.setString(1, username);
+	            try (ResultSet resultSet = statement.executeQuery()) {
+	                if (resultSet.next()) {
+	                    loggedInStatus = resultSet.getInt("logged_in");
+	                }
+	            }
+	        }
+	        return loggedInStatus;
+	    }
+
+	    public Timestamp getLastLoggedInDate(String username) throws SQLException {
+	        Timestamp lastLoggedInDate = null;
+	        String sql = "SELECT last_logged_in_date FROM user_details WHERE username = ?";
+
+	        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+	            statement.setString(1, username);
+	            try (ResultSet resultSet = statement.executeQuery()) {
+	                if (resultSet.next()) {
+	                    lastLoggedInDate = resultSet.getTimestamp("last_logged_in_date");
+	                }
+	            }
+	        }
+	        return lastLoggedInDate;
+	    }
+
+	    
+	    public void checkAndSetLoggedOutStatus() throws SQLException {
+	        String sql = "SELECT username, logged_in, last_logged_in_date FROM user_details WHERE logged_in = 1";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        ResultSet resultSet = statement.executeQuery();
+	        List<String> usersToUpdateStatus = new ArrayList<>();
+
+	        while (resultSet.next()) {
+	            String username = resultSet.getString("username");
+	            int loggedInStatus = resultSet.getInt("logged_in");
+	            Timestamp lastLoggedInDate = resultSet.getTimestamp("last_logged_in_date");
+
+	            LocalDateTime currentDateTime = LocalDateTime.now();
+	            Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
+
+	            if (loggedInStatus == 1) {
+	                if (lastLoggedInDate == null) {
+	                    // Update last logged-in date to current date and time
+	                    updateLastLoggedInDateAndStatus(username, loginTimestamp);
+	                } else {
+	                    // Check if the user has exceeded 5 minutes of inactivity
+	                    Duration timeDifference = Duration.between(lastLoggedInDate.toLocalDateTime(), currentDateTime);
+	                    long hoursDifference = timeDifference.toHours();
+
+	                    if (hoursDifference > 5) {
+	                        usersToUpdateStatus.add(username);
+	                    }
+	                }
+	            } else {
+	                // User has a logged_in status of 0, so we can skip them for inactivity check
+	            }
+	        }
+
+	        // Update the status for users who have exceeded 5 minutes of inactivity
+	        if (!usersToUpdateStatus.isEmpty()) {
+	            String updateSql = "UPDATE user_details SET logged_in = 0 WHERE username IN (";
+	            for (int i = 0; i < usersToUpdateStatus.size(); i++) {
+	                updateSql += "?";
+	                if (i < usersToUpdateStatus.size() - 1) {
+	                    updateSql += ",";
+	                }
+	            }
+	            updateSql += ")";
+
+	            PreparedStatement updateStatement = connection.prepareStatement(updateSql);
+	            for (int i = 0; i < usersToUpdateStatus.size(); i++) {
+	                updateStatement.setString(i + 1, usersToUpdateStatus.get(i));
+	            }
+	            updateStatement.executeUpdate();
+	        }
+	    }
+
+	    public void updateLastLoggedInDateAndStatus(String username, Timestamp loginTimestamp) throws SQLException {
+	        String sql = "UPDATE user_details SET last_logged_in_date = ?, logged_in = ? WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setTimestamp(1, loginTimestamp);
+	        statement.setInt(2, 1); // Set logged_in status to 1 (logged in)
+	        statement.setString(3, username);
+	        statement.executeUpdate();
+	    }
+	    
+	    public void updateLastLoggedInDate(String username) throws SQLException {
+	        LocalDateTime currentDateTime = LocalDateTime.now();
+	        Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
+
+	        String sql = "UPDATE user_details SET last_logged_in_date = ? WHERE username = ?";
+	        PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setTimestamp(1, loginTimestamp);
+	        statement.setString(2, username);
+	        statement.executeUpdate();
+	    }
+	    
 		public ResultSet executeQueryReturnResults(String sql) throws SQLException {
 	        Statement statement = connection.createStatement();
 	        return statement.executeQuery(sql);

@@ -134,8 +134,6 @@ public class UI {
 	@FXML private TextField userGrabberCreator;
 	@FXML private TextField passGrabberCreator;
 	@FXML private TextField emailGrabberCreator;
-	@FXML private Button addColumn;
-	@FXML private Button addRow;
 	@FXML private Button view;
 	@FXML private Button update;
 	@FXML private Button insert;
@@ -201,13 +199,6 @@ public class UI {
 		stage.show();
 	}
 	
-	public void switchToTableCreator(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\TableCreator.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
 	
 	public void switchToMySQL(ActionEvent event) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Test.fxml"));

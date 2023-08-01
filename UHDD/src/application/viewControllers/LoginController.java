@@ -1,12 +1,16 @@
 package application.viewControllers;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
 import application.EmailManager.LoginResult;
+import application.UsernameStorage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -106,13 +110,21 @@ public class LoginController {
             actionGrabber.setText("Another user is already logged in with this username");
             actionGrabber.setFill(Color.RED);
             System.out.println("A user: " + username + " has attempted access from another device (all users logged out): " + formattedDateTime);
-            dbConnector.setLoggedInStatus(username, 0);
+            dbConnector.setLoggedInStatus(username, 2);
         } else { 
         	
         	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
+                Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
+                dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
-
+                
+                dbConnector.updateLastLoggedInDateAndStatus(username, loginTimestamp);
+                dbConnector.checkAndSetLoggedOutStatus();
+                
+                UsernameStorage.setUsername(username);
+                System.out.println(UsernameStorage.getUsername());
+                
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
                 Parent root = loader.load();
                 DashboardController dashboardController = loader.getController();
@@ -154,5 +166,5 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
-
+    
 }
