@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Map;
 
 import com.google.protobuf.StringValue;
 
@@ -17,11 +19,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import scala.Byte;
 
 public class PatientInfoViewController {
 	private Stage stage;
@@ -36,44 +40,35 @@ public class PatientInfoViewController {
 	private Pane dashboardIVPane;
 	
 	//labels that update
-	@FXML
-	private Text fullnameTXT;
-	@FXML
-	private Text genderTXT;
-	@FXML
-	private Text dobTXT;
-	@FXML
-	private Text locationTXT;
-	@FXML
-	private Text patientIdTXT;
-	@FXML
-	private Text phoneNoTXT;
-	@FXML 
-	private Text emailTXT;
-	@FXML
-	private Text addressTXT;
-	@FXML
-	private Text insuranceNumberTXT;
-	@FXML
-	private Text detailsTXT;
-	@FXML
-	private Text cityTXT;
-	@FXML
-	private Text emergencyNoTXT;
-	@FXML
-	private Button nextPatientBTN;
-	@FXML
-	private Text viewPatientInfoBtn;
-	@FXML
-	private Text viewPatientInfoBtn2;
-	@FXML
-	private Text viewPatientInfoBtn3;
-	@FXML
-	private Text viewPatientInfoBtn4;
-	@FXML
-	private Text familyMedicalHistoryTXT;
-	@FXML
-	private Text progressNotesTXT;
+	@FXML private Text fullnameTXT;
+	@FXML private Text genderTXT;
+	@FXML private Text dobTXT;
+	@FXML private Text locationTXT;
+	@FXML private Text patientIdTXT;
+	@FXML private Text phoneNoTXT;
+	@FXML private Text emailTXT;
+	@FXML private Text addressTXT;
+	@FXML private Text insuranceNumberTXT;
+	@FXML private Text detailsTXT;
+	@FXML private Text cityTXT;
+	@FXML private Text emergencyNoTXT;
+	@FXML private Button nextPatientBTN;
+	@FXML private Text viewPatientInfoBtn;
+	@FXML private Text viewPatientInfoBtn2;
+	@FXML private Text viewPatientInfoBtn3;
+	@FXML private Text viewPatientInfoBtn4;
+	@FXML private Text familyMedicalHistoryTXT;
+	@FXML private Text progressNotesTXT;
+
+	//Prescribed Medication Pane 
+	@FXML private Text medName1;
+	@FXML private Text medName2;
+	@FXML private Text medName3;
+	@FXML private Text medExpiry1;
+	@FXML private Text medExpiry2;
+	@FXML private Text medExpiry3;
+	
+	String currentFXML;
 	
 	static Integer patient;
 	
@@ -85,27 +80,14 @@ public class PatientInfoViewController {
 		ResultSetMetaData meta = patientDetails.getMetaData(); // not need at the moment, this will get the mata data such as column size
 		
 		if(patientDetails.next()) {
-			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
-			//emailTXT.setText(patientDetails.getString("Email"));
+			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));		
 			dobTXT.setText(patientDetails.getString("DateOfBirth"));
 			locationTXT.setText(patientDetails.getString("City"));
 			patientIdTXT.setText(patientDetails.getString("ID"));
-			//phoneNoTXT.setText(patientDetails.getString("Telephone"));
-			//addressTXT.setText(patientDetails.getString("Address"));
 			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
-			detailsTXT.setText(patientDetails.getString("Details"));
-			//cityTXT.setText(patientDetails.getString("City"));
-			//emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+			detailsTXT.setText(patientDetails.getString("Details"));	
 			familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
 			progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
-			
-//			if(patientDetails.getString("gender").equals("M")){
-//				genderTXT.setText("Male");
-//			} else if(patientDetails.getString("gender").equals("F")) {
-//				genderTXT.setText("Female");
-//			} else {
-//				genderTXT.setText("Other");
-//			}
 	
 			patient++;
 		} else patient = 1;
@@ -122,16 +104,75 @@ public class PatientInfoViewController {
 		locationTXT.setText(patient.getCity());
 		patientIdTXT.setText(String.valueOf(patient.getId()));
 		insuranceNumberTXT.setText(patient.getHealthInsuranceNumber());
+		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
+			phoneNoTXT.setText(patient.getTelephone());
+			emailTXT.setText(patient.getEmail());
+			addressTXT.setText(patient.getAddress());
+			cityTXT.setText(patient.getCity());
+			emergencyNoTXT.setText(patient.getEmergencyContactNumber());
+		}
+	}
+
+	public void setMedicationOverviewTxtFields (Patient patient) throws SQLException, ClassNotFoundException{
+		dbConnector.initialiseDB();
+		ResultSet medicationResultSet = dbConnector.QueryReturnResultsMedicationFromPatientId(String.valueOf(patient.getId()));
+		int count = 0;
+		while(medicationResultSet.next() && count < 3){
+			String medicationName = medicationResultSet.getString("medication_name");
+        	LocalDate expiredDate = medicationResultSet.getDate("expired_date").toLocalDate();
+			System.out.println(count + " iterating");
+			switch(count) {
+				case 0:
+					medName1.setText(medicationName);
+					medExpiry1.setText(expiredDate.toString());
+					break;
+				case 1:
+					medName2.setText(medicationName);
+					medExpiry2.setText(expiredDate.toString());
+					break;
+				case 2:
+					medName3.setText(medicationName);
+					medExpiry3.setText(expiredDate.toString());
+					break;
+			}
+			count++;		
+		}
+		switch(count) {
+				case 0:
+					medName1.setText("No medication currently prescribed for this patient");
+					medName1.setFont(Font.font("System", FontWeight.BOLD, 12));
+					medName1.setFill(Color.web("#9a9797"));
+					medExpiry1.setText("");
+					medName2.setText("");
+					medExpiry2.setText("");
+					medName3.setText("");
+					medExpiry3.setText("");
+					break;
+				case 1:
+					medName2.setText("");
+					medExpiry2.setText("");
+					medName3.setText("");
+					medExpiry3.setText("");
+					break;
+				case 2:
+					medName3.setText("");
+					medExpiry3.setText("");
+					break;
+		}
+		dbConnector.closeConnection();
 	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
+		
 		if (patient == null) {
 			patient = 1;
 		} else patient--;
 		//setTextFieldsToPatientId(patient.toString());
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
+		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
 		setPatientOverviewTxtFields(patientNew);
+		setMedicationOverviewTxtFields(patientNew);
 	}
 	
 	@FXML
@@ -168,38 +209,59 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewOverview.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+	    currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	    System.out.println(currentFXML);
 	}
 	
 	@FXML	
 	public void switchToPatientInfoViewProgressPlan(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewProgressPlan.fxml"));
+		currentFXML = "../fxmlScenes/PatientInfoViewProgressPlan.fxml";
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+		Parent root = loader.load();
+		Map<String, Object> namespace = loader.getNamespace();
+		// Now you can use the namespace map to check which objects are loaded
+	
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+		System.out.println(currentFXML);
 	}
 	
 	@FXML	
 	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewPatientNotes.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+	    currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	    System.out.println(currentFXML);
 	}
 	
 	@FXML	
 	public void switchToPatientInfoViewDocuments(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewDocuments.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+	    currentFXML = "../fxmlScenes/PatientInfoViewDocuments.fxml";
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	    System.out.println(currentFXML);
 	}
 	
 	@FXML

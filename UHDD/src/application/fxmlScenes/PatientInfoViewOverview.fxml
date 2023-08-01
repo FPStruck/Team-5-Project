@@ -203,12 +203,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <Text fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 1" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT11" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 1" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 2" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT111" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 2" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 3" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT1111" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 3" wrappingWidth="102.0" />
+            <Text fx:id="medExpiry1" fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 1" wrappingWidth="92.0" />
+            <Text fx:id="medName1" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 1" wrappingWidth="150.0" />
+            <Text fx:id="medExpiry2" fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 2" wrappingWidth="92.0" />
+            <Text fx:id="medName2" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 2" wrappingWidth="102.0" />
+            <Text fx:id="medExpiry3" fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry date 3" wrappingWidth="92.0" />
+            <Text fx:id="medName3" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication 3" wrappingWidth="102.0" />
          </children>
       </Pane>
       <Pane layoutX="639.0" layoutY="89.0" prefHeight="177.0" prefWidth="260.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
