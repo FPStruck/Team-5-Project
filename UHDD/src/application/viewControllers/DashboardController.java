@@ -101,7 +101,7 @@ public class DashboardController {
 	            updateNextAppointment();
 	            updatePatientDirectoryDBTableView();
 	            updatePrescribedMedsDBTableView();
-				updatePatientInMem(1);
+				updatePatientInMem(5);
 	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
 	            e.printStackTrace();
 	        }

@@ -68,6 +68,15 @@ public class PatientInfoViewController {
 	@FXML private Text medExpiry2;
 	@FXML private Text medExpiry3;
 	
+
+	//Diagnosis Pane
+	@FXML private Text diagnosisTxt1;
+	@FXML private Text diagnosisTxt2;
+	@FXML private Text diagnosisTxt3;
+	@FXML private Text diagnosisDateTxt1;
+	@FXML private Text diagnosisDateTxt2;
+	@FXML private Text diagnosisDateTxt3;
+
 	String currentFXML;
 	
 	static Integer patient;
@@ -110,6 +119,54 @@ public class PatientInfoViewController {
 			addressTXT.setText(patient.getAddress());
 			cityTXT.setText(patient.getCity());
 			emergencyNoTXT.setText(patient.getEmergencyContactNumber());
+		}
+	}
+
+	public void setDiagnosisOverviewTxtFields (Patient patient) throws SQLException, ClassNotFoundException {
+		dbConnector.initialiseDB();
+		ResultSet diagnosisResultSet = dbConnector.QueryReturnResultsDiagnosisFromPatientId(String.valueOf(patient.getId()));
+		int count = 0;
+		while(diagnosisResultSet.next() && count < 3){
+			String diagnosisName = diagnosisResultSet.getString("diagnosisName");
+			LocalDate diagnosisDate = diagnosisResultSet.getDate("diagnosedDate").toLocalDate();
+			System.out.println(count + " iterating");
+			switch(count) {
+				case 0:
+					diagnosisTxt1.setText(diagnosisName);
+					diagnosisDateTxt1.setText(diagnosisDate.toString());
+					break;
+				case 1:
+					diagnosisTxt2.setText(diagnosisName);
+					diagnosisDateTxt2.setText(diagnosisDate.toString());
+					break;
+				case 2:
+					diagnosisTxt3.setText(diagnosisName);
+					diagnosisDateTxt3.setText(diagnosisDate.toString());
+					break;
+			}
+			count++;		
+		}
+		switch(count){
+			case 0:
+				diagnosisTxt1.setText("This patient currently has no diagnoses.");
+				diagnosisTxt1.setFont(Font.font("System", FontWeight.BOLD, 12));
+				diagnosisTxt1.setFill(Color.web("#9a9797"));
+				diagnosisDateTxt1.setText("");
+				diagnosisTxt2.setText("");
+				diagnosisDateTxt2.setText("");
+				diagnosisTxt3.setText("");
+				diagnosisDateTxt3.setText("");
+				break;
+			case 1:
+				diagnosisTxt2.setText("");
+				diagnosisDateTxt2.setText("");
+				diagnosisTxt3.setText("");
+				diagnosisDateTxt3.setText("");
+				break;
+			case 2:
+				diagnosisTxt3.setText("");
+				diagnosisDateTxt3.setText("");
+				break;
 		}
 	}
 
@@ -173,6 +230,7 @@ public class PatientInfoViewController {
 		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
 		setPatientOverviewTxtFields(patientNew);
 		setMedicationOverviewTxtFields(patientNew);
+		setDiagnosisOverviewTxtFields(patientNew);
 	}
 	
 	@FXML

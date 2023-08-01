@@ -188,12 +188,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <Text fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT1" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT11" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
-            <Text fx:id="phoneNoTXT111" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="102.0" />
+            <Text fx:id="diagnosisDateTxt1" fill="#9a9797" layoutX="18.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="diagnosisTxt1" fill="#282828" layoutX="18.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="170.0" />
+            <Text fx:id="diagnosisDateTxt2" fill="#9a9797" layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="diagnosisTxt2" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="170.0" />
+            <Text fx:id="diagnosisDateTxt3" fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
+            <Text fx:id="diagnosisTxt3" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="170.0" />
          </children>
       </Pane>
       <Pane layoutX="695.0" layoutY="274.0" prefHeight="209.0" prefWidth="208.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
