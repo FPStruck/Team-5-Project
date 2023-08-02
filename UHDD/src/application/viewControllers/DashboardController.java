@@ -46,6 +46,7 @@ public class DashboardController {
 	private static CalendarApp myCalendar;
 	private String currentUser;
 	private Timer timer;
+	String currentFXML;
 	
 	@FXML private TableView<Patient> patientDirectoryDBTV;
 	@FXML private TableColumn<Patient, Integer> patientDirectoryDBTVId;
@@ -379,11 +380,15 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoViewOverview.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+		CurrentFXMLInstance.initInstance("../fxmlScenes/PatientInfoViewOverview.fxml");
+		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
 	}
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {

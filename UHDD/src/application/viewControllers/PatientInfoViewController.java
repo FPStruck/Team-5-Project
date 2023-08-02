@@ -78,7 +78,6 @@ public class PatientInfoViewController {
 	@FXML private Text diagnosisDateTxt3;
 
 	String currentFXML;
-	
 	static Integer patient;
 	
 	DBConnector dbConnector = new DBConnector();
@@ -113,6 +112,8 @@ public class PatientInfoViewController {
 		locationTXT.setText(patient.getCity());
 		patientIdTXT.setText(String.valueOf(patient.getId()));
 		insuranceNumberTXT.setText(patient.getHealthInsuranceNumber());
+		//currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+		System.out.println(currentFXML + " on set patient overview");
 		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
 			phoneNoTXT.setText(patient.getTelephone());
 			emailTXT.setText(patient.getEmail());
@@ -227,10 +228,13 @@ public class PatientInfoViewController {
 		} else patient--;
 		//setTextFieldsToPatientId(patient.toString());
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
-		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		setPatientOverviewTxtFields(patientNew);
-		setMedicationOverviewTxtFields(patientNew);
-		setDiagnosisOverviewTxtFields(patientNew);
+		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
+			setMedicationOverviewTxtFields(patientNew);
+			setDiagnosisOverviewTxtFields(patientNew);
+		}
+		
 	}
 	
 	@FXML
@@ -268,6 +272,7 @@ public class PatientInfoViewController {
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
 	    currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
 	    Map<String, Object> namespace = loader.getNamespace();
@@ -282,10 +287,10 @@ public class PatientInfoViewController {
 	@FXML	
 	public void switchToPatientInfoViewProgressPlan(MouseEvent mouseEvent) throws IOException {
 		currentFXML = "../fxmlScenes/PatientInfoViewProgressPlan.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML); 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 		Parent root = loader.load();
 		Map<String, Object> namespace = loader.getNamespace();
-		// Now you can use the namespace map to check which objects are loaded
 	
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
@@ -297,6 +302,7 @@ public class PatientInfoViewController {
 	@FXML	
 	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
 	    currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
 	    Map<String, Object> namespace = loader.getNamespace();
@@ -311,6 +317,7 @@ public class PatientInfoViewController {
 	@FXML	
 	public void switchToPatientInfoViewDocuments(MouseEvent mouseEvent) throws IOException {
 	    currentFXML = "../fxmlScenes/PatientInfoViewDocuments.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
 	    Map<String, Object> namespace = loader.getNamespace();
