@@ -198,6 +198,14 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		public ResultSet QueryReturnResultsNotesFromPatientId(String patientId) throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_notes WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			System.out.println(sql);
+	        return statement.executeQuery();
+	    }
+
 		public ResultSet QueryReturnResultsFromPatientDataId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_data WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);

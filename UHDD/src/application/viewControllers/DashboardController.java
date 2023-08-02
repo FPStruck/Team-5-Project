@@ -102,7 +102,7 @@ public class DashboardController {
 	            updateNextAppointment();
 	            updatePatientDirectoryDBTableView();
 	            updatePrescribedMedsDBTableView();
-				updatePatientInMem(5);
+				updatePatientInMem(3);
 	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
 	            e.printStackTrace();
 	        }

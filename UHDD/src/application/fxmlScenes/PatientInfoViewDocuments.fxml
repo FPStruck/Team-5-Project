@@ -179,5 +179,6 @@
       </Pane>
       <Text fx:id="familyMedicalHistoryTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" visible="false" wrappingWidth="466.13671875" />
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />
+      <Button fx:id="btnPDFCreate" layoutX="506.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#createPDF" text="Create" />
    </children>
 </AnchorPane>

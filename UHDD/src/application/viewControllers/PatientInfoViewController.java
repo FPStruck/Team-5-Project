@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.google.protobuf.StringValue;
 
+import application.CreateEncryptedPdf;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
@@ -24,6 +25,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import scala.Byte;
 
@@ -53,6 +58,7 @@ public class PatientInfoViewController {
 	@FXML private Text cityTXT;
 	@FXML private Text emergencyNoTXT;
 	@FXML private Button nextPatientBTN;
+	@FXML private Button btnPDFCreate;
 	@FXML private Text viewPatientInfoBtn;
 	@FXML private Text viewPatientInfoBtn2;
 	@FXML private Text viewPatientInfoBtn3;
@@ -76,6 +82,28 @@ public class PatientInfoViewController {
 	@FXML private Text diagnosisDateTxt1;
 	@FXML private Text diagnosisDateTxt2;
 	@FXML private Text diagnosisDateTxt3;
+
+	//Patient Notes
+	@FXML private Text txtNoteDate1;
+	@FXML private Text txtNote1;
+	@FXML private Text txtNoteDate2;
+	@FXML private Text txtNote2;
+	@FXML private Text txtNoteDate3;
+	@FXML private Text txtNote3;
+	@FXML private Text txtScriptInc1;
+	@FXML private Text txtScriptInc2;
+	@FXML private Text txtScriptInc3;
+
+	//Patient Notes PopUp
+	@FXML private Text txtEnterNoteAsId;
+	@FXML private Text txtNotePatientName;
+	@FXML private TextArea txtAreaNote;
+	@FXML private RadioButton radBtnYes;
+	@FXML private RadioButton radBtnNo;
+	@FXML private TextField inMedicationName;
+	@FXML private TextField inScriptValidDays;
+	@FXML private Button btnNoteSaveNClose;
+
 
 	String currentFXML;
 	static Integer patient;
@@ -129,9 +157,10 @@ public class PatientInfoViewController {
 		int count = 0;
 		while(diagnosisResultSet.next() && count < 3){
 			String diagnosisName = diagnosisResultSet.getString("diagnosisName");
-			LocalDate diagnosisDate = diagnosisResultSet.getDate("diagnosedDate").toLocalDate();
-			System.out.println(count + " iterating");
-			switch(count) {
+			LocalDate diagnosisDate = null;
+			if (diagnosisResultSet.getDate("diagnosedDate") != null) {
+				diagnosisDate = diagnosisResultSet.getDate("diagnosedDate").toLocalDate();
+				switch(count) {
 				case 0:
 					diagnosisTxt1.setText(diagnosisName);
 					diagnosisDateTxt1.setText(diagnosisDate.toString());
@@ -145,7 +174,9 @@ public class PatientInfoViewController {
 					diagnosisDateTxt3.setText(diagnosisDate.toString());
 					break;
 			}
-			count++;		
+			count++;
+			} 
+					
 		}
 		switch(count){
 			case 0:
@@ -177,9 +208,10 @@ public class PatientInfoViewController {
 		int count = 0;
 		while(medicationResultSet.next() && count < 3){
 			String medicationName = medicationResultSet.getString("medication_name");
-        	LocalDate expiredDate = medicationResultSet.getDate("expired_date").toLocalDate();
-			System.out.println(count + " iterating");
-			switch(count) {
+			LocalDate expiredDate = null;
+			if (medicationResultSet.getDate("expired_date") != null) {
+				expiredDate = medicationResultSet.getDate("expired_date").toLocalDate();
+				switch(count) {
 				case 0:
 					medName1.setText(medicationName);
 					medExpiry1.setText(expiredDate.toString());
@@ -193,7 +225,9 @@ public class PatientInfoViewController {
 					medExpiry3.setText(expiredDate.toString());
 					break;
 			}
-			count++;		
+			count++;
+			}
+					
 		}
 		switch(count) {
 				case 0:
@@ -219,6 +253,75 @@ public class PatientInfoViewController {
 		}
 		dbConnector.closeConnection();
 	}
+
+	public void setNoteSummaryDetails(Patient patient) throws SQLException, ClassNotFoundException{
+		dbConnector.initialiseDB();
+		ResultSet noteResultSet = dbConnector.QueryReturnResultsNotesFromPatientId(String.valueOf(patient.getId()));
+		
+		int count = 0;
+		while(noteResultSet.next() && count < 3){
+			String noteSummary = noteResultSet.getString("noteText");
+			LocalDate noteDate = null;
+			if (noteResultSet.getDate("noteEnteredDate") != null) {
+				noteDate = noteResultSet.getDate("noteEnteredDate").toLocalDate();
+				int scriptInc = noteResultSet.getInt("scriptIncluded");
+				String trimmedNoteSummary = noteSummary.substring(0, 200) + "...";
+				String scriptTxString = "No";
+				if(scriptInc == 1){
+					scriptTxString = "Yes";
+				}
+				switch(count) {
+					case 0:
+						txtNote1.setText(trimmedNoteSummary);
+						txtNoteDate1.setText(noteDate.toString());
+						txtScriptInc1.setText(scriptTxString);
+						break;
+					case 1:
+						txtNote2.setText(trimmedNoteSummary);
+						txtNoteDate2.setText(noteDate.toString());
+						txtScriptInc2.setText(scriptTxString);
+						break;	
+					case 2:
+						txtNote3.setText(trimmedNoteSummary);
+						txtNoteDate3.setText(noteDate.toString());
+						txtScriptInc3.setText(scriptTxString);
+						break;
+					
+				}
+				count++;
+			}
+					
+		}
+		switch(count) {
+				case 0:
+					txtNote1.setText("No notes have been added to this patient's record.");
+					txtNote1.setFont(Font.font("System", FontWeight.BOLD, 12));
+					txtNote1.setFill(Color.web("#9a9797"));
+					txtNoteDate1.setText("");
+					txtScriptInc1.setText("");
+					txtNoteDate2.setText("");
+					txtScriptInc2.setText("");
+					txtNote2.setText("");
+					txtNoteDate3.setText("");
+					txtScriptInc3.setText("");
+					txtNote3.setText("");
+					break;
+				case 1:
+					txtNoteDate2.setText("");
+					txtScriptInc2.setText("");
+					txtNote2.setText("");
+					txtNoteDate3.setText("");
+					txtScriptInc3.setText("");
+					txtNote3.setText("");
+					break;
+				case 2:
+					txtNoteDate3.setText("");
+					txtScriptInc3.setText("");
+					txtNote3.setText("");
+					break;
+		}
+		dbConnector.closeConnection();
+	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
@@ -229,14 +332,31 @@ public class PatientInfoViewController {
 		//setTextFieldsToPatientId(patient.toString());
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
-		setPatientOverviewTxtFields(patientNew);
+		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
+		
+		} else {setPatientOverviewTxtFields(patientNew);}
+		
 		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
 			setMedicationOverviewTxtFields(patientNew);
 			setDiagnosisOverviewTxtFields(patientNew);
+		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientNotes.fxml")){
+			setNoteSummaryDetails(patientNew);
 		}
 		
 	}
-	
+	@FXML
+	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
+			currentFXML = "../fxmlScenes/PopUpAddPatientNote.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+			Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
+	}
+
+
 	@FXML
 	public void nextPatient() throws ClassNotFoundException, SQLException {
 		setTextFieldsToPatientId(patient.toString());
@@ -329,6 +449,11 @@ public class PatientInfoViewController {
 	    System.out.println(currentFXML);
 	}
 	
+	@FXML 
+	public void createPDF(MouseEvent mouseEvent) throws Exception {
+		CreateEncryptedPdf.create(null);
+	}
+
 	@FXML
 	public void switchToOverviewTab(MouseEvent mouseEvent) throws IOException {
 		// this will change the subheader text to bold and make the text visible 
@@ -373,6 +498,24 @@ public class PatientInfoViewController {
 		familyMedicalHistoryTXT.setVisible(false);
 		progressNotesTXT.setVisible(false);;
 		// document tab has no text to view as of code written 
+	}
+
+	@FXML
+	public void setTxtFieldsNoEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnNo.selectedProperty() != null){
+			inMedicationName.setEditable(false);
+			inScriptValidDays.setEditable(false);
+		}
+	}
+
+	@FXML
+	public void setTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnNo.selectedProperty() != null){
+			inMedicationName.setEditable(true);
+			inScriptValidDays.setEditable(true);
+		}
 	}
 	
 	@FXML	

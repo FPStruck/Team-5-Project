@@ -161,7 +161,37 @@
             <Line endX="112.0" layoutX="285.0" layoutY="33.0" startX="-272.0" stroke="#a4a4a4" />
          </children>
       </Pane>
-      <Pane layoutX="433.0" layoutY="80.0" prefHeight="413.0" prefWidth="466.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;" />
+      <Pane layoutX="433.0" layoutY="80.0" prefHeight="413.0" prefWidth="466.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+         <children>
+            <Line endX="137.33331298828125" layoutX="316.0" layoutY="37.0" startX="-302.6666564941406" stroke="#a4a4a4" />
+            <Text fill="#323232" layoutX="19.0" layoutY="33.0" onMouseClicked="#switchToPatientInfoViewPatientNotes" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" wrappingWidth="50.333343505859375">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="#323232" layoutX="114.0" layoutY="33.0" onMouseClicked="#switchToPatientInfoViewPatientNotes" strokeType="OUTSIDE" strokeWidth="0.0" text="Notes" wrappingWidth="50.333343505859375">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Line endX="35.15104675292969" layoutX="240.0" layoutY="183.0" rotate="90.0" startX="-294.6666564941406" stroke="#a4a4a4" />
+            <Button fx:id="btnNewEntry" layoutX="378.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#addPatientNote" text="New Entry" />
+            <Text fill="#323232" layoutX="390.0" layoutY="33.0" onMouseClicked="#switchToPatientInfoViewPatientNotes" strokeType="OUTSIDE" strokeWidth="0.0" text="Script Inc." wrappingWidth="68.33334350585938">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Line endX="35.15104675292969" layoutX="515.0" layoutY="183.0" rotate="90.0" startX="-294.6666564941406" stroke="#a4a4a4" />
+            <Text fx:id="txtNoteDate1" layoutX="16.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="txtNote1" layoutX="114.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="266.13671875" />
+            <Text fx:id="txtNoteDate2" layoutX="16.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="txtNote2" layoutX="114.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="266.13671875" />
+            <Text fx:id="txtNoteDate3" layoutX="16.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="txtNote3" layoutX="114.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="266.13671875" />
+            <Text fx:id="txtScriptInc1" layoutX="389.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="txtScriptInc2" layoutX="389.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="txtScriptInc3" layoutX="389.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+         </children></Pane>
       <Text fx:id="familyMedicalHistoryTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" visible="false" wrappingWidth="466.13671875" />
    </children>
 </AnchorPane>
