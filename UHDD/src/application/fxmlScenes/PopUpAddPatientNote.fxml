@@ -45,21 +45,23 @@
    <children>
       <Pane layoutX="2.0" prefHeight="506.0" prefWidth="416.0">
          <children>
-            <TextArea fx:id="txtAreaNote" layoutX="26.0" layoutY="40.0" prefHeight="279.0" prefWidth="369.0" />
+            <TextArea fx:id="txtAreaNote" layoutX="26.0" layoutY="40.0" prefHeight="279.0" prefWidth="369.0" wrapText="true" />
             <Text fx:id="txtEnterNoteAsId" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entering note as:" wrappingWidth="224.67578125" />
             <Text fx:id="txtNotePatientName" layoutX="240.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " wrappingWidth="168.80078125" />
-            <Text layoutX="14.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prescribe Medication" />
-            <TextField fx:id="inMedicationName" layoutX="14.0" layoutY="401.0" promptText="Enter name" />
-            <TextField fx:id="inScriptValidDays" layoutX="198.0" layoutY="402.0" promptText="Enter Days" />
-            <Text layoutX="14.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication Name:" />
-            <Text layoutX="198.0" layoutY="398.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Script valid for:" />
-            <Button fx:id="btnNoteSaveNClose" layoutX="299.0" layoutY="452.0" mnemonicParsing="false" text="Save and Close" />
-            <RadioButton fx:id="radBtnYes" layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#setTxtFieldsEdit" prefHeight="17.0" prefWidth="61.0" text="Yes">
+            <Text layoutX="14.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prescribe Medication" />
+            <TextField fx:id="inMedicationName" editable="false" layoutX="14.0" layoutY="416.0" promptText="Enter name" />
+            <TextField fx:id="inScriptValidDays" editable="false" layoutX="198.0" layoutY="417.0" promptText="Enter Days" />
+            <Text layoutX="14.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication Name:" />
+            <Text layoutX="198.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Script valid for:" />
+            <Button fx:id="btnNoteSaveNClose" layoutX="299.0" layoutY="467.0" mnemonicParsing="false" onMouseClicked="#saveAndAddNote" text="Save and Close" />
+            <RadioButton fx:id="radBtnYes" layoutX="14.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#setTxtFieldsEdit" prefHeight="17.0" prefWidth="61.0" text="Yes">
                <toggleGroup>
                   <ToggleGroup fx:id="group1" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="radBtnNo" layoutX="69.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#setTxtFieldsNoEdit" text="No" toggleGroup="$group1" />
+            <RadioButton fx:id="radBtnNo" layoutX="69.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#setTxtFieldsNoEdit" selected="true" text="No" toggleGroup="$group1" />
+            <Text fx:id="txtCharCountWarn" fill="#da6060" layoutX="89.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Character count has exceed maximum of 500" visible="false" />
+            <Text fx:id="txtNonIntWarn" fill="#da6060" layoutX="189.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
          </children>
       </Pane>
    </children>

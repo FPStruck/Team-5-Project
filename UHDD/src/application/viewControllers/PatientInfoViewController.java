@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import com.google.protobuf.StringValue;
@@ -13,6 +15,8 @@ import application.CreateEncryptedPdf;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
+import javafx.animation.PauseTransition;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -30,6 +34,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import scala.Byte;
 
 public class PatientInfoViewController {
@@ -103,6 +108,9 @@ public class PatientInfoViewController {
 	@FXML private TextField inMedicationName;
 	@FXML private TextField inScriptValidDays;
 	@FXML private Button btnNoteSaveNClose;
+	@FXML private Text txtCharCountWarn;
+	private static final int MAX_LENGTH = 500;
+	@FXML private Text txtNonIntWarn;
 
 
 	String currentFXML;
@@ -265,24 +273,27 @@ public class PatientInfoViewController {
 			if (noteResultSet.getDate("noteEnteredDate") != null) {
 				noteDate = noteResultSet.getDate("noteEnteredDate").toLocalDate();
 				int scriptInc = noteResultSet.getInt("scriptIncluded");
+				if(noteSummary.length() >= 200){
 				String trimmedNoteSummary = noteSummary.substring(0, 200) + "...";
+				noteSummary = trimmedNoteSummary;
+				}
 				String scriptTxString = "No";
 				if(scriptInc == 1){
 					scriptTxString = "Yes";
 				}
 				switch(count) {
 					case 0:
-						txtNote1.setText(trimmedNoteSummary);
+						txtNote1.setText(noteSummary);
 						txtNoteDate1.setText(noteDate.toString());
 						txtScriptInc1.setText(scriptTxString);
 						break;
 					case 1:
-						txtNote2.setText(trimmedNoteSummary);
+						txtNote2.setText(noteSummary);
 						txtNoteDate2.setText(noteDate.toString());
 						txtScriptInc2.setText(scriptTxString);
 						break;	
 					case 2:
-						txtNote3.setText(trimmedNoteSummary);
+						txtNote3.setText(noteSummary);
 						txtNoteDate3.setText(noteDate.toString());
 						txtScriptInc3.setText(scriptTxString);
 						break;
@@ -322,6 +333,48 @@ public class PatientInfoViewController {
 		}
 		dbConnector.closeConnection();
 	}
+
+	@FXML
+	public void saveAndAddNote() throws ClassNotFoundException, SQLException{
+		dbConnector.initialiseDB();
+		Patient patient = PatientService.getInstance().getCurrentPatient();
+		String noteText = txtAreaNote.getText();
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = now.format(formatter);
+		int scriptIncluded = 0;
+		if(radBtnYes.isSelected()){
+			String MedicationName = inMedicationName.getText();
+			String input = inScriptValidDays.getText();
+			try {
+				int value = Integer.parseInt(input);
+				if (value < 1 || value > 730) {
+					// Value is not between 1 and 730, handle this case
+					txtNonIntWarn.setText(input + " is not between 1 and 730");
+					txtNonIntWarn.setVisible(true);
+				} else {
+					// Value is valid
+					LocalDateTime futureDate = now.plusDays(value);
+					String formatFutureDate = futureDate.format(formatter);
+					dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate);
+					scriptIncluded = 1;
+				}
+			} catch (NumberFormatException e) {
+				// Input is not an integer, handle this case
+				txtNonIntWarn.setText(input + " is not an integer");
+				txtNonIntWarn.setVisible(true);
+			}
+		}
+		dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+		dbConnector.closeConnection();
+		PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
+			delay.setOnFinished( event -> {
+				// Closes the window after the pause
+				Stage stage = (Stage) txtAreaNote.getScene().getWindow(); 
+				stage.close();
+			});
+		delay.play();
+	}
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
@@ -333,7 +386,15 @@ public class PatientInfoViewController {
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
-		
+			txtNotePatientName.setText("Patient Name: " + patientNew.getGivenName() + " " + patientNew.getFamilyName());
+			txtAreaNote.textProperty().addListener((observable, oldValue, newValue) -> {
+				if (newValue != null && newValue.length() > MAX_LENGTH) {
+					txtAreaNote.setText(oldValue);
+					txtCharCountWarn.setVisible(true);
+				} else {
+					txtCharCountWarn.setVisible(false);
+				}
+			});
 		} else {setPatientOverviewTxtFields(patientNew);}
 		
 		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
@@ -503,7 +564,7 @@ public class PatientInfoViewController {
 	@FXML
 	public void setTxtFieldsNoEdit (MouseEvent mouseEvent) throws IOException {
 
-		if(radBtnNo.selectedProperty() != null){
+		if(radBtnNo.isSelected()){
 			inMedicationName.setEditable(false);
 			inScriptValidDays.setEditable(false);
 		}
@@ -512,7 +573,7 @@ public class PatientInfoViewController {
 	@FXML
 	public void setTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
 
-		if(radBtnNo.selectedProperty() != null){
+		if(radBtnYes.isSelected()){
 			inMedicationName.setEditable(true);
 			inScriptValidDays.setEditable(true);
 		}

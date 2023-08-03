@@ -133,6 +133,31 @@ public class DBConnector {
 			statement.executeUpdate();
 			
 		}
+
+		public void createNewNoteExecuteQuery(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded)
+		  throws SQLException {
+			String sql = "INSERT INTO testdb.patient_notes (patientId, doctorId, noteText, noteEnteredDate, scriptIncluded) VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, doctorId);
+			statement.setString(3, noteText);
+			statement.setString(4, noteEnteredDate);
+			statement.setString(5, scriptIncluded);
+			statement.executeUpdate();
+			
+		}
+
+		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date)
+		  throws SQLException {
+			String sql = "INSERT INTO testdb.medication_data (patientId, medication_name, prescribed_date, expired_date) VALUES (?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, medication_name);
+			statement.setString(3, prescribed_date);
+			statement.setString(4, expired_date);
+			statement.executeUpdate();
+			
+		}
 		
 		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
 				  throws SQLException {
@@ -199,7 +224,7 @@ public class DBConnector {
 	    }
 
 		public ResultSet QueryReturnResultsNotesFromPatientId(String patientId) throws SQLException {
-			String sql = "SELECT * FROM testdb.patient_notes WHERE patientId = ?";
+			String sql = "SELECT * FROM testdb.patient_notes WHERE patientId = ? ORDER BY noteEnteredDate DESC";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
 			System.out.println(sql);
