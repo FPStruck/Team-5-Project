@@ -512,7 +512,12 @@ public class PatientInfoViewController {
 	
 	@FXML 
 	public void createPDF(MouseEvent mouseEvent) throws Exception {
-		CreateEncryptedPdf.create(null);
+		String userProfile = System.getenv("USERPROFILE");
+		String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
+
+		String ownerPassword = "owner";
+		String userPassword = "user";
+		CreateEncryptedPdf.create(filePath, ownerPassword, userPassword);
 	}
 
 	@FXML
