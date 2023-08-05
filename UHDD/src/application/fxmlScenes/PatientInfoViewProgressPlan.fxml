@@ -81,7 +81,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="-1.0" layoutY="255.0" onMouseEntered="#highlightPatientNotesPaneOnEnter" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #02181f;">
+            <Pane layoutX="-1.0" layoutY="255.0" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #02181f;">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Details" wrappingWidth="133.0">
                      <font>
@@ -172,10 +172,21 @@
             <Text layoutX="16.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Timeline:" wrappingWidth="109.0" />
             <Button layoutX="283.0" layoutY="366.0" mnemonicParsing="false" text="New Plan" />
             <Button layoutX="382.0" layoutY="366.0" mnemonicParsing="false" text="Next plan" />
-            <TextArea fx:id="txtInitialDetails" editable="false" layoutX="129.0" layoutY="53.0" prefHeight="64.0" prefWidth="282.0" />
-            <TextArea fx:id="txtAreaGoalStatus" editable="false" layoutX="129.0" layoutY="140.0" prefHeight="52.0" prefWidth="282.0" />
-            <TextArea fx:id="txtAreaRecentUpdate" editable="false" layoutX="129.0" layoutY="208.0" prefHeight="52.0" prefWidth="282.0" />
-            <Text fx:id="txtPPDiagnosisName" layoutX="129.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="102.0" />
+            <TextArea fx:id="txtAreaInitialDetails" editable="false" layoutX="129.0" layoutY="53.0" prefHeight="64.0" prefWidth="282.0" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font></TextArea>
+            <TextArea fx:id="txtAreaGoalStatus" editable="false" layoutX="129.0" layoutY="140.0" prefHeight="52.0" prefWidth="282.0" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font></TextArea>
+            <TextArea fx:id="txtAreaRecentUpdate" editable="false" layoutX="129.0" layoutY="208.0" prefHeight="52.0" prefWidth="282.0" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font></TextArea>
+            <Text fx:id="txtPPDiagnosisName" layoutX="129.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="216.00000000000006" />
+            <Text fx:id="txtMedicationToRectify" layoutX="129.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="282.0000000000001" />
+            <Text fx:id="txtPPExpectedTimeline" layoutX="134.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="216.00000000000006" />
          </children>
       </Pane>
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.calendarfx.model.Entry;
+import com.google.zxing.Result;
 
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
@@ -309,6 +310,36 @@ public class DBConnector {
 			System.out.println(statement);
 	        return statement.executeQuery();
 	    }
+
+	public ResultSet QueryReturnResultsDiagIdForProgressPlan(String diagnosisId) throws SQLException {
+			String sql = "SELECT pd.diagnosisName,\n" + //
+					"       pp.initialDetails,\n" + //
+					"       pp.progressPlanGoal,\n" + //
+					"       pp.expectedRemediationDate,\n" + //
+					"       pn.noteText\n" + //
+					"FROM patient_diagnoses pd\n" + //
+					"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+					"JOIN diagnosis_notes dn ON pd.diagnosisId = dn.diagnosisId\n" + //
+					"JOIN patient_notes pn ON dn.noteId = pn.noteId\n" + //
+					"WHERE pd.diagnosisId = ?\n" + //
+					"ORDER BY pn.noteEnteredDate DESC\n" + //
+					"LIMIT 1;";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, diagnosisId);
+					return statement.executeQuery();
+
+	}
+
+	public ResultSet QueryReturnResultsDiagIdForMedicationNames(String diagnosisId) throws SQLException {
+		String sql = "SELECT md.medication_name FROM medication_data md\n" + //
+				"JOIN diagnosis_notes dn ON md.noteId = dn.noteId\n" + //
+				"JOIN patient_diagnoses pd ON dn.diagnosisId = pd.diagnosisId\n" + //
+				"WHERE pd.diagnosisId = ?;\n" + //
+				"";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, diagnosisId);
+				return statement.executeQuery();
+	}
 		
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,

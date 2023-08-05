@@ -121,6 +121,13 @@ public class PatientInfoViewController {
 	@FXML private TextField inDiagnosisId;
 	@FXML private Text txtInvalidDiagId;
 
+	//Patient Progress Plan
+	@FXML private Text txtPPDiagnosisName;
+	@FXML private TextArea txtAreaInitialDetails;
+	@FXML private TextArea txtAreaGoalStatus;
+	@FXML private TextArea txtAreaRecentUpdate;
+	@FXML private Text txtMedicationToRectify;
+	@FXML private Text txtPPExpectedTimeline;
 
 	String currentFXML;
 	static Integer patient;
@@ -432,9 +439,33 @@ public class PatientInfoViewController {
 		
 	}
 
-	public void setProgressPlan(){
-		//Get diagnosis name
-		//Get 
+	public void setProgressPlan() throws ClassNotFoundException, SQLException{
+		System.out.println("do we begin to set Progress plan?");
+		String diagId = "50";
+		String strMedicationNames = "";
+		dbConnector.initialiseDB();
+		ResultSet progressplanResultSet = dbConnector.QueryReturnResultsDiagIdForProgressPlan(diagId);
+		while(progressplanResultSet.next()){
+			System.out.println("do we get into the while loop?");
+			txtPPDiagnosisName.setText(progressplanResultSet.getString("diagnosisName"));
+			txtAreaInitialDetails.setText(progressplanResultSet.getString("initialDetails"));
+			txtAreaGoalStatus.setText(progressplanResultSet.getString("progressPlanGoal"));
+			txtAreaRecentUpdate.setText(progressplanResultSet.getString("noteText"));
+		}
+		ResultSet medicationNames = dbConnector.QueryReturnResultsDiagIdForMedicationNames(diagId);
+		while(medicationNames.next()){
+			strMedicationNames += medicationNames.getString("medication_name");
+			strMedicationNames += ", ";
+		}
+		if (strMedicationNames.endsWith(", ")) {
+			strMedicationNames = strMedicationNames.substring(0, strMedicationNames.length() - 2);
+			txtMedicationToRectify.setText(strMedicationNames);
+		} else {
+			txtMedicationToRectify.setText("No Medication to rectify");
+		}
+
+		dbConnector.closeConnection();
+
 	}
 
 	//INITIALISE METHOD
@@ -447,6 +478,7 @@ public class PatientInfoViewController {
 		//setTextFieldsToPatientId(patient.toString());
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+		System.out.println("Current FXML: " + currentFXML);
 		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
 			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
 			inDiagnosisSev.setValue("Mild");
@@ -466,8 +498,9 @@ public class PatientInfoViewController {
 			setDiagnosisOverviewTxtFields(patientNew);
 		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientNotes.fxml")){
 			setNoteSummaryDetails(patientNew);
-		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientProgressPlan.fxml")){
-
+		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewProgressPlan.fxml")){
+			System.out.println("Are we getting here?");
+			setProgressPlan();
 		}	
 	}
 	//INITIALISE ^^^^^
