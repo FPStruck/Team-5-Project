@@ -161,10 +161,10 @@ public class DBConnector {
 			
 		}
 
-		public void createNewDiagnosisExecuteQuery(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId, String noteId)
+		public void createNewDiagnosisExecuteQuery(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
 			throws SQLException {
 			String sql = "INSERT INTO testdb.patient_diagnoses "
-					+ "(patientId, diagnosisName, diagnosisSeverity, diagnosedDate, diagnosingDrId, noteId) "
+					+ "(patientId, diagnosisName, diagnosisSeverity, diagnosedDate, diagnosingDrId) "
 					+ "VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
@@ -172,10 +172,16 @@ public class DBConnector {
 			statement.setString(3, diagnosisSeverity);
 			statement.setString(4, diagnosedDate);
 			statement.setString(5, diagnosingDrId);
-			statement.setString(6, noteId);
 			statement.executeUpdate();
 		}
 		
+		public void CreateNewNoteDiagnosisIdLink(String noteId, String diagnosisId) throws SQLException {
+			String sql = "INSERT INTO testdb.diagnosis_notes (diagnosisId, noteId) VALUES (?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			statement.setString(2, noteId);
+			statement.executeUpdate();
+		}
 		
 		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
 				  throws SQLException {
@@ -187,6 +193,18 @@ public class DBConnector {
 					statement.setString(4, username);
 					statement.executeUpdate();
 			
+		}
+
+		public boolean verifyDiagnosisIdExists(String diagnosisId) throws SQLException {
+			String sql = "SELECT COUNT(*) FROM testdb.patient_diagnoses WHERE diagnosisId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				int count = resultSet.getInt(1);
+				return count > 0;
+			}
+			return false;
 		}
 
 		public ResultSet QueryReturnOTPSecretKeyFromUser(String username) throws SQLException {
@@ -268,6 +286,18 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 		
+		public ResultSet QueryDiagnosisId(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
+			throws SQLException {
+			String sql = "SELECT diagnosisId FROM testdb.patient_diagnoses WHERE patientId = ? AND diagnosisName = ? AND diagnosisSeverity = ? AND diagnosedDate = ? AND diagnosingDrId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, diagnosisName);
+			statement.setString(3, diagnosisSeverity);
+			statement.setString(4, diagnosedDate);
+			statement.setString(5, diagnosingDrId);
+			return statement.executeQuery();
+		}
+
 		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
 			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
 			PreparedStatement statement = connection.prepareStatement(sql);

@@ -116,6 +116,10 @@ public class PatientInfoViewController {
 	@FXML private ChoiceBox<String> inDiagnosisSev;
 	@FXML private RadioButton radBtnDiagYes;
 	@FXML private RadioButton radBtnDiagNo;
+	@FXML private RadioButton radBtnDiagIdYes;
+	@FXML private RadioButton radBtnDiagIdNo;
+	@FXML private TextField inDiagnosisId;
+	@FXML private Text txtInvalidDiagId;
 
 
 	String currentFXML;
@@ -351,8 +355,15 @@ public class PatientInfoViewController {
 		String formatFutureDate = null;
 		LocalDateTime futureDate = null;
 		String MedicationName = null;
+		int parsedDiagnosisId = 0;
+		Boolean diagnosisIdValid = true;
+		Boolean validExpiryDate = true;
+		Boolean textAreaValid = false;
+
+
 
 		if(radBtnYes.isSelected()){
+			validExpiryDate = false;
 			MedicationName = inMedicationName.getText();
 			String input = inScriptValidDays.getText();
 			try {
@@ -365,7 +376,7 @@ public class PatientInfoViewController {
 					// Value is valid
 					futureDate = now.plusDays(value);
 					formatFutureDate = futureDate.format(formatter);
-					
+					validExpiryDate = true;
 					scriptIncluded = 1;
 				}
 			} catch (NumberFormatException e) {
@@ -374,12 +385,57 @@ public class PatientInfoViewController {
 				txtNonIntWarn.setVisible(true);
 			}
 		}
+		if(radBtnDiagIdYes.isSelected()){
+			diagnosisIdValid = false;
+			String diagnosisId = inDiagnosisId.getText();
+			try {
+				parsedDiagnosisId = Integer.parseInt(diagnosisId);
+				if(dbConnector.verifyDiagnosisIdExists(String.valueOf(parsedDiagnosisId))){
+					diagnosisIdValid = true;
+				} else {
+					txtInvalidDiagId.setText(diagnosisId + " Does not exist");
+				}
+			} catch (NumberFormatException e) {
+				txtInvalidDiagId.setText(diagnosisId + " is not a number");
+			}
+		}
+
+		if(noteText.length() > 0){
+			textAreaValid = true;
+		} else {
+			txtCharCountWarn.setVisible(true);
+			txtCharCountWarn.setText("Please enter a note");
+		}
+
+		if(validExpiryDate && diagnosisIdValid && textAreaValid){
+			dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+
+			ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+			notes.next();
+			String noteId = notes.getString("noteId");
+			if(radBtnDiagIdYes.isSelected()){
+			dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
+			}
+			if(scriptIncluded == 1){
+				dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, "105");
+			}
+			if(radBtnDiagYes.isSelected()){
+				String diagnosisName = inDiagnosisName.getText();
+				String diagnosisSev = inDiagnosisSev.getValue();		
+				dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
+			}
+			dbConnector.closeConnection();
+			Stage stage = (Stage) btnNoteSaveNClose.getScene().getWindow();
+			stage.close();
+		} 
 		
+		/* 
 		dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
 		
 		ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
 		notes.next();
 		String noteId = notes.getString("noteId");
+		dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
 
 		if(scriptIncluded == 1){
 			dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, "105");
@@ -388,9 +444,14 @@ public class PatientInfoViewController {
 			
 			String diagnosisName = inDiagnosisName.getText();
 			String diagnosisSev = inDiagnosisSev.getValue();		
-			dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105", noteId);
+			dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
+			ResultSet diagnosis = dbConnector.QueryDiagnosisId(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
+			diagnosis.next();
+			String diagnosisId = diagnosis.getString("diagnosisId");
+			dbConnector.CreateNewNoteDiagnosisIdLink(noteId, diagnosisId);
 		}
 		
+
 		dbConnector.closeConnection();
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
@@ -400,8 +461,15 @@ public class PatientInfoViewController {
 				stage.close();
 			});
 		delay.play();
+		*/
 	}
-	
+
+	public void setProgressPlan(){
+		//Get diagnosis name
+		//Get 
+	}
+
+	//INITIALISE METHOD
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
 		
@@ -429,9 +497,12 @@ public class PatientInfoViewController {
 			setDiagnosisOverviewTxtFields(patientNew);
 		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientNotes.fxml")){
 			setNoteSummaryDetails(patientNew);
-		}
-		
+		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientProgressPlan.fxml")){
+
+		}	
 	}
+	//INITIALISE ^^^^^
+
 	@FXML
 	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
 			currentFXML = "../fxmlScenes/PopUpAddPatientNote.fxml";
@@ -599,6 +670,7 @@ public class PatientInfoViewController {
 		if(radBtnNo.isSelected()){
 			inMedicationName.setEditable(false);
 			inScriptValidDays.setEditable(false);
+			radBtnYes.setSelected(false);
 		}
 	}
 
@@ -608,6 +680,7 @@ public class PatientInfoViewController {
 		if(radBtnYes.isSelected()){
 			inMedicationName.setEditable(true);
 			inScriptValidDays.setEditable(true);
+			radBtnNo.setSelected(false);
 		}
 	}
 
@@ -617,6 +690,7 @@ public class PatientInfoViewController {
 		if(radBtnDiagNo.isSelected()){
 			inDiagnosisName.setEditable(false);
 			inDiagnosisSev.setDisable(true);
+			radBtnDiagYes.setSelected(false);
 		}
 	}
 
@@ -626,6 +700,25 @@ public class PatientInfoViewController {
 		if(radBtnDiagYes.isSelected()){
 			inDiagnosisName.setEditable(true);
 			inDiagnosisSev.setDisable(false);
+			radBtnDiagNo.setSelected(false);
+		}
+	}
+
+	@FXML
+	public void setDiagIdTxtFieldsNoEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnDiagIdNo.isSelected()){
+			inDiagnosisId.setEditable(false);
+			radBtnDiagIdYes.setSelected(false);
+		}
+	}
+
+	@FXML
+	public void setDiagIdTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnDiagIdYes.isSelected()){
+			inDiagnosisId.setEditable(true);
+			radBtnDiagIdNo.setSelected(false);
 		}
 	}
 
