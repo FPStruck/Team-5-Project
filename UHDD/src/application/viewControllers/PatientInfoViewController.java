@@ -29,6 +29,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -111,6 +112,10 @@ public class PatientInfoViewController {
 	@FXML private Text txtCharCountWarn;
 	private static final int MAX_LENGTH = 500;
 	@FXML private Text txtNonIntWarn;
+	@FXML private TextField inDiagnosisName;
+	@FXML private ChoiceBox<String> inDiagnosisSev;
+	@FXML private RadioButton radBtnDiagYes;
+	@FXML private RadioButton radBtnDiagNo;
 
 
 	String currentFXML;
@@ -343,8 +348,12 @@ public class PatientInfoViewController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formatDateTime = now.format(formatter);
 		int scriptIncluded = 0;
+		String formatFutureDate = null;
+		LocalDateTime futureDate = null;
+		String MedicationName = null;
+
 		if(radBtnYes.isSelected()){
-			String MedicationName = inMedicationName.getText();
+			MedicationName = inMedicationName.getText();
 			String input = inScriptValidDays.getText();
 			try {
 				int value = Integer.parseInt(input);
@@ -354,9 +363,9 @@ public class PatientInfoViewController {
 					txtNonIntWarn.setVisible(true);
 				} else {
 					// Value is valid
-					LocalDateTime futureDate = now.plusDays(value);
-					String formatFutureDate = futureDate.format(formatter);
-					dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate);
+					futureDate = now.plusDays(value);
+					formatFutureDate = futureDate.format(formatter);
+					
 					scriptIncluded = 1;
 				}
 			} catch (NumberFormatException e) {
@@ -365,8 +374,25 @@ public class PatientInfoViewController {
 				txtNonIntWarn.setVisible(true);
 			}
 		}
+		
 		dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+		
+		ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+		notes.next();
+		String noteId = notes.getString("noteId");
+
+		if(scriptIncluded == 1){
+			dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, "105");
+		}
+		if(radBtnDiagYes.isSelected()){
+			
+			String diagnosisName = inDiagnosisName.getText();
+			String diagnosisSev = inDiagnosisSev.getValue();		
+			dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105", noteId);
+		}
+		
 		dbConnector.closeConnection();
+
 		PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
 			delay.setOnFinished( event -> {
 				// Closes the window after the pause
@@ -386,6 +412,7 @@ public class PatientInfoViewController {
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
+			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
 			txtNotePatientName.setText("Patient Name: " + patientNew.getGivenName() + " " + patientNew.getFamilyName());
 			txtAreaNote.textProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue != null && newValue.length() > MAX_LENGTH) {
@@ -583,7 +610,25 @@ public class PatientInfoViewController {
 			inScriptValidDays.setEditable(true);
 		}
 	}
-	
+
+	@FXML
+	public void setDiagTxtFieldsNoEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnDiagNo.isSelected()){
+			inDiagnosisName.setEditable(false);
+			inDiagnosisSev.setDisable(true);
+		}
+	}
+
+	@FXML
+	public void setDiagTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
+
+		if(radBtnDiagYes.isSelected()){
+			inDiagnosisName.setEditable(true);
+			inDiagnosisSev.setDisable(false);
+		}
+	}
+
 	@FXML	
 	public void highlightPatientDirectoryPane(MouseEvent mouseEvent) throws IOException {
 		patientDirectoryIVPane.setStyle("-fx-background-color: #02181f");

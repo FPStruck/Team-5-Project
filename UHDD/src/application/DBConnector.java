@@ -147,17 +147,35 @@ public class DBConnector {
 			
 		}
 
-		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date)
+		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date, String noteId, String prescribedBy)
 		  throws SQLException {
-			String sql = "INSERT INTO testdb.medication_data (patientId, medication_name, prescribed_date, expired_date) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO testdb.medication_data (patientId, medication_name, prescribed_date, expired_date, noteId, prescribedBy) VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
 			statement.setString(2, medication_name);
 			statement.setString(3, prescribed_date);
 			statement.setString(4, expired_date);
+			statement.setString(5, noteId);
+			statement.setString(6, prescribedBy);
 			statement.executeUpdate();
 			
 		}
+
+		public void createNewDiagnosisExecuteQuery(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId, String noteId)
+			throws SQLException {
+			String sql = "INSERT INTO testdb.patient_diagnoses "
+					+ "(patientId, diagnosisName, diagnosisSeverity, diagnosedDate, diagnosingDrId, noteId) "
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, diagnosisName);
+			statement.setString(3, diagnosisSeverity);
+			statement.setString(4, diagnosedDate);
+			statement.setString(5, diagnosingDrId);
+			statement.setString(6, noteId);
+			statement.executeUpdate();
+		}
+		
 		
 		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
 				  throws SQLException {
@@ -235,6 +253,18 @@ public class DBConnector {
 			String sql = "SELECT * FROM testdb.patient_data WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryNoteIdForDiagnosis(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded) throws SQLException {
+			String sql = "SELECT noteId FROM testdb.patient_notes WHERE patientId = ? AND doctorId = ? AND noteText = ? AND noteEnteredDate = ? AND scriptIncluded = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, doctorId);
+			statement.setString(3, noteText);
+			statement.setString(4, noteEnteredDate);
+			statement.setString(5, scriptIncluded);
+			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
 		
