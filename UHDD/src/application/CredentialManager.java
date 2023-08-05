@@ -7,7 +7,7 @@ public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	public void addNewUserToDB(String username, String password, String email, String role) throws ClassNotFoundException, SQLException {
+	public void addNewUserToDB(String username, String password, String email, String role) throws Exception {
 		dbConnector.initialiseDB();		
 		PasswordHash passwordHash = passwordHasher.hashPassword(password);
 		String passwordHashAsString = passwordHash.getHashAsString();		
@@ -17,7 +17,7 @@ public class CredentialManager {
 	}
 	
 	
-	public String checkCredentialsInFile(String username, String password) throws ClassNotFoundException, SQLException {
+	public String checkCredentialsInFile(String username, String password) throws Exception {
 		dbConnector.initialiseDB();
 	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {

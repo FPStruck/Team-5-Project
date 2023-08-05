@@ -75,7 +75,7 @@ public class Nurse_PatientInfoViewController {
 	
 	DBConnector dbConnector = new DBConnector();
 	
-	public void setTextFieldsToPatientId(String Id) throws ClassNotFoundException, SQLException {
+	public void setTextFieldsToPatientId(String Id) throws Exception {
 		dbConnector.initialiseDB();
 		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
 		ResultSetMetaData meta = patientDetails.getMetaData(); // not need at the moment, this will get the mata data such as column size
@@ -112,7 +112,7 @@ public class Nurse_PatientInfoViewController {
 	}
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException {
+	public void initialize() throws Exception {
 		if (patient == null) {
 			patient = 1;
 		} else patient--;
@@ -120,7 +120,7 @@ public class Nurse_PatientInfoViewController {
 	}
 	
 	@FXML
-	public void nextPatient() throws ClassNotFoundException, SQLException {
+	public void nextPatient() throws Exception {
 		setTextFieldsToPatientId(patient.toString());
 	}
 	

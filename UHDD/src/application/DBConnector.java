@@ -1,6 +1,7 @@
 package application;
 
 import java.sql.Connection;
+import application.EncryptionUtils;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +35,7 @@ public class DBConnector {
 		String nextRRule;
 		Boolean nextRecurrence;		
 		
-		public void initialiseDB() throws ClassNotFoundException, SQLException {
+		public void initialiseDB() throws Exception {
 		
 			// loads and checks the driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -44,7 +45,7 @@ public class DBConnector {
 			// connect to Jonathan's cloud
 			String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
 			String username = "itc303admin";
-			String password = "L3cr3X2bNCtcvf"; // Hash this password using a function and unhash it when it's called for this line so its not stored in plain text (makes it harder for people to access DB)
+			String password = EncryptionUtils.decrypt("wqX+dVaHb7MQOLDjyKuzQw=="); // Hash this password using a function and unhash it when it's called for this line so its not stored in plain text (makes it harder for people to access DB)
 			
 			// connect to local database
 //			String url = "jdbc:mysql://127.0.0.1:3306/testdb";

@@ -51,7 +51,7 @@ public class LoginController {
         this.dbConnector = dbConnector;
     }
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException {
+    public boolean loginSuccessful() throws Exception {
         CredentialManager credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
@@ -86,7 +86,7 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
+    protected void handleSignInAction(ActionEvent event) throws Exception {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);
