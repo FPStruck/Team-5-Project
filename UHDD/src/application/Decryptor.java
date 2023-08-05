@@ -9,11 +9,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class EncryptionUtils {
+public class Decryptor {
     private static final String ENCRYPTION_ALGORITHM = "AES";
 
-    // Replace this with your actual passphrase
-    private static final String PASSPHRASE = "YourPassphrase1234";
+    private static final String PASSPHRASE = "PassDecryptor1234";
 
     private static byte[] deriveKey(String passphrase, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 10000;
@@ -22,7 +21,7 @@ public class EncryptionUtils {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         return factory.generateSecret(spec).getEncoded();
     }
-
+    
     public static String encrypt(String input) throws Exception {
         byte[] salt = new byte[16];
         // Generate a random salt
@@ -40,7 +39,7 @@ public class EncryptionUtils {
         byte[] encryptedBytes = cipher.doFinal(input.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
-
+    
     public static String decrypt(String encryptedInput) throws Exception {
         byte[] salt = new byte[16];
         // Generate the same salt that was used during encryption.
@@ -59,29 +58,6 @@ public class EncryptionUtils {
         
     }
 
-    public static void main(String[] args) {
-        String originalString = "L3cr3X2bNCtcvf";
-
-        try {
-            // Encryption
-            String encryptedString = encrypt(originalString);
-            System.out.println("Original String: " + originalString);
-            System.out.println("Encrypted String: " + encryptedString);
-            
-           
-            // Decryption
-            String decryptedString = decrypt(encryptedString);
-            System.out.println("Decrypted String: " + decryptedString);
-            
-            if(encryptedString == "H+WZuEtWjBChNUyoMTGf2QtGvNlO9GH8h/6Vz4rPjdY=") {
-            	System.out.println("equal");
-            } else {
-            	System.out.print("Not");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 
