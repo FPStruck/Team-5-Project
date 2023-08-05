@@ -429,39 +429,7 @@ public class PatientInfoViewController {
 			stage.close();
 		} 
 		
-		/* 
-		dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
 		
-		ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
-		notes.next();
-		String noteId = notes.getString("noteId");
-		dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
-
-		if(scriptIncluded == 1){
-			dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, "105");
-		}
-		if(radBtnDiagYes.isSelected()){
-			
-			String diagnosisName = inDiagnosisName.getText();
-			String diagnosisSev = inDiagnosisSev.getValue();		
-			dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
-			ResultSet diagnosis = dbConnector.QueryDiagnosisId(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
-			diagnosis.next();
-			String diagnosisId = diagnosis.getString("diagnosisId");
-			dbConnector.CreateNewNoteDiagnosisIdLink(noteId, diagnosisId);
-		}
-		
-
-		dbConnector.closeConnection();
-
-		PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
-			delay.setOnFinished( event -> {
-				// Closes the window after the pause
-				Stage stage = (Stage) txtAreaNote.getScene().getWindow(); 
-				stage.close();
-			});
-		delay.play();
-		*/
 	}
 
 	public void setProgressPlan(){

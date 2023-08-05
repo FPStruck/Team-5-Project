@@ -61,7 +61,7 @@
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="radBtnNo" layoutX="69.0" layoutY="282.0" mnemonicParsing="false" onMouseClicked="#setTxtFieldsNoEdit" selected="true" text="No" toggleGroup="$group1" />
-            <Text fx:id="txtCharCountWarn" fill="#da6060" layoutX="89.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Character count has exceed maximum of 500" visible="false" />
+            <Text fx:id="txtCharCountWarn" fill="#da6060" layoutX="89.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Character count has exceed maximum of 500" visible="false" />
             <Text fx:id="txtNonIntWarn" fill="#da6060" layoutX="189.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
             <Text layoutX="14.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diganose Patient" />
             <RadioButton fx:id="radBtnDiagYes" layoutX="13.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#setDiagTxtFieldsEdit" prefHeight="17.0" prefWidth="61.0" text="Yes">

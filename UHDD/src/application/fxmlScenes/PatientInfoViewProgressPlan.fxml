@@ -33,6 +33,7 @@
 -->
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
@@ -163,19 +164,18 @@
       </Pane>
       <Pane layoutX="429.0" layoutY="81.0" prefHeight="416.0" prefWidth="474.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
          <children>
-            <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Plan">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Text>
-            <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis" />
-            <Text layoutX="14.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial details" />
-            <Text layoutX="13.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Previous status" />
-            <Text layoutX="15.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication to rectify" />
-            <Text layoutX="17.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal status" />
-            <Text layoutX="17.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Timeline" />
+            <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis:" />
+            <Text layoutX="14.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial details:" />
+            <Text layoutX="16.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Most recent update:" wrappingWidth="92.0" />
+            <Text layoutX="15.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication to rectify:" wrappingWidth="102.0" />
+            <Text layoutX="16.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal status:" />
+            <Text layoutX="16.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Timeline:" wrappingWidth="109.0" />
             <Button layoutX="283.0" layoutY="366.0" mnemonicParsing="false" text="New Plan" />
             <Button layoutX="382.0" layoutY="366.0" mnemonicParsing="false" text="Next plan" />
+            <TextArea fx:id="txtInitialDetails" editable="false" layoutX="129.0" layoutY="53.0" prefHeight="64.0" prefWidth="282.0" />
+            <TextArea fx:id="txtAreaGoalStatus" editable="false" layoutX="129.0" layoutY="140.0" prefHeight="52.0" prefWidth="282.0" />
+            <TextArea fx:id="txtAreaRecentUpdate" editable="false" layoutX="129.0" layoutY="208.0" prefHeight="52.0" prefWidth="282.0" />
+            <Text fx:id="txtPPDiagnosisName" layoutX="129.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="102.0" />
          </children>
       </Pane>
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />

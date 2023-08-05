@@ -165,7 +165,7 @@ public class DBConnector {
 			throws SQLException {
 			String sql = "INSERT INTO testdb.patient_diagnoses "
 					+ "(patientId, diagnosisName, diagnosisSeverity, diagnosedDate, diagnosingDrId) "
-					+ "VALUES (?, ?, ?, ?, ?, ?)";
+					+ "VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, patientId);
 			statement.setString(2, diagnosisName);
