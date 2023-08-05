@@ -449,6 +449,7 @@ public class PatientInfoViewController {
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
 			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
+			inDiagnosisSev.setValue("Mild");
 			txtNotePatientName.setText("Patient Name: " + patientNew.getGivenName() + " " + patientNew.getFamilyName());
 			txtAreaNote.textProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue != null && newValue.length() > MAX_LENGTH) {
