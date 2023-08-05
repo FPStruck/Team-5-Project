@@ -1,3 +1,4 @@
+/* 
 package application;
 
 import java.io.IOException;
@@ -211,3 +212,4 @@ public class PatientInfoViewController {
 		dashboardIVPane.setStyle("-fx-background-color:  #063847");
 	}
 }
+*/

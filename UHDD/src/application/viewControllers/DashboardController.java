@@ -97,6 +97,7 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+		CurrentFXMLInstance.initInstance("../fxmlScenes/Dashboard.fxml");
 		Platform.runLater(() -> {
 	        try {
 	            updateNextAppointment();
@@ -380,8 +381,8 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		CurrentFXMLInstance.initInstance("../fxmlScenes/PatientInfoViewOverview.fxml");
-		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
 	    Map<String, Object> namespace = loader.getNamespace();
