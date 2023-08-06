@@ -83,7 +83,7 @@
                      <font>
                         <Font size="17.0" />
                      </font>
-                  </Text>
+                  </Text> 
                </children>
             </Pane>
             <Pane fx:id="patientNotesDBPane" layoutX="-1.0" layoutY="255.0" onMouseEntered="#highlightPatientNotesPaneOnEnter" onMouseExited="#highlightPatientNotesPaneOnExit" prefHeight="40.0" prefWidth="200.0">

@@ -27,14 +27,12 @@ public class EmailManager {
 	    CANCELLED
 	}
 	
-	public LoginResult verifyLogin(String userLog, String passLog, String toAddress) {
+	public LoginResult verifyLogin(String toAddress) {
 		
 	    String from = "Verifier";
 	    String host = "smtp.gmail.com";
 	    int port = 587;
-//	    String username = "jonoleo@gmail.com";
-//	    //Will require a password here
-//	    String password = "xx";
+
 	    
 	    // use my email
 	    String username = "mina.gemian79@gmail.com";
