@@ -170,7 +170,7 @@
             <Text layoutX="15.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medication to rectify:" wrappingWidth="102.0" />
             <Text layoutX="16.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal status:" />
             <Text layoutX="16.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Timeline:" wrappingWidth="109.0" />
-            <Button layoutX="283.0" layoutY="366.0" mnemonicParsing="false" text="New Plan" />
+            <Button layoutX="283.0" layoutY="366.0" mnemonicParsing="false" onMouseClicked="#addPatientProgressPlan" text="New Plan" />
             <Button layoutX="382.0" layoutY="366.0" mnemonicParsing="false" text="Next plan" />
             <TextArea fx:id="txtAreaInitialDetails" editable="false" layoutX="129.0" layoutY="53.0" prefHeight="64.0" prefWidth="282.0" wrapText="true">
                <font>

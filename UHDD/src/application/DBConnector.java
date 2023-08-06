@@ -340,6 +340,18 @@ public class DBConnector {
 				statement.setString(1, diagnosisId);
 				return statement.executeQuery();
 	}
+
+	public ResultSet QueryReturnResultsMostRecentDiagIdForPP(String patientId) throws SQLException {
+		String sql = "SELECT pd.diagnosisId\n" + //
+				"FROM patient_diagnoses pd\n" + //
+				"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+				"WHERE pd.patientId = ?\n" + //
+				"ORDER BY pp.progressPlanId DESC\n" + //
+				"LIMIT 1;";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, patientId);
+				return statement.executeQuery();
+	}
 		
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,

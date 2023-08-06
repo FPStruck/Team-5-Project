@@ -30,6 +30,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -129,6 +130,15 @@ public class PatientInfoViewController {
 	@FXML private Text txtMedicationToRectify;
 	@FXML private Text txtPPExpectedTimeline;
 
+	//Patient Progress Plan PopUp
+	@FXML private Text txtEnterPPAsId;
+	@FXML private TextField inPPDiagnosisId;
+	@FXML private TextArea txtAreaPPInitialDetails;
+	@FXML private TextArea txtAreaPPGoal;
+	@FXML private DatePicker datePickPPRemediationDate;
+	@FXML private Button btnPPSaveNClose;
+
+
 	String currentFXML;
 	static Integer patient;
 	
@@ -149,8 +159,8 @@ public class PatientInfoViewController {
 			familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
 			progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
 	
-			patient++;
-		} else patient = 1;
+			
+		} 
 		
 		System.out.println(patient);
 		
@@ -439,11 +449,16 @@ public class PatientInfoViewController {
 		
 	}
 
-	public void setProgressPlan() throws ClassNotFoundException, SQLException{
+	public void setProgressPlan(String patientId) throws ClassNotFoundException, SQLException{
 		System.out.println("do we begin to set Progress plan?");
-		String diagId = "50";
-		String strMedicationNames = "";
+		String strMedicationNames = " ";
 		dbConnector.initialiseDB();
+
+		//get the most recent diagnosisId for the patients progress plan
+		ResultSet getDiagIdResultSet = dbConnector.QueryReturnResultsMostRecentDiagIdForPP(patientId);
+		getDiagIdResultSet.next();
+		String diagId = getDiagIdResultSet.getString("diagnosisId");
+
 		ResultSet progressplanResultSet = dbConnector.QueryReturnResultsDiagIdForProgressPlan(diagId);
 		while(progressplanResultSet.next()){
 			System.out.println("do we get into the while loop?");
@@ -491,7 +506,10 @@ public class PatientInfoViewController {
 					txtCharCountWarn.setVisible(false);
 				}
 			});
-		} else {setPatientOverviewTxtFields(patientNew);}
+		} else if (currentFXML.equals("../fxmlScenes/PopUpAddProgressPlan.fxml")){
+
+		}
+		else {setPatientOverviewTxtFields(patientNew);}
 		
 		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
 			setMedicationOverviewTxtFields(patientNew);
@@ -500,7 +518,7 @@ public class PatientInfoViewController {
 			setNoteSummaryDetails(patientNew);
 		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewProgressPlan.fxml")){
 			System.out.println("Are we getting here?");
-			setProgressPlan();
+			setProgressPlan(String.valueOf(patientNew.getId()));
 		}	
 	}
 	//INITIALISE ^^^^^
@@ -517,6 +535,17 @@ public class PatientInfoViewController {
             popupStage.showAndWait();
 	}
 
+	@FXML
+	public void addPatientProgressPlan(MouseEvent mouseEvent) throws IOException{
+			currentFXML = "../fxmlScenes/PopUpAddProgressPlan.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+			Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
+	}
 
 	@FXML
 	public void nextPatient() throws ClassNotFoundException, SQLException {
