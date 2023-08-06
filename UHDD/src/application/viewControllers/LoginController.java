@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
@@ -55,32 +56,45 @@ public class LoginController {
         CredentialManager credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
-        String to = credentialManager.checkCredentialsInFile(userLog, passLog);
+        String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
+        UserSession.initInstance(userLog,emailTo);
+        if(!credentialManager.checkPasswordLastSetDate(userLog)){
+            if (emailTo == null) {
+                actionGrabber.setText("No user match found");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            }
 
-        if (to == null) {
-            actionGrabber.setText("No user match found");
-            actionGrabber.setFill(Color.RED);
-            return false;
-        }
+            //2FA verification
+            EmailManager emailManager = new EmailManager();
+            LoginResult result = emailManager.verifyLogin(emailTo);
 
-        EmailManager emailManager = new EmailManager();
-        LoginResult result = emailManager.verifyLogin(userLog, passLog, to);
-
-        if (result == LoginResult.SUCCESSFUL) {
-            // Handle successful login
-            return true;
-        } else if (result == LoginResult.WRONG_CODE) {
-            // Handle wrong code scenario
-            actionGrabber.setText("Wrong code input. Email verification cancelled");
-            actionGrabber.setFill(Color.RED);
-            return false;
-        } else if (result == LoginResult.CANCELLED) {
-            // Handle login cancelled scenario
-            actionGrabber.setText("Email verification cancelled");
-            actionGrabber.setFill(Color.RED);
-            return false;
+            if (result == LoginResult.SUCCESSFUL) {
+                // Handle successful login
+                return true;
+            } else if (result == LoginResult.WRONG_CODE) {
+                // Handle wrong code scenario
+                actionGrabber.setText("Wrong code input. Email verification cancelled");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            } else if (result == LoginResult.CANCELLED) {
+                // Handle login cancelled scenario
+                actionGrabber.setText("Email verification cancelled");
+                actionGrabber.setFill(Color.RED);
+                return false;
+            } else {
+                // Handle any other result if necessary
+                return false;
+            }
         } else {
-            // Handle any other result if necessary
+            actionGrabber.setText("Password has expired. Please reset your password");
+            //Open popup window
+            Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PopUpPwdExpired.fxml"));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
             return false;
         }
     }
