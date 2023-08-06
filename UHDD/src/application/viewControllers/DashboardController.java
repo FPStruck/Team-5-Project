@@ -103,7 +103,7 @@ public class DashboardController {
 	            updateNextAppointment();
 	            updatePatientDirectoryDBTableView();
 	            updatePrescribedMedsDBTableView();
-				updatePatientInMem(3);
+				updatePatientInMem(4);
 	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
 	            e.printStackTrace();
 	        }
@@ -258,27 +258,6 @@ public class DashboardController {
 			}
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);			
-		
-		// serialize and save the file to desktop, not serializable (only works with Events
-//		try {
-//			serialize("C:\\Users\\User\\Desktop\\test.ser", entry);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		// de-serialize the file from the desktop, not serializable
-//		try {
-//			System.out.println("Return deserialize: " + deserialize("C:\\Users\\User\\Desktop\\test.ser"));
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		//startLoggedInStatusTimer();
 	}
 
 	public void setUserText(String username) {

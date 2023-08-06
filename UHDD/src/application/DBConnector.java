@@ -196,6 +196,16 @@ public class DBConnector {
 			
 		}
 
+		public void CreateNewProgressPlanExecuteQuery(String diagnosisId, String initialDetails, String progressPlanGoal, String expectedRemediationDate) throws SQLException{
+			String sql = "INSERT INTO testdb.progress_plan (diagnosisId, initialDetails, progressPlanGoal, expectedRemediationDate) VALUES (?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			statement.setString(2, initialDetails);
+			statement.setString(3, progressPlanGoal);
+			statement.setString(4, expectedRemediationDate);
+			statement.executeUpdate();
+		}
+
 		public boolean verifyDiagnosisIdExists(String diagnosisId) throws SQLException {
 			String sql = "SELECT COUNT(*) FROM testdb.patient_diagnoses WHERE diagnosisId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -311,47 +321,47 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
-	public ResultSet QueryReturnResultsDiagIdForProgressPlan(String diagnosisId) throws SQLException {
-			String sql = "SELECT pd.diagnosisName,\n" + //
-					"       pp.initialDetails,\n" + //
-					"       pp.progressPlanGoal,\n" + //
-					"       pp.expectedRemediationDate,\n" + //
-					"       pn.noteText\n" + //
-					"FROM patient_diagnoses pd\n" + //
-					"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
-					"JOIN diagnosis_notes dn ON pd.diagnosisId = dn.diagnosisId\n" + //
-					"JOIN patient_notes pn ON dn.noteId = pn.noteId\n" + //
-					"WHERE pd.diagnosisId = ?\n" + //
-					"ORDER BY pn.noteEnteredDate DESC\n" + //
-					"LIMIT 1;";
+		public ResultSet QueryReturnResultsDiagIdForProgressPlan(String diagnosisId) throws SQLException {
+				String sql = "SELECT pd.diagnosisName,\n" + //
+						"       pp.initialDetails,\n" + //
+						"       pp.progressPlanGoal,\n" + //
+						"       pp.expectedRemediationDate,\n" + //
+						"       pn.noteText\n" + //
+						"FROM patient_diagnoses pd\n" + //
+						"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+						"JOIN diagnosis_notes dn ON pd.diagnosisId = dn.diagnosisId\n" + //
+						"JOIN patient_notes pn ON dn.noteId = pn.noteId\n" + //
+						"WHERE pd.diagnosisId = ?\n" + //
+						"ORDER BY pn.noteEnteredDate DESC\n" + //
+						"LIMIT 1;";
+						PreparedStatement statement = connection.prepareStatement(sql);
+						statement.setString(1, diagnosisId);
+						return statement.executeQuery();
+
+		}
+
+		public ResultSet QueryReturnResultsDiagIdForMedicationNames(String diagnosisId) throws SQLException {
+			String sql = "SELECT md.medication_name FROM medication_data md\n" + //
+					"JOIN diagnosis_notes dn ON md.noteId = dn.noteId\n" + //
+					"JOIN patient_diagnoses pd ON dn.diagnosisId = pd.diagnosisId\n" + //
+					"WHERE pd.diagnosisId = ?;\n" + //
+					"";
 					PreparedStatement statement = connection.prepareStatement(sql);
 					statement.setString(1, diagnosisId);
 					return statement.executeQuery();
+		}
 
-	}
-
-	public ResultSet QueryReturnResultsDiagIdForMedicationNames(String diagnosisId) throws SQLException {
-		String sql = "SELECT md.medication_name FROM medication_data md\n" + //
-				"JOIN diagnosis_notes dn ON md.noteId = dn.noteId\n" + //
-				"JOIN patient_diagnoses pd ON dn.diagnosisId = pd.diagnosisId\n" + //
-				"WHERE pd.diagnosisId = ?;\n" + //
-				"";
-				PreparedStatement statement = connection.prepareStatement(sql);
-				statement.setString(1, diagnosisId);
-				return statement.executeQuery();
-	}
-
-	public ResultSet QueryReturnResultsMostRecentDiagIdForPP(String patientId) throws SQLException {
-		String sql = "SELECT pd.diagnosisId\n" + //
-				"FROM patient_diagnoses pd\n" + //
-				"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
-				"WHERE pd.patientId = ?\n" + //
-				"ORDER BY pp.progressPlanId DESC\n" + //
-				"LIMIT 1;";
-				PreparedStatement statement = connection.prepareStatement(sql);
-				statement.setString(1, patientId);
-				return statement.executeQuery();
-	}
+		public ResultSet QueryReturnResultsMostRecentDiagIdForPP(String patientId) throws SQLException {
+			String sql = "SELECT pd.diagnosisId\n" + //
+					"FROM patient_diagnoses pd\n" + //
+					"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+					"WHERE pd.patientId = ?\n" + //
+					"ORDER BY pp.progressPlanId DESC\n" + //
+					"LIMIT 1;";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, patientId);
+					return statement.executeQuery();
+		}
 		
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,

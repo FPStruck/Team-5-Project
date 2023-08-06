@@ -137,6 +137,10 @@ public class PatientInfoViewController {
 	@FXML private TextArea txtAreaPPGoal;
 	@FXML private DatePicker datePickPPRemediationDate;
 	@FXML private Button btnPPSaveNClose;
+	@FXML private Text txtPPInvalidDiagId;
+	@FXML private Text txtIntPlanDetailsWarn;
+	@FXML private Text txtPlanGoalWarn;
+	@FXML private Text txtInvalidRemediationDate;
 
 
 	String currentFXML;
@@ -440,6 +444,7 @@ public class PatientInfoViewController {
 				String diagnosisName = inDiagnosisName.getText();
 				String diagnosisSev = inDiagnosisSev.getValue();		
 				dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
+				dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
 			}
 			dbConnector.closeConnection();
 			Stage stage = (Stage) btnNoteSaveNClose.getScene().getWindow();
@@ -452,35 +457,104 @@ public class PatientInfoViewController {
 	public void setProgressPlan(String patientId) throws ClassNotFoundException, SQLException{
 		System.out.println("do we begin to set Progress plan?");
 		String strMedicationNames = " ";
+		String diagId = "0";
 		dbConnector.initialiseDB();
 
 		//get the most recent diagnosisId for the patients progress plan
 		ResultSet getDiagIdResultSet = dbConnector.QueryReturnResultsMostRecentDiagIdForPP(patientId);
-		getDiagIdResultSet.next();
-		String diagId = getDiagIdResultSet.getString("diagnosisId");
-
+		System.out.println(patientId + " is the patient id");
+		if(getDiagIdResultSet.next()){
+			System.out.println("do we get into the if statement?");
+			diagId = getDiagIdResultSet.getString("diagnosisId");
+		}
+		System.out.println(diagId + " is the diagnosis id");
 		ResultSet progressplanResultSet = dbConnector.QueryReturnResultsDiagIdForProgressPlan(diagId);
-		while(progressplanResultSet.next()){
-			System.out.println("do we get into the while loop?");
+
+		// Check if the ResultSet has any rows
+		if (progressplanResultSet.next()) {
+			System.out.println("do we get into the if statement?");
 			txtPPDiagnosisName.setText(progressplanResultSet.getString("diagnosisName"));
 			txtAreaInitialDetails.setText(progressplanResultSet.getString("initialDetails"));
 			txtAreaGoalStatus.setText(progressplanResultSet.getString("progressPlanGoal"));
 			txtAreaRecentUpdate.setText(progressplanResultSet.getString("noteText"));
-		}
-		ResultSet medicationNames = dbConnector.QueryReturnResultsDiagIdForMedicationNames(diagId);
-		while(medicationNames.next()){
-			strMedicationNames += medicationNames.getString("medication_name");
-			strMedicationNames += ", ";
-		}
-		if (strMedicationNames.endsWith(", ")) {
-			strMedicationNames = strMedicationNames.substring(0, strMedicationNames.length() - 2);
-			txtMedicationToRectify.setText(strMedicationNames);
+
+			ResultSet medicationNames = dbConnector.QueryReturnResultsDiagIdForMedicationNames(diagId);
+			while (medicationNames.next()) {
+				strMedicationNames += medicationNames.getString("medication_name");
+				strMedicationNames += ", ";
+			}
+
+			if (strMedicationNames.endsWith(", ")) {
+				strMedicationNames = strMedicationNames.substring(0, strMedicationNames.length() - 2);
+				txtMedicationToRectify.setText(strMedicationNames);
+			} else {
+				txtMedicationToRectify.setText("No Medication to rectify");
+			}
 		} else {
+			txtPPDiagnosisName.setText("No Progress Plan");
 			txtMedicationToRectify.setText("No Medication to rectify");
 		}
 
 		dbConnector.closeConnection();
 
+	}
+
+	@FXML
+	public void createProgressPlan() throws ClassNotFoundException, SQLException{
+		
+		String diagnosisId = inPPDiagnosisId.getText();
+		String initialDetails = txtAreaPPInitialDetails.getText();
+		String progressPlanGoal = txtAreaPPGoal.getText();
+		LocalDate currentDate = LocalDate.now();
+		LocalDate expectedRemediationDate = datePickPPRemediationDate.getValue();
+		Boolean diagnosisIdValid = false;
+		Boolean initialDetailsValid = false;
+		Boolean planGoalValid = false;
+		Boolean remediationDateValid = false;
+		txtPlanGoalWarn.setText("");
+		txtPPInvalidDiagId.setText("");
+		txtIntPlanDetailsWarn.setText("");
+		txtInvalidRemediationDate.setText("");
+
+		dbConnector.initialiseDB();
+		try {
+			int parsedDiagnosisId = Integer.parseInt(diagnosisId);
+			if(dbConnector.verifyDiagnosisIdExists(String.valueOf(parsedDiagnosisId))){
+				diagnosisIdValid = true;
+			} else {
+				txtPPInvalidDiagId.setText(diagnosisId + " Does not exist");
+			}
+		} catch (NumberFormatException e) {
+			txtPPInvalidDiagId.setText(diagnosisId + " is not a number");
+		}
+
+		if(initialDetails.length() > 0 && initialDetails.length() < 201){
+			initialDetailsValid = true;
+		} else {
+			txtIntPlanDetailsWarn.setVisible(true);
+			txtIntPlanDetailsWarn.setText("Please enter a note between 1 and 200 characters");
+		} 
+
+		if(progressPlanGoal.length() > 0 && progressPlanGoal.length() < 201){
+			planGoalValid = true;
+		} else {
+			txtPlanGoalWarn.setVisible(true);
+			txtPlanGoalWarn.setText("Please enter a note between 1 and 200 characters");
+		}
+		if (expectedRemediationDate.isAfter(currentDate.plusDays(1)) || expectedRemediationDate.equals(currentDate.plusDays(1))) {
+			remediationDateValid = true;
+		} else {
+			txtInvalidRemediationDate.setText("Invalid expected remediation date. It should be at least 1 day ahead of the current date.");
+		}
+		if(diagnosisIdValid && initialDetailsValid && planGoalValid && remediationDateValid){
+			dbConnector.CreateNewProgressPlanExecuteQuery(diagnosisId, initialDetails, progressPlanGoal, expectedRemediationDate.toString());
+			dbConnector.closeConnection();
+			Stage stage = (Stage) btnPPSaveNClose.getScene().getWindow();
+			stage.close();
+		} else {
+			dbConnector.closeConnection();
+		}
+		
 	}
 
 	//INITIALISE METHOD
@@ -507,7 +581,7 @@ public class PatientInfoViewController {
 				}
 			});
 		} else if (currentFXML.equals("../fxmlScenes/PopUpAddProgressPlan.fxml")){
-
+			
 		}
 		else {setPatientOverviewTxtFields(patientNew);}
 		

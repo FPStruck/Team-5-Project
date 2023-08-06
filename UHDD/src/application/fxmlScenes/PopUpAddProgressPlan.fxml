@@ -42,23 +42,24 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="416.0" prefHeight="506.0" prefWidth="416.0" style="-fx-background-color: #e0e0e0;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.PatientInfoViewController">
    <children>
-      <Pane layoutX="2.0" prefHeight="507.0" prefWidth="416.0">
+      <Pane layoutX="1.0" prefHeight="507.0" prefWidth="416.0">
          <children>
             <TextArea fx:id="txtAreaPPInitialDetails" layoutX="24.0" layoutY="123.0" prefHeight="82.0" prefWidth="369.0" wrapText="true" />
             <Text fx:id="txtEnterPPAsId" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entering Plan as:" wrappingWidth="224.67578125" />
             <Text fx:id="txtNotePatientName" layoutX="240.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " wrappingWidth="168.80078125" />
             <Text layoutX="19.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plan Goal" />
-            <Button fx:id="btnPPSaveNClose" layoutX="296.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#saveAndAddNote" text="Save and Close" />
+            <Button fx:id="btnPPSaveNClose" layoutX="296.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#createProgressPlan" text="Save and Close" />
             <Text fx:id="txtCharCountWarn" fill="#da6060" layoutX="89.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Character count has exceed maximum of 500" visible="false" />
-            <Text fx:id="txtNonIntWarn" fill="#da6060" layoutX="121.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
+            <Text fx:id="txtPlanGoalWarn" fill="#da6060" layoutX="121.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
             <Text layoutX="14.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Remediation Date" />
-            <Text layoutX="18.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Link note to existing diagnosis: *" wrappingWidth="137.576171875" />
-            <TextField fx:id="inPPDiagnosisId" layoutX="164.0" layoutY="41.0" prefHeight="26.0" prefWidth="99.0" promptText="Diagnosis Id" />
-            <Text fx:id="txtInvalidDiagId" fill="#da6060" layoutX="121.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
+            <Text layoutX="15.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Link note to existing diagnosis: *" wrappingWidth="185.1171875" />
+            <TextField fx:id="inPPDiagnosisId" layoutX="213.0" layoutY="41.0" prefHeight="26.0" prefWidth="99.0" promptText="Diagnosis Id" />
+            <Text fx:id="txtInvalidRemediationDate" fill="#da6060" layoutX="108.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
             <Text layoutX="18.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial Plan details" />
             <TextArea fx:id="txtAreaPPGoal" layoutX="26.0" layoutY="256.0" prefHeight="82.0" prefWidth="369.0" wrapText="true" />
             <DatePicker fx:id="datePickPPRemediationDate" layoutX="10.0" layoutY="402.0" />
-            <Text fx:id="txtNonIntWarn1" fill="#da6060" layoutX="108.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
+            <Text fx:id="txtIntPlanDetailsWarn" fill="#da6060" layoutX="108.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.80078125" />
+            <Text fx:id="txtPPInvalidDiagId" layoutX="120.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="185.1171875" />
          </children>
       </Pane>
    </children>
