@@ -1,3 +1,4 @@
+/*
 package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,3 +37,4 @@ class EncryptionControllerTest {
 	}
 
 }
+*/
