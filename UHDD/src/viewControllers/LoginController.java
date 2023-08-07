@@ -1,4 +1,5 @@
 
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -32,6 +33,7 @@ public class LoginController {
     private Scene scene;
     private DBConnector dbConnector;
     private static String currentUser;
+    public static String username = "";
 
     @FXML
     private TextField userGrabber;
@@ -111,8 +113,10 @@ public class LoginController {
         String formattedDateTime = currentDateTime.format(formatter);
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
-
-        String username = userGrabber.getText();
+        UserSession us = new UserSession();
+        
+        username = userGrabber.getText();
+        us.setEmail(username);
         
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 

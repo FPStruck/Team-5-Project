@@ -1,10 +1,9 @@
 package application;
-	
+
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-import application.viewControllers.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,10 +30,10 @@ public class Main extends Application {
 	
 	@Override
 	 public void stop() throws SQLException, ClassNotFoundException{
-		LoginController lc = new LoginController();
+		UserSession us = new UserSession();
 		DBConnector db = new DBConnector();
 		db.initialiseDB();
-		String name = lc.username;
+		String name = us.getUserName();
 		System.out.println("Stage is closing: " + name);
 		db.setLoggedInStatus(name, 0);
 	 } 
