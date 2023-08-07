@@ -1,4 +1,4 @@
-package application.viewControllers;
+package application;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -6,12 +6,7 @@ import java.sql.SQLException;
 
 import com.mysql.cj.protocol.Resultset;
 
-import application.CredentialManager;
-import application.DBConnector;
-import application.EmailManager;
 import application.EmailManager.LoginResult;
-import application.PasswordHash;
-import application.PasswordHasher;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class pwdResetController {
+public class pwdResetController_old {
     @FXML
     private Button btnResetPwd;
     @FXML

@@ -1,11 +1,10 @@
-package application.viewControllers;
+
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import application.DBConnector;
 import javafx.event.ActionEvent;
@@ -23,7 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class Nurse_PatientInformationController {
+public class PatientInformationController {
 	private Stage stage;
 	private Scene scene;
 	@FXML private Label labelStatus = new Label();
@@ -81,7 +80,7 @@ public class Nurse_PatientInformationController {
 	}
 
 	public void switchToDashBoard(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Nurse_DashBoard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/DashBoard.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -89,7 +88,7 @@ public class Nurse_PatientInformationController {
 	}
 	
 	public void switchToPatientDirectory(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Nurse_PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientDirectory.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -281,7 +280,7 @@ public class Nurse_PatientInformationController {
 			// execute statement
 //			dbConnection.executeUpdate(updateQuery); // old query
 			statement.executeUpdate();
-			labelStatus.setText("Update completed or does not exist please view the ID");
+			labelStatus.setText("Update completed");
 			labelStatus.setTextFill(Color.GREEN);
 			System.out.println("Update suceeded");
 			
