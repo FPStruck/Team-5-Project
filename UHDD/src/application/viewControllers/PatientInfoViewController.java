@@ -727,12 +727,18 @@ public class PatientInfoViewController {
 	
 	@FXML 
 	public void createPDF(MouseEvent mouseEvent) throws Exception {
+		//windows
 		String userProfile = System.getenv("USERPROFILE");
-		String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
+		//String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
 
+		//macos
+		String filePath = System.getProperty("user.home") + "/Documents/encryptedPdf.pdf";
+
+		Patient patientNew = PatientService.getInstance().getCurrentPatient();
+		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
 		String userPassword = "user";
-		CreateEncryptedPdf.create(filePath, ownerPassword, userPassword);
+		CreateEncryptedPdf.create(patientId, filePath, ownerPassword, userPassword);
 	}
 
 	@FXML
