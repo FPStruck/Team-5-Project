@@ -89,6 +89,9 @@ public class PatientInfoViewController {
 	@FXML private Text diagnosisDateTxt1;
 	@FXML private Text diagnosisDateTxt2;
 	@FXML private Text diagnosisDateTxt3;
+	@FXML private Text diagnosisIdTxt1;
+	@FXML private Text diagnosisIdTxt2;
+	@FXML private Text diagnosisIdTxt3;
 
 	//Patient Notes
 	@FXML private Text txtNoteDate1;
@@ -195,6 +198,7 @@ public class PatientInfoViewController {
 		int count = 0;
 		while(diagnosisResultSet.next() && count < 3){
 			String diagnosisName = diagnosisResultSet.getString("diagnosisName");
+			String diagnosisId = diagnosisResultSet.getString("diagnosisId");
 			LocalDate diagnosisDate = null;
 			if (diagnosisResultSet.getDate("diagnosedDate") != null) {
 				diagnosisDate = diagnosisResultSet.getDate("diagnosedDate").toLocalDate();
@@ -202,14 +206,17 @@ public class PatientInfoViewController {
 				case 0:
 					diagnosisTxt1.setText(diagnosisName);
 					diagnosisDateTxt1.setText(diagnosisDate.toString());
+					diagnosisIdTxt1.setText("Id: " + diagnosisId);
 					break;
 				case 1:
 					diagnosisTxt2.setText(diagnosisName);
 					diagnosisDateTxt2.setText(diagnosisDate.toString());
+					diagnosisIdTxt2.setText("Id: " + diagnosisId);
 					break;
 				case 2:
 					diagnosisTxt3.setText(diagnosisName);
 					diagnosisDateTxt3.setText(diagnosisDate.toString());
+					diagnosisIdTxt3.setText("Id: " + diagnosisId);
 					break;
 			}
 			count++;
@@ -222,20 +229,26 @@ public class PatientInfoViewController {
 				diagnosisTxt1.setFont(Font.font("System", FontWeight.BOLD, 12));
 				diagnosisTxt1.setFill(Color.web("#9a9797"));
 				diagnosisDateTxt1.setText("");
+				diagnosisIdTxt1.setText("");
 				diagnosisTxt2.setText("");
 				diagnosisDateTxt2.setText("");
+				diagnosisIdTxt2.setText("");
 				diagnosisTxt3.setText("");
 				diagnosisDateTxt3.setText("");
+				diagnosisIdTxt3.setText("");
 				break;
 			case 1:
 				diagnosisTxt2.setText("");
 				diagnosisDateTxt2.setText("");
+				diagnosisIdTxt2.setText("");
 				diagnosisTxt3.setText("");
 				diagnosisDateTxt3.setText("");
+				diagnosisIdTxt3.setText("");
 				break;
 			case 2:
 				diagnosisTxt3.setText("");
 				diagnosisDateTxt3.setText("");
+				diagnosisIdTxt3.setText("");
 				break;
 		}
 	}
@@ -444,7 +457,6 @@ public class PatientInfoViewController {
 				String diagnosisName = inDiagnosisName.getText();
 				String diagnosisSev = inDiagnosisSev.getValue();		
 				dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
-				dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
 			}
 			dbConnector.closeConnection();
 			Stage stage = (Stage) btnNoteSaveNClose.getScene().getWindow();

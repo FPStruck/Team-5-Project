@@ -183,7 +183,7 @@
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />
       <Pane layoutX="426.0" layoutY="89.0" prefHeight="177.0" prefWidth="200.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
          <children>
-            <Text fill="#323232" layoutX="18.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent diagnoses" wrappingWidth="165.0">
+            <Text fill="#323232" layoutX="18.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent diagnoses" wrappingWidth="165.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -194,6 +194,9 @@
             <Text fx:id="diagnosisTxt2" fill="#282828" layoutX="18.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="170.0" />
             <Text fx:id="diagnosisDateTxt3" fill="#9a9797" layoutX="18.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnosis date" wrappingWidth="92.0" />
             <Text fx:id="diagnosisTxt3" fill="#282828" layoutX="18.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnoses 1" wrappingWidth="170.0" />
+            <Text fx:id="diagnosisIdTxt1" fill="#9a9797" layoutX="158.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
+            <Text fx:id="diagnosisIdTxt2" fill="#9a9797" layoutX="158.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
+            <Text fx:id="diagnosisIdTxt3" fill="#9a9797" layoutX="158.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
          </children>
       </Pane>
       <Pane layoutX="695.0" layoutY="274.0" prefHeight="209.0" prefWidth="208.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
