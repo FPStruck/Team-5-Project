@@ -52,7 +52,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="838.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.Nurse_PatientInformationController">
+<VBox prefHeight="838.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nurse_PatientInformationController">
   <children>
     <MenuBar prefWidth="1141.0" style="-fx-background-color: #527c88;" VBox.vgrow="NEVER">
       <menus>

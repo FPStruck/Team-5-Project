@@ -83,7 +83,7 @@ public class LoginController_old {
             actionGrabber.setText("Password has expired. Please reset your password");
             //Open popup window
             Stage popupStage = new Stage();
-            Parent popupRoot = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PopUpPwdExpired.fxml"));
+            Parent popupRoot = FXMLLoader.load(getClass().getResource("/fxmlScenes/PopUpPwdExpired.fxml"));
             Scene popupScene = new Scene(popupRoot);
             popupStage.setScene(popupScene);
             popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -94,7 +94,7 @@ public class LoginController_old {
 
     @FXML
     protected void handlePwdResetAction(ActionEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PasswordReset.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/PasswordReset.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -133,7 +133,7 @@ public class LoginController_old {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
                 dbConnector.setLoggedInStatus(username, 1);
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlScenes/Dashboard.fxml"));
                 Parent root = loader.load();
                 DashboardController_old dashboardController = loader.getController();
                 dashboardController.setUserText(username);
@@ -147,7 +147,7 @@ public class LoginController_old {
 
                 // Redirect the current user to the login.fxml scene
                 if (currentUser != null && currentUser.equals(username)) {
-                    Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Login.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Login.fxml"));
                     stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -159,7 +159,7 @@ public class LoginController_old {
 
     @FXML
     public void switchToCreateUser(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/UserCreation.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/UserCreation.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -168,7 +168,7 @@ public class LoginController_old {
 
     @FXML
     public void bypassUserLogin(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Dashboard.fxml"));
         stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

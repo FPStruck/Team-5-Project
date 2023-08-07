@@ -45,7 +45,7 @@ public class PatientDirectoryController {
 	DBConnector dbConnection = new DBConnector();
 	
 	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/DashBoard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/DashBoard.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

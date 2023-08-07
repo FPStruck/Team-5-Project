@@ -244,7 +244,7 @@ public class DashboardController {
     
     @FXML
     private void switchToLoginScreen() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Login.fxml"));
         stage = (Stage) userText.getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -253,7 +253,7 @@ public class DashboardController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -262,7 +262,7 @@ public class DashboardController {
 	
 	@FXML 
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientDirectory.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/PatientDirectory.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -271,7 +271,7 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToTableCreator(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/TableCreator.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/TableCreator.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -280,7 +280,7 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoView.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/PatientInfoView.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -289,7 +289,7 @@ public class DashboardController {
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
 		if (myCalendar == null) {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxmlScenes/Calendar.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxmlScenes/Calendar.fxml"));
 	        calendarRoot = (Parent) fxmlLoader.load();
 			calendarStage = new Stage();
 			calendarStage.setScene(new Scene(calendarRoot));
