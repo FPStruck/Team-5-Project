@@ -738,7 +738,8 @@ public class PatientInfoViewController {
 		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
 		String userPassword = "user";
-		CreateEncryptedPdf.createPatientDetailsPdf(patientId, filePath, ownerPassword, userPassword);
+		String patientName = patientNew.getGivenName() + " " + patientNew.getFamilyName();
+		CreateEncryptedPdf.createPatientDetailsPdf(patientId, filePath, ownerPassword, userPassword, patientName);
 	}
 
 	@FXML 
@@ -754,7 +755,8 @@ public class PatientInfoViewController {
 		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
 		String userPassword = "user";
-		CreateEncryptedPdf.createMedicationPdf(patientId, filePath, ownerPassword, userPassword);
+		String patientName = patientNew.getGivenName() + " " + patientNew.getFamilyName();
+		CreateEncryptedPdf.createMedicationPdf(patientId, filePath, ownerPassword, userPassword, patientName);
 	}
 
 	@FXML

@@ -1,7 +1,8 @@
 package application;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Header;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -15,7 +16,7 @@ public class CreateEncryptedPdf {
     
 
     
-    public static void createPatientDetailsPdf(String patientId,String finalPath, String ownerPassword, String userPassword) throws ClassNotFoundException, SQLException {
+    public static void createPatientDetailsPdf(String patientId,String finalPath, String ownerPassword, String userPassword, String patientName) throws ClassNotFoundException, SQLException {
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();
@@ -26,7 +27,13 @@ public class CreateEncryptedPdf {
             writer.setEncryption(userPassword.getBytes(), ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             
             document.open();
-            
+            Paragraph heading = new Paragraph(patientName + "'s patient details");
+            heading.getFont().setSize(18);
+            heading.getFont().setStyle(Font.BOLD);
+            heading.setAlignment(Element.ALIGN_LEFT);
+            heading.setSpacingAfter(20);
+            document.add(heading);
+
             // Fetch patient data
             ResultSet resultSet = dbconnector.QueryReturnResultsFromPatientDataId(patientId);
             if (resultSet.next()) {
@@ -55,7 +62,7 @@ public class CreateEncryptedPdf {
         }
     }
 
-    public static void createMedicationPdf(String patientId, String finalPath, String ownerPassword, String userPassword) throws ClassNotFoundException, SQLException{
+    public static void createMedicationPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws ClassNotFoundException, SQLException{
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();
@@ -66,12 +73,21 @@ public class CreateEncryptedPdf {
             writer.setEncryption(userPassword.getBytes(), ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             
             document.open();
-
+            Paragraph heading = new Paragraph(patientName + "'s prescribed medication");
+            heading.getFont().setSize(18);
+            heading.getFont().setStyle(Font.BOLD);
+            heading.setAlignment(Element.ALIGN_CENTER);
+            heading.setSpacingAfter(20);
+            document.add(heading);  
             // Fetch patient data
             ResultSet resultSet = dbconnector.QueryReturnResultsMedicationFromPatientId(patientId);
             while (resultSet.next()) {
+                Paragraph subheading = new Paragraph("Medication Name: " + resultSet.getString("medication_name"));
+                subheading.getFont().setSize(14);
+                subheading.getFont().setStyle(Font.BOLD);
+                document.add(subheading);
                 document.add(new Paragraph("Patient Id: " + resultSet.getInt("patientId")));
-                document.add(new Paragraph("Medication Name: " + resultSet.getString("medication_name")));
+                
                 document.add(new Paragraph("Script Id: " + resultSet.getString("scriptId")));
                 document.add(new Paragraph("Patient Id: " + resultSet.getString("patientId")));
                 document.add(new Paragraph("Note Id: " + resultSet.getString("noteId")));
