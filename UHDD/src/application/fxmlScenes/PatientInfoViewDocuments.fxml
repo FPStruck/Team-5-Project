@@ -38,7 +38,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #e0e0e0;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.PatientInfoViewController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #e0e0e0;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.PatientInfoViewController">
    <children>
       <Pane prefHeight="506.0" prefWidth="200.0" style="-fx-background-color: #063847;">
          <children>
@@ -158,27 +158,23 @@
             </Text>
          </children>
       </Pane>
-      <Pane layoutX="681.0" layoutY="263.0" prefHeight="217.0" prefWidth="225.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
+      <Pane layoutX="429.0" layoutY="85.0" prefHeight="395.0" prefWidth="477.0" style="-fx-border-radius: 7; -fx-background-radius: 7; -fx-background-color: #fcfcfc;">
          <children>
-            <Text fill="#323232" layoutX="19.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Info" wrappingWidth="165.0">
+            <Text layoutX="28.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create patient details Pdf:">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="13.0" />
                </font>
             </Text>
-            <Text fill="#9a9797" layoutX="26.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no:" wrappingWidth="75.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="75.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" wrappingWidth="75.0" />
-            <Text fx:id="phoneNoTXT" fill="#282828" layoutX="101.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone no" wrappingWidth="102.0" />
-            <Text fx:id="emailTXT" fill="#282828" layoutX="101.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="102.0" />
-            <Text fx:id="addressTXT" fill="#282828" layoutX="103.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="75.0" />
-            <Text fx:id="cityTXT" fill="#282828" layoutX="103.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" wrappingWidth="102.0" />
-            <Text fill="#9a9797" layoutX="26.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency #:" wrappingWidth="75.0" />
-            <Text fx:id="emergencyNoTXT" fill="#282828" layoutX="103.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency no" wrappingWidth="102.0" />
+            <Button fx:id="btnPDFCreate" layoutX="318.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#createPatientPDF" text="Patient Details" />
+            <Text layoutX="28.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create patient medication prescribed Pdf:" wrappingWidth="171.48681640625">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Button fx:id="btnPDFCreate1" layoutX="318.0" layoutY="84.0" mnemonicParsing="false" onMouseClicked="#createMedicationPdf" text="Medication Details" />
          </children>
       </Pane>
       <Text fx:id="familyMedicalHistoryTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" visible="false" wrappingWidth="466.13671875" />
       <Text fx:id="progressNotesTXT" layoutX="433.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress Notes" visible="false" wrappingWidth="466.13671875" />
-      <Button fx:id="btnPDFCreate" layoutX="506.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#createPDF" text="Create" />
    </children>
 </AnchorPane>

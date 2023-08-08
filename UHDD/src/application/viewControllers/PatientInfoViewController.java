@@ -726,19 +726,35 @@ public class PatientInfoViewController {
 	}
 	
 	@FXML 
-	public void createPDF(MouseEvent mouseEvent) throws Exception {
+	public void createPatientPDF(MouseEvent mouseEvent) throws Exception {
 		//windows
 		String userProfile = System.getenv("USERPROFILE");
 		//String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
 
 		//macos
-		String filePath = System.getProperty("user.home") + "/Documents/encryptedPdf.pdf";
+		String filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
 
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
 		String userPassword = "user";
-		CreateEncryptedPdf.create(patientId, filePath, ownerPassword, userPassword);
+		CreateEncryptedPdf.createPatientDetailsPdf(patientId, filePath, ownerPassword, userPassword);
+	}
+
+	@FXML 
+	public void createMedicationPdf(MouseEvent mouseEvent) throws Exception {
+		//windows
+		String userProfile = System.getenv("USERPROFILE");
+		//String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
+
+		//macos
+		String filePath = System.getProperty("user.home") + "/Documents/medicationDetails.pdf";
+
+		Patient patientNew = PatientService.getInstance().getCurrentPatient();
+		String patientId = String.valueOf(patientNew.getId());
+		String ownerPassword = "owner";
+		String userPassword = "user";
+		CreateEncryptedPdf.createMedicationPdf(patientId, filePath, ownerPassword, userPassword);
 	}
 
 	@FXML
