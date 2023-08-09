@@ -3,12 +3,15 @@ package application.viewControllers;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
 import application.LoginResult;
+import application.Patient;
+import application.PatientService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +42,7 @@ public class LoginController {
 
     private Stage stage;
     private Scene scene;
-    private DBConnector dbConnector;
+    
     private CredentialManager credentialManager;
     private static String currentUser;
 
@@ -54,11 +57,7 @@ public class LoginController {
     @FXML
     private Button btnPwdReset;
 
-    
-
-    public void setDbConnector(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-    }
+    DBConnector dbConnector = new DBConnector();
 
     
 
@@ -107,6 +106,33 @@ public class LoginController {
         }
     }
 
+    
+    public void updatePatientInMem(int id) throws SQLException, ClassNotFoundException{
+		dbConnector.initialiseDB();
+		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(String.valueOf(id));
+		Patient patient;
+		while(patientDetails.next()){
+			String familyName = patientDetails.getString("lastName");
+			String givenName = patientDetails.getString("firstName");
+			String middleName = patientDetails.getString("middleName");
+			String gender = patientDetails.getString("gender");
+			String address = patientDetails.getString("address");
+			String city = patientDetails.getString("city");
+			String state = patientDetails.getString("state");
+			String telephone = patientDetails.getString("telephone");
+			String email = patientDetails.getString("email");
+			String dateOfBirth = patientDetails.getString("dateOfBirth");
+			String healthInsuranceNumber = patientDetails.getString("healthInsuranceNumber");
+			String emergencyContactNumber = patientDetails.getString("emergencyContactNumber");
+			patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber);
+			PatientService.getInstance().setCurrentPatient(patient);
+		}
+	}
+
+    @FXML public void initialize() throws ClassNotFoundException, SQLException{
+        updatePatientInMem(1);
+    }
+    
     @FXML
     protected void handlePwdResetAction(ActionEvent event) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PasswordReset.fxml"));

@@ -4,9 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import application.DBConnector;
 import application.Patient;
+import application.PatientService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,6 +51,7 @@ public class PatientDirectoryController {
 	@FXML private TableColumn<Patient, String> pdTableViewAddress;
 	@FXML private TableColumn<Patient, String> pdTableViewCity;
 	@FXML private TableColumn<Patient, String> pdTableViewEmail;
+	String currentFXML;
 	DBConnector dbConnector = new DBConnector();
 	
 	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
@@ -57,6 +60,31 @@ public class PatientDirectoryController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	@FXML	
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+
+	public void NonMeSwitchToPatientInfoView() throws IOException {
+		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = new Stage();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
 	}
 	
 	@FXML 
@@ -68,6 +96,10 @@ public class PatientDirectoryController {
         pdTableViewFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
         pdTableViewGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
 		pdTableViewGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+		pdTableViewDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+		pdTableViewAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+		pdTableViewCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+		pdTableViewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         dbConnector.initialiseDB();
         ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
@@ -95,10 +127,16 @@ public class PatientDirectoryController {
         patientDirectorytableView.setRowFactory(tv -> {
             TableRow<Patient> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     Patient clickedPatient = row.getItem();
+					PatientService.getInstance().setCurrentPatient(clickedPatient);
                     System.out.println("Clicked on: " + clickedPatient.getFamilyName() + " " + clickedPatient.getGivenName());
-                    // Handle the click event here, e.g., open a new window or display patient details
+					try {
+						NonMeSwitchToPatientInfoView();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+                   
                 }
             });
             return row;
@@ -107,6 +145,7 @@ public class PatientDirectoryController {
         dbConnector.closeConnection();
 	}
 	
+	/* 
 	@FXML public void viewTable(MouseEvent mouseEvent) throws ClassNotFoundException, SQLException, FileNotFoundException {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
@@ -158,7 +197,7 @@ public class PatientDirectoryController {
             System.out.println("Error on Building Data");
         }
         dbConnector.closeConnection();
-	}
+	} */
 	
 	@FXML	
 	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {

@@ -103,7 +103,6 @@ public class DashboardController {
 	            updateNextAppointment();
 	            updatePatientDirectoryDBTableView();
 	            updatePrescribedMedsDBTableView();
-				updatePatientInMem(4);
 	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
 	            e.printStackTrace();
 	        }
@@ -156,27 +155,7 @@ public class DashboardController {
 
 	}
 
-	public void updatePatientInMem(int id) throws SQLException, ClassNotFoundException{
-		dbConnector.initialiseDB();
-		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(String.valueOf(id));
-		Patient patient;
-		while(patientDetails.next()){
-			String familyName = patientDetails.getString("lastName");
-			String givenName = patientDetails.getString("firstName");
-			String middleName = patientDetails.getString("middleName");
-			String gender = patientDetails.getString("gender");
-			String address = patientDetails.getString("address");
-			String city = patientDetails.getString("city");
-			String state = patientDetails.getString("state");
-			String telephone = patientDetails.getString("telephone");
-			String email = patientDetails.getString("email");
-			String dateOfBirth = patientDetails.getString("dateOfBirth");
-			String healthInsuranceNumber = patientDetails.getString("healthInsuranceNumber");
-			String emergencyContactNumber = patientDetails.getString("emergencyContactNumber");
-			patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber);
-			PatientService.getInstance().setCurrentPatient(patient);
-		}
-	}
+	
 
 	public void updateNextAppointment() throws ClassNotFoundException, SQLException{
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
