@@ -36,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DashboardController {
@@ -348,6 +349,31 @@ public class DashboardController {
 	    scene = new Scene(root);
 	    stage.setScene(scene);
 	    stage.show();
+	}
+
+	@FXML	
+	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+
+	@FXML
+	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
+			currentFXML = "../fxmlScenes/PopUpAddPatientNote.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+			Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
 	}
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
