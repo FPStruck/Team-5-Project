@@ -218,6 +218,18 @@ public class DBConnector {
 			return false;
 		}
 
+		public boolean verifyPatientIdExists(String patientId) throws SQLException {
+			String sql = "SELECT COUNT(*) FROM testdb.patient_data WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				int count = resultSet.getInt(1);
+				return count > 0;
+			}
+			return false;
+		}
+
 		public ResultSet QueryReturnOTPSecretKeyFromUser(String username) throws SQLException {
 			String sql = "SELECT OTPSecretKey FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);

@@ -22,10 +22,12 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -34,7 +36,7 @@ public class PatientDirectoryController {
 	private Stage stage;
 	private Scene scene;
 	@FXML private Button back;
-	@FXML private Button viewTable;
+	@FXML private Button searchTable;
 	@FXML private TableView<Patient> patientDirectorytableView = new TableView();
 	static ObservableList<Patient> data;
 	static TableColumn col;
@@ -51,6 +53,9 @@ public class PatientDirectoryController {
 	@FXML private TableColumn<Patient, String> pdTableViewAddress;
 	@FXML private TableColumn<Patient, String> pdTableViewCity;
 	@FXML private TableColumn<Patient, String> pdTableViewEmail;
+	@FXML private TextField searchTxtId;
+	@FXML private Text txtPatientIdStatus;
+	
 	String currentFXML;
 	DBConnector dbConnector = new DBConnector();
 	
@@ -145,59 +150,46 @@ public class PatientDirectoryController {
         dbConnector.closeConnection();
 	}
 	
-	/* 
-	@FXML public void viewTable(MouseEvent mouseEvent) throws ClassNotFoundException, SQLException, FileNotFoundException {
-		System.out.println("view table");
-		// TODO Auto-generated method stub
+	@FXML
+	public void searchTable(MouseEvent mouseEvent) throws IOException, SQLException, ClassNotFoundException {
+		Boolean patientIdValid = false;
 		dbConnector.initialiseDB();
-		data = FXCollections.observableArrayList();
-        try {
-            //MySql query table
-            String SQL = "SELECT * from `testdb`.`test3`";
-            //ResultSet
-            ResultSet rs = dbConnector.executeQueryReturnResults(SQL);
-            System.out.println("After result set obtained");
-            // add table column dynamically
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                //We are using non property style for making dynamic table
-                final int j = i;
-                col = new TableColumn(rs.getMetaData().getColumnName(i + 1)); // loops through the results and grabs the column name
-                System.out.println("j: " + j);
-                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { // makes the columns ready for population
-                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                        
-                    }
-                });
-                System.out.println("After column is prepared");
-                patientDirectorytableView.getColumns().addAll(col);
-                System.out.println("Column [" + i + "] ");
-            }
-
-            // add to observation list
-            System.out.println("Starting observation list...");
-            while (rs.next()) {
-                //Iterate Row
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    //Iterate Column
-                    row.add(rs.getString(i));
-                    System.out.println("Counting column...");
-                }
-                System.out.println("Row [1] added " + row);
-                data.add((Patient) row);
-
-            }
-
-            //add to table view
-            patientDirectorytableView.setItems(data);
-            System.out.println("Data: " + data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error on Building Data");
-        }
-        dbConnector.closeConnection();
-	} */
+		String patientId = searchTxtId.getText();
+		try {
+			int parsedDiagnosisId = Integer.parseInt(patientId);
+			if(dbConnector.verifyPatientIdExists(String.valueOf(parsedDiagnosisId))){
+				patientIdValid = true;
+			} else {
+				txtPatientIdStatus.setText(patientId + " Does not exist");
+			}
+		} catch (NumberFormatException e) {
+			txtPatientIdStatus.setText(patientId + " is not a number");
+		}
+        
+		if(patientIdValid){
+			ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+			ResultSet rs = dbConnector.QueryReturnResultsFromPatientDataId(patientId);
+			while (rs.next()) {
+				int id = rs.getInt("patientId");
+				String familyName = rs.getString("lastName");
+				String givenName = rs.getString("firstName");
+				String middleName = rs.getString("middleName");
+				String gender = rs.getString("gender");
+				String address = rs.getString("address");
+				String city = rs.getString("city");
+				String state = rs.getString("state");
+				String telephone = rs.getString("telephone");
+				String email = rs.getString("email");
+				String dob = rs.getString("dateOfBirth");
+				String HIN = rs.getString("healthInsuranceNumber");
+				String emergencyContactNumber = rs.getString("emergencyContactNumber");
+				Patient patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
+				patientOL.add(patient);
+				System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+			}
+        patientDirectorytableView.setItems(patientOL);
+		}
+	}
 	
 	@FXML	
 	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {
