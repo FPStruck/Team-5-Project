@@ -52,7 +52,7 @@ public class UserCreationController {
 		return SwingFXUtils.toFXImage(bufferedImage, null);
 	}
 
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, WriterException {
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws WriterException, NoSuchAlgorithmException  {
 		System.out.println(cbRole.getValue());
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());
@@ -95,7 +95,12 @@ public class UserCreationController {
 				String passCreate = passGrabberCreator.getText();
 				String emailCreate = emailGrabberCreator.getText();
 				String roleCreate = cbRole.getValue();
-				CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
+				try {
+					CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	

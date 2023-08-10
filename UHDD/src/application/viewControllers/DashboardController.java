@@ -19,12 +19,16 @@ import com.calendarfx.model.Entry;
 
 import application.CalendarApp;
 import application.DBConnector;
+import application.Main;
 import application.Medication;
 import application.Patient;
 import application.PatientService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -109,11 +113,13 @@ public class DashboardController {
 	            updatePrescribedMedsDBTableView();
 	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
 	            e.printStackTrace();
-	        }
+	        } catch (Exception e) {
+				e.printStackTrace();
+			}
 	    });
 	}
 
-	public void updatePatientDirectoryDBTableView() throws ClassNotFoundException, SQLException{
+	public void updatePatientDirectoryDBTableView() throws Exception{
 		ObservableList<Patient> patientOL = FXCollections.observableArrayList();
 		
 		patientDirectoryDBTVId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -135,7 +141,7 @@ public class DashboardController {
 
 	}
 	
-	public void updatePrescribedMedsDBTableView() throws ClassNotFoundException, SQLException{
+	public void updatePrescribedMedsDBTableView() throws Exception{
 		ObservableList<Medication> medicationOL = FXCollections.observableArrayList();
 		
 		prescribedMedsDBTVScriptId.setCellValueFactory(new PropertyValueFactory<>("scriptId"));
@@ -161,7 +167,7 @@ public class DashboardController {
 
 	
 
-	public void updateNextAppointment() throws ClassNotFoundException, SQLException{
+	public void updateNextAppointment() throws Exception{
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		
@@ -250,9 +256,13 @@ public class DashboardController {
 	    timer.schedule(new TimerTask() {
 	        @Override
 	        public void run() {
-	            checkLoggedInStatus(timer);
+	            try {
+					checkLoggedInStatus(timer);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 	        }
-	    }, 0, 5000); // Run the task every 5 seconds
+	    }, 0, 60000); // Run the task every 5 seconds
 	}
 	
 	private void startDate() {
@@ -260,14 +270,19 @@ public class DashboardController {
 	    timerone.schedule(new TimerTask() {
 	        @Override
 	        public void run() {
-	            checkInactivityStatus(timerone);
+	            try {
+					checkInactivityStatus(timerone);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 	        }
 	    }, 0, 5000); // Run the task every 5 seconds
 	}
 	
-	private void checkLoggedInStatus(Timer timer) {
+	private void checkLoggedInStatus(Timer timer) throws SQLException {
 	    Platform.runLater(() -> {
 	        try {
+				dbConnector.initialiseDB();
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
 	            if (loggedInStatus == 2) {
 	                // User has been logged out, show alert and provide options to continue or logout
@@ -291,6 +306,7 @@ public class DashboardController {
 	                        } catch (InterruptedException e) {
 	                            // Timer interrupted, no need to handle it
 	                        }
+							dbConnector.closeConnection();
 	                        return null;
 	                    }
 	                };
@@ -332,15 +348,22 @@ public class DashboardController {
 	                    }
 	                });
 	            }
-	        } catch (SQLException e) {
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
+			try {
+				dbConnector.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	    });
 	}
 	
-	private void checkInactivityStatus(Timer timerone) {
-	    Platform.runLater(() -> {
+	private void checkInactivityStatus(Timer timerone) throws Exception {
+	    
+		Platform.runLater(() -> {
 	        try {
+				dbConnector.initialiseDB();
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
 	            if (loggedInStatus == 1) {
 	                // User is logged in, check for inactivity
@@ -375,6 +398,7 @@ public class DashboardController {
 	                                } catch (InterruptedException e) {
 	                                    // Timer interrupted, no need to handle it
 	                                }
+									dbConnector.closeConnection();
 	                                return null;
 	                            }
 	                        };
@@ -420,10 +444,16 @@ public class DashboardController {
 	                    }
 	                }
 	            }
-	        } catch (SQLException e) {
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
+			try {
+				dbConnector.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	    });
+		
 	}
     
     @FXML

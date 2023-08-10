@@ -187,7 +187,7 @@ public class PatientInfoViewController {
 		}
 	}
 
-	public void setDiagnosisOverviewTxtFields (Patient patient) throws SQLException, ClassNotFoundException {
+	public void setDiagnosisOverviewTxtFields (Patient patient) throws Exception {
 		dbConnector.initialiseDB();
 		ResultSet diagnosisResultSet = dbConnector.QueryReturnResultsDiagnosisFromPatientId(String.valueOf(patient.getId()));
 		int count = 0;
@@ -248,7 +248,7 @@ public class PatientInfoViewController {
 		}
 	}
 
-	public void setMedicationOverviewTxtFields (Patient patient) throws SQLException, ClassNotFoundException{
+	public void setMedicationOverviewTxtFields (Patient patient) throws Exception{
 		dbConnector.initialiseDB();
 		ResultSet medicationResultSet = dbConnector.QueryReturnResultsMedicationFromPatientId(String.valueOf(patient.getId()));
 		int count = 0;
@@ -300,7 +300,7 @@ public class PatientInfoViewController {
 		dbConnector.closeConnection();
 	}
 
-	public void setNoteSummaryDetails(Patient patient) throws SQLException, ClassNotFoundException{
+	public void setNoteSummaryDetails(Patient patient) throws Exception{
 		dbConnector.initialiseDB();
 		ResultSet noteResultSet = dbConnector.QueryReturnResultsNotesFromPatientId(String.valueOf(patient.getId()));
 		
@@ -373,7 +373,7 @@ public class PatientInfoViewController {
 	}
 
 	@FXML
-	public void saveAndAddNote() throws ClassNotFoundException, SQLException{
+	public void saveAndAddNote() throws Exception{
 		dbConnector.initialiseDB();
 		Patient patient = PatientService.getInstance().getCurrentPatient();
 		String noteText = txtAreaNote.getText();
@@ -462,7 +462,7 @@ public class PatientInfoViewController {
 		
 	}
 
-	public void setProgressPlan(String patientId) throws ClassNotFoundException, SQLException{
+	public void setProgressPlan(String patientId) throws Exception{
 		System.out.println("do we begin to set Progress plan?");
 		String strMedicationNames = " ";
 		String diagId = "0";
@@ -508,7 +508,7 @@ public class PatientInfoViewController {
 	}
 
 	@FXML
-	public void createProgressPlan() throws ClassNotFoundException, SQLException{
+	public void createProgressPlan() throws Exception{
 		
 		String diagnosisId = inPPDiagnosisId.getText();
 		String initialDetails = txtAreaPPInitialDetails.getText();
@@ -567,7 +567,7 @@ public class PatientInfoViewController {
 
 	//INITIALISE METHOD
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException {
+	public void initialize() throws Exception {
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);

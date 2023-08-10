@@ -52,7 +52,7 @@ public class LoginController {
     String currentFXML;
     
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public boolean loginSuccessful() throws Exception {
         credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
@@ -106,7 +106,7 @@ public class LoginController {
     }
 
     
-    public void updatePatientInMem(int id) throws SQLException, ClassNotFoundException{
+    public void updatePatientInMem(int id) throws Exception{
 		dbConnector.initialiseDB();
 		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(String.valueOf(id));
 		Patient patient;
@@ -128,7 +128,7 @@ public class LoginController {
 		}
 	}
 
-    @FXML public void initialize() throws ClassNotFoundException, SQLException{
+    @FXML public void initialize() throws Exception{
         updatePatientInMem(1);
     }
     
@@ -142,7 +142,7 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException, InvalidKeyException, NoSuchAlgorithmException {
+    protected void handleSignInAction(ActionEvent event) throws Exception {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);

@@ -16,7 +16,7 @@ public class CreateEncryptedPdf {
     
 
     
-    public static void createPatientDetailsPdf(String patientId,String finalPath, String ownerPassword, String userPassword, String patientName) throws ClassNotFoundException, SQLException {
+    public static void createPatientDetailsPdf(String patientId,String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception {
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();
@@ -62,7 +62,7 @@ public class CreateEncryptedPdf {
         }
     }
 
-    public static void createMedicationPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws ClassNotFoundException, SQLException{
+    public static void createMedicationPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception{
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();

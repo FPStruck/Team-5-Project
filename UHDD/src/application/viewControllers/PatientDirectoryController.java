@@ -174,7 +174,7 @@ public class PatientDirectoryController {
 	
 	
 	@FXML 
-	public void initialize() throws ClassNotFoundException, SQLException{
+	public void initialize() throws Exception{
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);
 		if(currentFXML.equals("../fxmlScenes/PatientDirectory.fxml")){
@@ -238,7 +238,7 @@ public class PatientDirectoryController {
 	}
 	
 	@FXML
-	public void searchTable(MouseEvent mouseEvent) throws IOException, SQLException, ClassNotFoundException {
+	public void searchTable(MouseEvent mouseEvent) throws Exception {
 		Boolean patientIdValid = false;
 		dbConnector.initialiseDB();
 		String patientId = searchTxtId.getText();
@@ -279,7 +279,7 @@ public class PatientDirectoryController {
 	}
 
 	@FXML
-	public void AddPatient(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException, IOException{
+	public void AddPatient(MouseEvent mouseEvent) throws Exception{
 		boolean isValid = true;
 		txtFirstNameError.setVisible(false);
 		txtMiddleNameError.setVisible(false);

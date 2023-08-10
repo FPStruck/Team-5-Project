@@ -25,7 +25,7 @@ public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	public void addNewUserToDB(String username, String password, String email, String role, String OTPSecretKey) throws ClassNotFoundException, SQLException {
+	public void addNewUserToDB(String username, String password, String email, String role, String OTPSecretKey) throws Exception {
 		dbConnector.initialiseDB();
 		//Get the current date and time
 		LocalDateTime now = LocalDateTime.now();
@@ -39,7 +39,7 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 	}
 
-	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
+	public boolean verifyPassword(String username, String password) throws Exception {
 		dbConnector.initialiseDB();	
 		try (ResultSet userDetailsFromDb = dbConnector.QueryReturnResultsFromUser(username)) {
 			if (userDetailsFromDb.next()) {
@@ -73,7 +73,7 @@ public class CredentialManager {
 	
 	}
 
-	public boolean verifyOTP(String username, int OTP) throws NoSuchAlgorithmException{
+	public boolean verifyOTP(String username, int OTP) throws Exception{
 		OTPService otpService;
 		try {
 			otpService = new OTPService();
@@ -104,17 +104,20 @@ public class CredentialManager {
 		}
 	}
 	
-	public String getOTPSecretKeyFromDatabase(String username){
+	public String getOTPSecretKeyFromDatabase(String username) throws Exception{
 		try {
 			dbConnector.initialiseDB();
 			ResultSet OTPSecretKey = dbConnector.QueryReturnOTPSecretKeyFromUser(username);
 			if(OTPSecretKey.next()){
-				return OTPSecretKey.getString("OTPSecretKey");
+				String strOTPSecretyKey = OTPSecretKey.getString("OTPSecretKey");
+				dbConnector.closeConnection();
+				return strOTPSecretyKey;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();
 		}
+		dbConnector.closeConnection();
 		return null;
 	}
 	
@@ -133,7 +136,7 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 	}
 
-	public LoginResult verifyMFA(String username) throws NoSuchAlgorithmException{
+	public LoginResult verifyMFA(String username) throws Exception{
             int inputCode = 0;
         
             // Display the dialog box for verification code
@@ -211,7 +214,7 @@ public class CredentialManager {
 		return false;
 	}
 	
-	public String verifyPasswordAndReturnEmail(String username, String password) throws ClassNotFoundException, SQLException {
+	public String verifyPasswordAndReturnEmail(String username, String password) throws Exception {
 		checkPasswordLastSetDate(username);
 		dbConnector.initialiseDB();	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {

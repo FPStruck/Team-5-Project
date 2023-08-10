@@ -33,12 +33,12 @@ public class pwdResetController {
   
 
     
-    public void resetPwd() throws SQLException, ClassNotFoundException, NoSuchAlgorithmException {
+    public void resetPwd() throws Exception {
         String oldPwd = txtOldPwd.getText();
         String newPwd = txtNewPwd.getText();
         String verifyPwd = txtVerifyPwd.getText();
         String username = UserSession.getInstance().getUserName();
-        String email = UserSession.getInstance().getEmail();
+        //String email = UserSession.getInstance().getEmail();
         System.out.println(username + " is the username");
         CredentialManager credentialManager = new CredentialManager();
     
@@ -87,7 +87,7 @@ public class pwdResetController {
     }
 
     @FXML
-    protected void handlePwdResetAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException{
+    protected void handlePwdResetAction(ActionEvent event) throws Exception{
         resetPwd();
     }
 }
