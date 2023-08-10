@@ -1,6 +1,5 @@
 package application.viewControllers;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +11,6 @@ import java.util.regex.Pattern;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,12 +18,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
@@ -36,7 +34,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class PatientDirectoryController {
 	private Stage stage;
@@ -93,12 +90,12 @@ public class PatientDirectoryController {
 	String currentFXML;
 	DBConnector dbConnector = new DBConnector();
 	
+	@FXML
 	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
 		currentFXML = "../fxmlScenes/Dashboard.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
-	    Map<String, Object> namespace = loader.getNamespace();
 	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -133,15 +130,22 @@ public class PatientDirectoryController {
 
 	@FXML	
 	public void switchToNewPatient(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/CreateNewPatient.fxml";
-		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
-	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
-	    Parent root = loader.load();
-	    Map<String, Object> namespace = loader.getNamespace();
-	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-	    scene = new Scene(root);
-	    stage.setScene(scene);
-	    stage.show();
+		 String role = UserSession.getInstance().getRole();
+		if ("Nurse".equals(role)) {
+			Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add new patients", ButtonType.OK);
+			alert.setTitle("Role Check");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+		} else {
+			currentFXML = "../fxmlScenes/CreateNewPatient.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+			Parent root = loader.load();
+			stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		}
 	}
 
 	public void NonMouseEventSwitchToPatientInfoView() throws IOException {

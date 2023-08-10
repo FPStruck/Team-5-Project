@@ -442,21 +442,21 @@ public class PatientInfoViewController {
 		}
 
 		if(validExpiryDate && diagnosisIdValid && textAreaValid){
-			dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+			dbConnector.createNewNoteExecuteQuery(String.valueOf(patient.getId()),UserSession.getInstance().getId(), noteText, formatDateTime, String.valueOf(scriptIncluded));
 
-			ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),"105", noteText, formatDateTime, String.valueOf(scriptIncluded));
+			ResultSet notes = dbConnector.QueryNoteIdForDiagnosis(String.valueOf(patient.getId()),UserSession.getInstance().getId(), noteText, formatDateTime, String.valueOf(scriptIncluded));
 			notes.next();
 			String noteId = notes.getString("noteId");
 			if(radBtnDiagIdYes.isSelected()){
 			dbConnector.CreateNewNoteDiagnosisIdLink(noteId, String.valueOf(parsedDiagnosisId));
 			}
 			if(scriptIncluded == 1){
-				dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, "105");
+				dbConnector.createNewMedicationExecuteQuery(String.valueOf(patient.getId()), MedicationName, formatDateTime, formatFutureDate, noteId, UserSession.getInstance().getId());
 			}
 			if(radBtnDiagYes.isSelected()){
 				String diagnosisName = inDiagnosisName.getText();
 				String diagnosisSev = inDiagnosisSev.getValue();		
-				dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, "105");
+				dbConnector.createNewDiagnosisExecuteQuery(String.valueOf(patient.getId()), diagnosisName, diagnosisSev, formatDateTime, UserSession.getInstance().getId());
 			}
 			dbConnector.closeConnection();
 			Stage stage = (Stage) btnNoteSaveNClose.getScene().getWindow();

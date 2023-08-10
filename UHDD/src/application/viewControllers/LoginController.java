@@ -170,10 +170,12 @@ public class LoginController {
         	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
                 dbConnector.setLoggedInStatus(username, 1);
-                currentFXML = "../fxmlScenes/Dashboard.fxml";	
-                CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+                currentFXML = "../fxmlScenes/Dashboard.fxml";
+                CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
                 Parent root = loader.load();
+                
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

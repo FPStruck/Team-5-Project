@@ -98,7 +98,6 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-		CurrentFXMLInstance.initInstance("../fxmlScenes/Dashboard.fxml");
 		userText.setText(UserSession.getInstance().getUserName());
 		Platform.runLater(() -> {
 	        try {
