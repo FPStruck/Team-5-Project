@@ -208,7 +208,7 @@ public class UI {
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+	/* 
 	public void switchToMySQL(ActionEvent event) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\Test.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -218,7 +218,7 @@ public class UI {
 		MySQL_test mySQL_test = new MySQL_test();
 		mySQL_test.start(stage);
 	}
-	
+	*/
 	@FXML public void switchToPatientInformation(ActionEvent event) throws Exception {
 		
 		Parent root = FXMLLoader.load(getClass().getResource("\\fxmlScenes\\PatientInformation.fxml"));		

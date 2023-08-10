@@ -656,13 +656,17 @@ public class PatientInfoViewController {
 		stage.show();
 	}
 	
-	@FXML 
-	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientDirectory.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+	@FXML	
+	public void switchToPatientDirectory(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
 	}
 	
 	@FXML	

@@ -97,7 +97,7 @@
             <TextField fx:id="InputTelephone" layoutX="76.0" layoutY="322.0" promptText="Telephone" />
             <TextField fx:id="InputEmail" layoutX="76.0" layoutY="378.0" promptText="Email" />
             <TextField fx:id="InputAddress" layoutX="329.0" layoutY="57.0" prefHeight="26.0" prefWidth="189.0" promptText="Address" />
-            <DatePicker fx:id="datePickDateOfBirth" layoutX="77.0" layoutY="432.0" prefHeight="26.0" prefWidth="157.0" />
+            <DatePicker fx:id="datePickDateOfBirth" layoutX="77.0" layoutY="432.0" prefHeight="26.0" prefWidth="157.0" promptText="Date of Birth" />
             <TextField fx:id="InputHealthInsuranceNumber" layoutX="329.0" layoutY="252.0" prefHeight="26.0" prefWidth="189.0" promptText="Health Insurance Number" />
             <ChoiceBox fx:id="choiceBoxState" layoutX="329.0" layoutY="188.0" prefWidth="150.0" />
             <TextField fx:id="InputEmergencyNumber" layoutX="328.0" layoutY="318.0" prefHeight="26.0" prefWidth="189.0" promptText="Emergency Contact Number" />
@@ -161,7 +161,7 @@
                   <Font size="12.0" />
                </font>
             </Text>
-            <Button fx:id="btnAddPatient" layoutX="368.0" layoutY="431.0" mnemonicParsing="false" onMouseClicked="#AddPatient" text="Save Patient" />
+            <Button fx:id="btnAddPatient" layoutX="437.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#AddPatient" text="Save Patient" />
             <Text layoutX="31.0" layoutY="29.0" onMouseClicked="#switchToPatientDirectory" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;" wrappingWidth="18.8583984375">
                <font>
                   <Font size="24.0" />

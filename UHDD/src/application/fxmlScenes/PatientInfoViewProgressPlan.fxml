@@ -133,8 +133,14 @@
       </Pane>
       <Pane layoutX="200.0" prefHeight="40.0" prefWidth="716.0" style="-fx-background-color: #fcfcfc;">
          <children>
-            <Pane prefHeight="40.0" prefWidth="52.0" />
-            <Text fx:id="familyMedicalHistoryTXT" layoutX="100.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Family Medcial History" wrappingWidth="466.13671875" />
+            <Pane prefHeight="40.0" prefWidth="52.0">
+               <children>
+                  <Text layoutX="17.0" layoutY="28.0" onMouseClicked="#switchToPatientDirectory" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;" wrappingWidth="18.8583984375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
          </children>
       </Pane>
       <Pane layoutX="416.0" layoutY="40.0" prefHeight="40.0" prefWidth="500.0" style="-fx-background-color: #e0e0e0;">
