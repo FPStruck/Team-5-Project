@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.calendarfx.model.Entry;
+import com.google.zxing.Result;
 
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
@@ -207,20 +208,90 @@ public class DBConnector {
 			statement.executeQuery(sql);
 	    }
 		
-		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString)
-				  throws SQLException {
-					String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified) VALUES (?, ?, ?, ?, ?, ?, ?)";
-					PreparedStatement statement = connection.prepareStatement(sql);
-					statement.setString(1, username);
-					statement.setString(2, passwordHash);
-					statement.setString(3, params);
-					statement.setString(4, email);
-					statement.setString(5, role);
-					statement.setString(6, dateString);
-					statement.setString(7, dateString);
-					statement.executeUpdate();
-					
-				}
+		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString, String OTPSecretKey)
+		  throws SQLException {
+			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified, OTPSecretKey) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setString(2, passwordHash);
+			statement.setString(3, params);
+			statement.setString(4, email);
+			statement.setString(5, role);
+			statement.setString(6, dateString);
+			statement.setString(7, dateString);
+			statement.setString(8, OTPSecretKey);
+			statement.executeUpdate();
+			
+		}
+
+		public void createNewNoteExecuteQuery(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded)
+		  throws SQLException {
+			String sql = "INSERT INTO testdb.patient_notes (patientId, doctorId, noteText, noteEnteredDate, scriptIncluded) VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, doctorId);
+			statement.setString(3, noteText);
+			statement.setString(4, noteEnteredDate);
+			statement.setString(5, scriptIncluded);
+			statement.executeUpdate();
+			
+		}
+
+		public void createNewPatientExecuteQuery(String firstName, String middleName, String lastName, String gender, String address, String city, String state, String telephone, String email, String dateOfBirth, String healthInsuranceNumber, String emergencyContactNumber) throws SQLException {
+			String sql = "INSERT INTO testdb.patient_data (firstName, middleName, lastName, gender, address, city, state, telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, firstName);
+			statement.setString(2, middleName);
+			statement.setString(3, lastName);
+			statement.setString(4, gender);
+			statement.setString(5, address);
+			statement.setString(6, city);
+			statement.setString(7, state);
+			statement.setString(8, telephone);
+			statement.setString(9, email);
+			statement.setString(10, dateOfBirth);
+			statement.setString(11, healthInsuranceNumber);
+			statement.setString(12, emergencyContactNumber);
+			statement.executeUpdate();
+		}
+    
+	
+
+		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date, String noteId, String prescribedBy)
+		  throws SQLException {
+			String sql = "INSERT INTO testdb.medication_data (patientId, medication_name, prescribed_date, expired_date, noteId, prescribedBy) VALUES (?, ?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, medication_name);
+			statement.setString(3, prescribed_date);
+			statement.setString(4, expired_date);
+			statement.setString(5, noteId);
+			statement.setString(6, prescribedBy);
+			statement.executeUpdate();
+			
+		}
+
+		public void createNewDiagnosisExecuteQuery(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
+			throws SQLException {
+			String sql = "INSERT INTO testdb.patient_diagnoses "
+					+ "(patientId, diagnosisName, diagnosisSeverity, diagnosedDate, diagnosingDrId) "
+					+ "VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, diagnosisName);
+			statement.setString(3, diagnosisSeverity);
+			statement.setString(4, diagnosedDate);
+			statement.setString(5, diagnosingDrId);
+			statement.executeUpdate();
+		}
+		
+		public void CreateNewNoteDiagnosisIdLink(String noteId, String diagnosisId) throws SQLException {
+			String sql = "INSERT INTO testdb.diagnosis_notes (diagnosisId, noteId) VALUES (?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			statement.setString(2, noteId);
+			statement.executeUpdate();
+		}
 		
 		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
 				  throws SQLException {
@@ -231,14 +302,78 @@ public class DBConnector {
 					statement.setString(3, dateString);
 					statement.setString(4, username);
 					statement.executeUpdate();
-					
-				}
+			
+		}
+
+		public void CreateNewProgressPlanExecuteQuery(String diagnosisId, String initialDetails, String progressPlanGoal, String expectedRemediationDate) throws SQLException{
+			String sql = "INSERT INTO testdb.progress_plan (diagnosisId, initialDetails, progressPlanGoal, expectedRemediationDate) VALUES (?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			statement.setString(2, initialDetails);
+			statement.setString(3, progressPlanGoal);
+			statement.setString(4, expectedRemediationDate);
+			statement.executeUpdate();
+		}
+
+		public boolean verifyDiagnosisIdExists(String diagnosisId) throws SQLException {
+			String sql = "SELECT COUNT(*) FROM testdb.patient_diagnoses WHERE diagnosisId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, diagnosisId);
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				int count = resultSet.getInt(1);
+				return count > 0;
+			}
+			return false;
+		}
+
+		public boolean verifyPatientIdExists(String patientId) throws SQLException {
+			String sql = "SELECT COUNT(*) FROM testdb.patient_data WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				int count = resultSet.getInt(1);
+				return count > 0;
+			}
+			return false;
+		}
+
+		public ResultSet QueryReturnOTPSecretKeyFromUser(String username) throws SQLException {
+			String sql = "SELECT OTPSecretKey FROM testdb.user_details WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+
+	        return statement.executeQuery();
+	    }
 
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsForUserSession(String username) throws SQLException {
+			// Updated SQL query to select only id, username, and role
+			String sql = "SELECT id, username, role FROM testdb.user_details WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+		
+			return statement.executeQuery();
+		}
+
+		
+		public ResultSet QueryReturnResultsFromPatients() throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_data";
+			PreparedStatement statement = connection.prepareStatement(sql);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsFromMedication() throws SQLException {
+			String sql = "SELECT * FROM testdb.medication_data";
+			PreparedStatement statement = connection.prepareStatement(sql);
 	        return statement.executeQuery();
 	    }
 		
@@ -249,7 +384,62 @@ public class DBConnector {
 			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
+
+		public ResultSet QueryReturnResultsMedicationFromPatientId(String patientId) throws SQLException {
+			String sql = "SELECT * FROM testdb.medication_data WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			System.out.println(sql);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsDiagnosisFromPatientId(String patientId) throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_diagnoses WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			System.out.println(sql);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsNotesFromPatientId(String patientId) throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_notes WHERE patientId = ? ORDER BY noteEnteredDate DESC";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			System.out.println(sql);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryReturnResultsFromPatientDataId(String patientId) throws SQLException {
+			String sql = "SELECT * FROM testdb.patient_data WHERE patientId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+	        return statement.executeQuery();
+	    }
+
+		public ResultSet QueryNoteIdForDiagnosis(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded) throws SQLException {
+			String sql = "SELECT noteId FROM testdb.patient_notes WHERE patientId = ? AND doctorId = ? AND noteText = ? AND noteEnteredDate = ? AND scriptIncluded = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, doctorId);
+			statement.setString(3, noteText);
+			statement.setString(4, noteEnteredDate);
+			statement.setString(5, scriptIncluded);
+			System.out.println(sql);
+	        return statement.executeQuery();
+	    }
 		
+		public ResultSet QueryDiagnosisId(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
+			throws SQLException {
+			String sql = "SELECT diagnosisId FROM testdb.patient_diagnoses WHERE patientId = ? AND diagnosisName = ? AND diagnosisSeverity = ? AND diagnosedDate = ? AND diagnosingDrId = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, patientId);
+			statement.setString(2, diagnosisName);
+			statement.setString(3, diagnosisSeverity);
+			statement.setString(4, diagnosedDate);
+			statement.setString(5, diagnosingDrId);
+			return statement.executeQuery();
+		}
+
 		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
 			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -261,6 +451,48 @@ public class DBConnector {
 			System.out.println(statement);
 	        return statement.executeQuery();
 	    }
+
+		public ResultSet QueryReturnResultsDiagIdForProgressPlan(String diagnosisId) throws SQLException {
+				String sql = "SELECT pd.diagnosisName,\n" + //
+						"       pp.initialDetails,\n" + //
+						"       pp.progressPlanGoal,\n" + //
+						"       pp.expectedRemediationDate,\n" + //
+						"       pn.noteText\n" + //
+						"FROM patient_diagnoses pd\n" + //
+						"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+						"JOIN diagnosis_notes dn ON pd.diagnosisId = dn.diagnosisId\n" + //
+						"JOIN patient_notes pn ON dn.noteId = pn.noteId\n" + //
+						"WHERE pd.diagnosisId = ?\n" + //
+						"ORDER BY pn.noteEnteredDate DESC\n" + //
+						"LIMIT 1;";
+						PreparedStatement statement = connection.prepareStatement(sql);
+						statement.setString(1, diagnosisId);
+						return statement.executeQuery();
+
+		}
+
+		public ResultSet QueryReturnResultsDiagIdForMedicationNames(String diagnosisId) throws SQLException {
+			String sql = "SELECT md.medication_name FROM medication_data md\n" + //
+					"JOIN diagnosis_notes dn ON md.noteId = dn.noteId\n" + //
+					"JOIN patient_diagnoses pd ON dn.diagnosisId = pd.diagnosisId\n" + //
+					"WHERE pd.diagnosisId = ?;\n" + //
+					"";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, diagnosisId);
+					return statement.executeQuery();
+		}
+
+		public ResultSet QueryReturnResultsMostRecentDiagIdForPP(String patientId) throws SQLException {
+			String sql = "SELECT pd.diagnosisId\n" + //
+					"FROM patient_diagnoses pd\n" + //
+					"JOIN progress_plan pp ON pd.diagnosisId = pp.diagnosisId\n" + //
+					"WHERE pd.patientId = ?\n" + //
+					"ORDER BY pp.progressPlanId DESC\n" + //
+					"LIMIT 1;";
+					PreparedStatement statement = connection.prepareStatement(sql);
+					statement.setString(1, patientId);
+					return statement.executeQuery();
+		}
 		
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,

@@ -5,15 +5,27 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
+import java.util.Optional;
+import javafx.application.Platform;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
 
+
 public class CredentialManager {
+
+	
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	public void addNewUserToDB(String username, String password, String email, String role) throws Exception {
+	public void addNewUserToDB(String username, String password, String email, String role, String OTPSecretKey) throws ClassNotFoundException, SQLException {
 		dbConnector.initialiseDB();
 		//Get the current date and time
 		LocalDateTime now = LocalDateTime.now();
@@ -23,64 +35,89 @@ public class CredentialManager {
 		PasswordHash passwordHash = passwordHasher.hashPassword(password);
 		String passwordHashAsString = passwordHash.getHashAsString();		
 		String paramsAsString = passwordHash.getParamsAsString();	
-		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime);
+		dbConnector.createUserExecuteQuery(username, passwordHashAsString, paramsAsString, email, role, formatDateTime, OTPSecretKey);
 		dbConnector.closeConnection();
 	}
 
-	//get user email from db
-	public String getUserEmail(String username) throws Exception {
-		dbConnector.initialiseDB();
-		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
-			if (userDetails.next()) {
-				// Retrieve the "email" field from the database
-				String email = userDetails.getString("email");
-				dbConnector.closeConnection();
-				return email;
-			} else {
-				// The user was not found in the database
-				dbConnector.closeConnection();
-				return null;
-			}
-		} catch (SQLException e) {
-			// Handle the exception that occurred while accessing the database
-			dbConnector.closeConnection();
-		}
-	
-		// Close the database connection and return false as the default result if any exception occurred
-		dbConnector.closeConnection();
-		return null;
-	}
-
-	public boolean verifyPassword(String username, String password) throws Exception {
-		dbConnector.initialiseDB();
-		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
-			if (userDetails.next()) {
+	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
+		dbConnector.initialiseDB();	
+		try (ResultSet userDetailsFromDb = dbConnector.QueryReturnResultsFromUser(username)) {
+			if (userDetailsFromDb.next()) {
+				System.out.println("verify password thinks user is : " + username);
 				// Retrieve the "password_hash" and "password_params" fields from the database
-				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));
+				PasswordHash passwordHash = PasswordHash.fromString(userDetailsFromDb.getString("password_hash"), userDetailsFromDb.getString("password_params"));
 	
 				// Verify the password
 				if (passwordHasher.verifyPassword(password, passwordHash)) {
 					// The password is correct
 					System.out.println("Password is correct");
+					dbConnector.closeConnection();
 					return true;
 				} else {
 					// The password is incorrect
 					System.out.println("Password is incorrect");
+					dbConnector.closeConnection();
 					return false;
 				}
 			} else {
 				// The user was not found in the database
 				System.out.println("User not found");
+				dbConnector.closeConnection();
 				return false;
 			}
 		} catch (SQLException e) {
-			// Handle the exception that occurred while accessing the database
+			System.out.println("Error querying the database");
+			e.printStackTrace();
+			return false;
 		}
 	
-		// Close the database connection
-		dbConnector.closeConnection();
-		return false;
 	}
+
+	public boolean verifyOTP(String username, int OTP) throws NoSuchAlgorithmException{
+		OTPService otpService;
+		try {
+			otpService = new OTPService();
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("OTP Service not found");
+			e.printStackTrace();
+			return false;
+		}
+	
+		String secretKey = getOTPSecretKeyFromDatabase(username);
+		if(secretKey == null){
+			System.out.println("No secret key found for user: " + username);
+			return false;
+		}
+	
+		try {
+			if(otpService.validateOTP(secretKey, OTP)) {
+				System.out.println("OTP is correct");
+				return true;
+			} else {
+				System.out.println("OTP is incorrect");
+				return false;
+			}
+		} catch (InvalidKeyException e) {
+			System.out.println("Invalid Key");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String getOTPSecretKeyFromDatabase(String username){
+		try {
+			dbConnector.initialiseDB();
+			ResultSet OTPSecretKey = dbConnector.QueryReturnOTPSecretKeyFromUser(username);
+			if(OTPSecretKey.next()){
+				return OTPSecretKey.getString("OTPSecretKey");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println(e.getClass().getName());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public void changePasswordInDB(String username, String password) throws Exception {
 		dbConnector.initialiseDB();
@@ -95,6 +132,46 @@ public class CredentialManager {
 		dbConnector.changePasswordExecuteQuery(username, passwordHashAsString, paramsAsString, formatDateTime);
 		dbConnector.closeConnection();
 	}
+
+	public LoginResult verifyMFA(String username) throws NoSuchAlgorithmException{
+            int inputCode = 0;
+        
+            // Display the dialog box for verification code
+	        Dialog<Integer> dialog = new Dialog<>();
+	        dialog.setTitle("Verification Code");
+	        //dialog.setHeaderText("Enter the verification code:");
+
+	        ButtonType submitButton = new ButtonType("Submit", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
+
+	        TextField verificationCodeField = new TextField();
+	        Platform.runLater(() -> verificationCodeField.requestFocus());
+	        dialog.getDialogPane().setContent(new VBox(8, new Label("Verification code:"), verificationCodeField));
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == submitButton) {
+	                return Integer.parseInt(verificationCodeField.getText());
+	            }
+	            return null;
+	        });
+
+            //Get the result from the dialog box
+	        Optional<Integer> result = dialog.showAndWait();
+	        if (result.isPresent()) {
+	            inputCode = result.get();
+	        } else {
+	        	return LoginResult.CANCELLED;
+	        }
+
+            //Verify the code
+            if (verifyOTP(username, inputCode)) {
+	            System.out.println("Verification successful!");
+	            return LoginResult.SUCCESSFUL;
+	        } else if (!verifyOTP(username, inputCode)) {
+	        	dialog.close();	  
+	        	return LoginResult.WRONG_CODE;
+	        }
+            return LoginResult.CANCELLED;
+    }
 
 	//Check if password last set date was more than 30 days ago
 	public boolean checkPasswordLastSetDate(String username) throws Exception {
@@ -134,7 +211,7 @@ public class CredentialManager {
 		return false;
 	}
 	
-	public String checkCredentialsInFile(String username, String password) throws Exception {
+	public String verifyPasswordAndReturnEmail(String username, String password) throws ClassNotFoundException, SQLException {
 		checkPasswordLastSetDate(username);
 		dbConnector.initialiseDB();	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
@@ -143,6 +220,7 @@ public class CredentialManager {
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
 		            String email = userDetails.getString("email");
 		            dbConnector.closeConnection();
+					System.out.println("password is valid here is email: " + email);
 		            return email;
 		            
 		        } else {
@@ -162,5 +240,7 @@ public class CredentialManager {
 		return null;
 	    
 	}
+
+
 	
 }

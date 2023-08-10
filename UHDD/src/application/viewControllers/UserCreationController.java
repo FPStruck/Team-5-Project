@@ -1,13 +1,19 @@
 package application.viewControllers;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.zxing.WriterException;
+
 import application.CredentialManager;
+import application.OTPService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +22,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -30,7 +38,9 @@ public class UserCreationController {
 	@FXML private TextField emailGrabberCreator;
 	@FXML private Rectangle ucRectanglePane;
 	@FXML private ComboBox<String> cbRole;
-	
+	@FXML private ImageView qrCodeView;
+	private OTPService otpService;
+
 	static ObservableList<String> roles;
 	private static final String regex = "^(.+)@(.+)$"; // ensure that it is a valid email address *@*
 	Pattern specialCharPattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE); // not a lower or upper case letter or number
@@ -38,7 +48,11 @@ public class UserCreationController {
     Pattern lowerCasePattern = Pattern.compile("[a-z ]"); // lower case regex
     Pattern digitCasePattern = Pattern.compile("[0-9 ]"); // number regex
 	
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws Exception {
+	public Image convertToFxImage(BufferedImage bufferedImage) {
+		return SwingFXUtils.toFXImage(bufferedImage, null);
+	}
+
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, WriterException {
 		System.out.println(cbRole.getValue());
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());
@@ -67,13 +81,21 @@ public class UserCreationController {
 				actionGrabberCreator.setFill(Color.RED);
 			}  
 			else {
+				//MFA OTP
+				otpService = new OTPService();
+				String secretKey = otpService.generateSecretKey();
+				System.out.println("this is the secret key:  " + secretKey);
+				BufferedImage qrCode = otpService.generateQRCode(secretKey, userGrabberCreator.getText(), "UHDB");
+				Image qrCodeFxImage = convertToFxImage(qrCode);
+				qrCodeView.setImage(qrCodeFxImage);
+				//
 				actionGrabberCreator.setText("User Creation Successful");
 				actionGrabberCreator.setFill(Color.GREEN);
 				String userCreate = userGrabberCreator.getText();
 				String passCreate = passGrabberCreator.getText();
 				String emailCreate = emailGrabberCreator.getText();
 				String roleCreate = cbRole.getValue();
-				CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate);
+				CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
 			}
 		}
 	

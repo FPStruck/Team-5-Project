@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 
 
 public class EmailManager {
+	/* 
 	public enum LoginResult {
 		SUCCESSFUL,
 	    WRONG_CODE,
@@ -123,4 +124,5 @@ public class EmailManager {
 	    }
 	    return LoginResult.CANCELLED;
 	}
+	*/
 }

@@ -5,16 +5,18 @@ public class UserSession {
     private static UserSession instance;
 
     private String userName;
-    private String email; // added email field
+    private String role; // Added role member variable
+    private String id;      // Added id member variable
 
-    private UserSession(String userName, String email) { // added email parameter
+    private UserSession(String userName, String role, String id) { // Modified constructor
         this.userName = userName;
-        this.email = email;
+        this.role = role;
+        this.id = id;
     }
 
-    public static void initInstance(String userName, String email) { // added email parameter
+    public static void initInstance(String userName, String role, String id) { // Modified initInstance method
         if(instance == null) {
-            instance = new UserSession(userName, email);
+            instance = new UserSession(userName, role, id);
         }
     }
 
@@ -29,14 +31,18 @@ public class UserSession {
         return userName;
     }
 
-    public String getEmail() { // added getEmail method
-        return email;
+    public String getRole() { // Getter for role
+        return role;
+    }
+
+    public String getId() { // Getter for id
+        return id;
     }
 
     public void cleanUserSession() {
         userName = ""; // or null
-        email = ""; // or null
+        role = "";     // or null
+        id = "";        // or any default value
         instance = null;
     }
-
 }
