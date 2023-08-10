@@ -28,7 +28,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
@@ -394,6 +396,7 @@ public class PatientInfoViewController {
 		Boolean validExpiryDate = true;
 		Boolean textAreaValid = false;
 
+		
 
 
 		if(radBtnYes.isSelected()){
@@ -825,11 +828,20 @@ public class PatientInfoViewController {
 
 	@FXML
 	public void setTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
-
+		String role = UserSession.getInstance().getRole();
 		if(radBtnYes.isSelected()){
-			inMedicationName.setEditable(true);
-			inScriptValidDays.setEditable(true);
-			radBtnNo.setSelected(false);
+			if ("Nurse".equals(role)) {
+				Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add prescribe medication", ButtonType.OK);
+				alert.setTitle("Role Check");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+				radBtnYes.setSelected(false);
+				radBtnNo.setSelected(true);
+			} else {
+				inMedicationName.setEditable(true);
+				inScriptValidDays.setEditable(true);
+				radBtnNo.setSelected(false);
+			}
 		}
 	}
 
@@ -845,11 +857,20 @@ public class PatientInfoViewController {
 
 	@FXML
 	public void setDiagTxtFieldsEdit (MouseEvent mouseEvent) throws IOException {
-
+		String role = UserSession.getInstance().getRole();
 		if(radBtnDiagYes.isSelected()){
-			inDiagnosisName.setEditable(true);
-			inDiagnosisSev.setDisable(false);
-			radBtnDiagNo.setSelected(false);
+			if ("Nurse".equals(role)) {
+				Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add prescribe medication", ButtonType.OK);
+				alert.setTitle("Role Check");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+				radBtnDiagYes.setSelected(false);
+				radBtnDiagNo.setSelected(true);
+			} else {
+				inDiagnosisName.setEditable(true);
+				inDiagnosisSev.setDisable(false);
+				radBtnDiagNo.setSelected(false);
+			}
 		}
 	}
 

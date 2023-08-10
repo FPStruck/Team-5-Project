@@ -130,7 +130,7 @@ public class PatientDirectoryController {
 
 	@FXML	
 	public void switchToNewPatient(MouseEvent mouseEvent) throws IOException {
-		 String role = UserSession.getInstance().getRole();
+		String role = UserSession.getInstance().getRole();
 		if ("Nurse".equals(role)) {
 			Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add new patients", ButtonType.OK);
 			alert.setTitle("Role Check");
