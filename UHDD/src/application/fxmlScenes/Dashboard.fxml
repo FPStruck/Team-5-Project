@@ -76,7 +76,6 @@
                </children>
             </Pane>
             <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@application.css" text="Patient Information" textFill="#063847" />
-            <Button fx:id="tableCreator" layoutX="85.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#switchToTableCreator" stylesheets="@application.css" text="Table Creator" textFill="#063847" />
             <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseClicked="#switchToCalendar" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">
