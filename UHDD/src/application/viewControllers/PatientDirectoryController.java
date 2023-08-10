@@ -24,6 +24,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -56,15 +59,62 @@ public class PatientDirectoryController {
 	@FXML private TextField searchTxtId;
 	@FXML private Text txtPatientIdStatus;
 	
+	//Add patient 
+	@FXML private TextField InputFirstName;
+	@FXML private TextField InputLastName;
+	@FXML private TextField InputMiddleName;
+	@FXML private RadioButton radBtnFemale;
+	@FXML private RadioButton radBtnMale;
+	@FXML private TextField InputTelephone;
+	@FXML private TextField InputEmail;
+	@FXML private DatePicker datePickDateOfBirth;
+	@FXML private TextField InputAddress;
+	@FXML private TextField InputCity;
+	@FXML private ChoiceBox<String> choiceBoxState;
+	@FXML private TextField InputHealthInsuranceNumber;
+	@FXML private TextField InputEmergencyNumber;
+	@FXML private Button btnAddPatient;
+	@FXML private Text txtFirstNameError;
+	@FXML private Text txtMiddleNameError;
+	@FXML private Text txtLastNameError;
+	@FXML private Text txtGenderError;
+	@FXML private Text txtTelephoneError;
+	@FXML private Text txtEmailError;
+	@FXML private Text txtDateOfBirthError;
+	@FXML private Text txtAddressError;
+	@FXML private Text txtCityError;
+	@FXML private Text txtStateError;
+	@FXML private Text txtHINError;
+	@FXML private Text txtEmergencyNumberError;
+
+
+	
 	String currentFXML;
 	DBConnector dbConnector = new DBConnector();
 	
 	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/DashBoard.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		currentFXML = "../fxmlScenes/Dashboard.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+
+@FXML	
+	public void switchToPatientDirectory(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
 	}
 
 	@FXML	
@@ -80,7 +130,20 @@ public class PatientDirectoryController {
 	    stage.show();
 	}
 
-	public void NonMeSwitchToPatientInfoView() throws IOException {
+	@FXML	
+	public void switchToNewPatient(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "../fxmlScenes/CreateNewPatient.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+
+	public void NonMouseEventSwitchToPatientInfoView() throws IOException {
 		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
@@ -94,60 +157,64 @@ public class PatientDirectoryController {
 	
 	@FXML 
 	public void initialize() throws ClassNotFoundException, SQLException{
-		System.out.println("Initialise PD");
-		ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+		System.out.println("Current FXML: " + currentFXML);
+		if(currentFXML.equals("../fxmlScenes/PatientDirectory.fxml")){
+			System.out.println("Initialise PD");
+			ObservableList<Patient> patientOL = FXCollections.observableArrayList();
 
-        pdTableViewId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        pdTableViewFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
-        pdTableViewGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
-		pdTableViewGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-		pdTableViewDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-		pdTableViewAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-		pdTableViewCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-		pdTableViewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+			pdTableViewId.setCellValueFactory(new PropertyValueFactory<>("id"));
+			pdTableViewFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
+			pdTableViewGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
+			pdTableViewGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+			pdTableViewDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+			pdTableViewAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+			pdTableViewCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+			pdTableViewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        dbConnector.initialiseDB();
-        ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
-        while (rs.next()) {
-            int id = rs.getInt("patientId");
-            String familyName = rs.getString("lastName");
-            String givenName = rs.getString("firstName");
-			String middleName = rs.getString("middleName");
-			String gender = rs.getString("gender");
-			String address = rs.getString("address");
-			String city = rs.getString("city");
-			String state = rs.getString("state");
-			String telephone = rs.getString("telephone");
-			String email = rs.getString("email");
-			String dob = rs.getString("dateOfBirth");
-			String HIN = rs.getString("healthInsuranceNumber");
-			String emergencyContactNumber = rs.getString("emergencyContactNumber");
-            Patient patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
-            patientOL.add(patient);
-            System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
-        }
-        patientDirectorytableView.setItems(patientOL);
+			dbConnector.initialiseDB();
+			ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
+			while (rs.next()) {
+				int id = rs.getInt("patientId");
+				String familyName = rs.getString("lastName");
+				String givenName = rs.getString("firstName");
+				String middleName = rs.getString("middleName");
+				String gender = rs.getString("gender");
+				String address = rs.getString("address");
+				String city = rs.getString("city");
+				String state = rs.getString("state");
+				String telephone = rs.getString("telephone");
+				String email = rs.getString("email");
+				String dob = rs.getString("dateOfBirth");
+				String HIN = rs.getString("healthInsuranceNumber");
+				String emergencyContactNumber = rs.getString("emergencyContactNumber");
+				Patient patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
+				patientOL.add(patient);
+				System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+			}
+			patientDirectorytableView.setItems(patientOL);
 
-        // Set row factory for clickable rows
-        patientDirectorytableView.setRowFactory(tv -> {
-            TableRow<Patient> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    Patient clickedPatient = row.getItem();
-					PatientService.getInstance().setCurrentPatient(clickedPatient);
-                    System.out.println("Clicked on: " + clickedPatient.getFamilyName() + " " + clickedPatient.getGivenName());
-					try {
-						NonMeSwitchToPatientInfoView();
-					} catch (IOException e) {
-						e.printStackTrace();
+			// Set row factory for clickable rows
+			patientDirectorytableView.setRowFactory(tv -> {
+				TableRow<Patient> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+						Patient clickedPatient = row.getItem();
+						PatientService.getInstance().setCurrentPatient(clickedPatient);
+						System.out.println("Clicked on: " + clickedPatient.getFamilyName() + " " + clickedPatient.getGivenName());
+						try {
+							NonMouseEventSwitchToPatientInfoView();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					
 					}
-                   
-                }
-            });
-            return row;
-        });
+				});
+				return row;
+			});
 
-        dbConnector.closeConnection();
+			dbConnector.closeConnection();
+		}
 	}
 	
 	@FXML
@@ -190,6 +257,8 @@ public class PatientDirectoryController {
         patientDirectorytableView.setItems(patientOL);
 		}
 	}
+
+
 	
 	@FXML	
 	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {

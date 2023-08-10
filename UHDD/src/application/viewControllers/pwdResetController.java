@@ -2,16 +2,10 @@ package application.viewControllers;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.mysql.cj.protocol.Resultset;
-
 import application.CredentialManager;
-import application.DBConnector;
 import application.LoginResult;
-import application.PasswordHash;
-import application.PasswordHasher;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
