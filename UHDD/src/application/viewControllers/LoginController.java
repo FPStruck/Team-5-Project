@@ -8,27 +8,18 @@ import java.sql.SQLException;
 
 import application.CredentialManager;
 import application.DBConnector;
-import application.EmailManager;
 import application.LoginResult;
 import application.Patient;
 import application.PatientService;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -36,7 +27,6 @@ import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class LoginController {
 
@@ -58,14 +48,22 @@ public class LoginController {
     private Button btnPwdReset;
 
     DBConnector dbConnector = new DBConnector();
-
+    String currentFXML;
     
 
     public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException, InvalidKeyException, NoSuchAlgorithmException {
         credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
-        String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
+        String emailTo = credentialManager.verifyPasswordAndReturnEmail(userLog, passLog);
+        ResultSet userRole = dbConnector.QueryReturnResultsForUserSession(userLog);
+        if(userRole.next()){
+            String id = userRole.getString("id");
+            String role = userRole.getString("role");
+            UserSession.initInstance(userLog,role,id);
+        }
+
+        //Check if password last set date was more than 30 days ago - returns true if password has expired
         if(!credentialManager.checkPasswordLastSetDate(userLog)){
             if (emailTo == null) {
                 actionGrabber.setText("No user match found");
@@ -151,7 +149,6 @@ public class LoginController {
         dbConnector.initialiseDB();
 
         String username = userGrabber.getText();
-        UserSession.initInstance(username);
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {
@@ -173,13 +170,10 @@ public class LoginController {
         	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
                 dbConnector.setLoggedInStatus(username, 1);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
+                currentFXML = "../fxmlScenes/Dashboard.fxml";	
+                CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
                 Parent root = loader.load();
-                DashboardController dashboardController = loader.getController();
-                dashboardController.setUserText(username);
-
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();

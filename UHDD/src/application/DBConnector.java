@@ -266,6 +266,16 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		public ResultSet QueryReturnResultsForUserSession(String username) throws SQLException {
+			// Updated SQL query to select only id, username, and role
+			String sql = "SELECT id, username, role FROM testdb.user_details WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+		
+			return statement.executeQuery();
+		}
+
+		
 		public ResultSet QueryReturnResultsFromPatients() throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_data";
 			PreparedStatement statement = connection.prepareStatement(sql);

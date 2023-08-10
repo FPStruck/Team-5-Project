@@ -77,6 +77,10 @@ public class pwdResetController {
             }     
         }
         else {
+            System.out.print(UserSession.getInstance().getUserName());
+            if(credentialManager.verifyPassword(username, oldPwd)){
+                System.out.println("Password is correct");
+            }
             txtStatus.setText("Old password is incorrect");
         }
     }

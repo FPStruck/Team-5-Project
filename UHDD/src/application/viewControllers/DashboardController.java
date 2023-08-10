@@ -99,6 +99,7 @@ public class DashboardController {
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
 		CurrentFXMLInstance.initInstance("../fxmlScenes/Dashboard.fxml");
+		userText.setText(UserSession.getInstance().getUserName());
 		Platform.runLater(() -> {
 	        try {
 	            updateNextAppointment();
@@ -238,11 +239,6 @@ public class DashboardController {
 			}
 		System.out.println("After loop: " + nextA);	
 		System.out.println("After loop next apppointment: " + nextAppointment);			
-	}
-
-	public void setUserText(String username) {
-	    userText.setText(username);
-	    currentUser = username;
 	}
 	
 	private void startLoggedInStatusTimer() {

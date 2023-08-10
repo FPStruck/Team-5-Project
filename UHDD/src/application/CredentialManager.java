@@ -44,34 +44,37 @@ public class CredentialManager {
 	}
 
 	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
-		dbConnector.initialiseDB();
-		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
-			if (userDetails.next()) {
+		dbConnector.initialiseDB();	
+		try (ResultSet userDetailsFromDb = dbConnector.QueryReturnResultsFromUser(username)) {
+			if (userDetailsFromDb.next()) {
+				System.out.println("verify password thinks user is : " + username);
 				// Retrieve the "password_hash" and "password_params" fields from the database
-				PasswordHash passwordHash = PasswordHash.fromString(userDetails.getString("password_hash"), userDetails.getString("password_params"));
+				PasswordHash passwordHash = PasswordHash.fromString(userDetailsFromDb.getString("password_hash"), userDetailsFromDb.getString("password_params"));
 	
 				// Verify the password
 				if (passwordHasher.verifyPassword(password, passwordHash)) {
 					// The password is correct
 					System.out.println("Password is correct");
+					dbConnector.closeConnection();
 					return true;
 				} else {
 					// The password is incorrect
 					System.out.println("Password is incorrect");
+					dbConnector.closeConnection();
 					return false;
 				}
 			} else {
 				// The user was not found in the database
 				System.out.println("User not found");
+				dbConnector.closeConnection();
 				return false;
 			}
 		} catch (SQLException e) {
-			// Handle the exception that occurred while accessing the database
+			System.out.println("Error querying the database");
+			e.printStackTrace();
+			return false;
 		}
 	
-		// Close the database connection
-		dbConnector.closeConnection();
-		return false;
 	}
 
 	public boolean verifyOTP(String username, int OTP) throws NoSuchAlgorithmException{
@@ -211,7 +214,7 @@ public class CredentialManager {
 		return false;
 	}
 	
-	public String checkCredentialsInFile(String username, String password) throws ClassNotFoundException, SQLException {
+	public String verifyPasswordAndReturnEmail(String username, String password) throws ClassNotFoundException, SQLException {
 		checkPasswordLastSetDate(username);
 		dbConnector.initialiseDB();	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
@@ -220,6 +223,7 @@ public class CredentialManager {
 				if(passwordHasher.verifyPassword(password, passwordHash)) {
 		            String email = userDetails.getString("email");
 		            dbConnector.closeConnection();
+					System.out.println("password is valid here is email: " + email);
 		            return email;
 		            
 		        } else {
