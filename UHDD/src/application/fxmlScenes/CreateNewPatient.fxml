@@ -63,7 +63,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane layoutX="192.0" prefHeight="506.0" prefWidth="717.0">
+      <Pane layoutX="192.0" layoutY="18.0" prefHeight="506.0" prefWidth="717.0">
          <children>
             <Text layoutX="71.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new Patient">
                <font>
@@ -75,149 +75,99 @@
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text layoutX="78.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name">
+            <Text layoutX="77.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="78.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name">
+            <Text layoutX="329.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="356.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="78.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle Name">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="78.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="356.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="78.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="78.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="356.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="356.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Health Insurance Number">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="356.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency Contact Number">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="InputFirstName" layoutX="78.0" layoutY="81.0" />
-            <TextField fx:id="InputMiddleName" layoutX="78.0" layoutY="158.0" />
-            <TextField fx:id="InputLastName" layoutX="78.0" layoutY="232.0" />
-            <RadioButton fx:id="radBtnFemale" layoutX="85.0" layoutY="310.0" mnemonicParsing="false" text="Female">
+            <TextField fx:id="InputFirstName" layoutX="75.0" layoutY="57.0" promptText="First Name" />
+            <TextField fx:id="InputMiddleName" layoutX="75.0" layoutY="116.0" promptText="Middle Name" />
+            <TextField fx:id="InputLastName" layoutX="75.0" layoutY="174.0" promptText="Last Name" />
+            <RadioButton fx:id="radBtnFemale" layoutX="82.0" layoutY="269.0" mnemonicParsing="false" text="Female">
                <toggleGroup>
                   <ToggleGroup fx:id="group1" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="radBtnMale" layoutX="162.0" layoutY="310.0" mnemonicParsing="false" text="Male" toggleGroup="$group1" />
-            <TextField fx:id="InputTelephone" layoutX="78.0" layoutY="375.0" />
-            <TextField fx:id="InputEmail" layoutX="78.0" layoutY="444.0" />
-            <TextField fx:id="InputAddress" layoutX="356.0" layoutY="156.0" prefHeight="26.0" prefWidth="189.0" />
-            <DatePicker fx:id="datePickDateOfBirth" layoutX="356.0" layoutY="79.0" />
-            <TextField fx:id="InputHealthInsuranceNumber" layoutX="356.0" layoutY="365.0" prefHeight="26.0" prefWidth="189.0" />
-            <ChoiceBox fx:id="choiceBoxState" layoutX="356.0" layoutY="290.0" prefWidth="150.0" />
-            <TextField fx:id="InputEmergencyNumber" layoutX="353.0" layoutY="443.0" prefHeight="26.0" prefWidth="189.0" />
-            <Text fx:id="txtFirstNameError" fill="RED" layoutX="117.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First name error">
+            <RadioButton fx:id="radBtnMale" layoutX="159.0" layoutY="269.0" mnemonicParsing="false" text="Male" toggleGroup="$group1" />
+            <TextField fx:id="InputTelephone" layoutX="76.0" layoutY="322.0" promptText="Telephone" />
+            <TextField fx:id="InputEmail" layoutX="76.0" layoutY="378.0" promptText="Email" />
+            <TextField fx:id="InputAddress" layoutX="329.0" layoutY="57.0" prefHeight="26.0" prefWidth="189.0" promptText="Address" />
+            <DatePicker fx:id="datePickDateOfBirth" layoutX="77.0" layoutY="432.0" prefHeight="26.0" prefWidth="157.0" />
+            <TextField fx:id="InputHealthInsuranceNumber" layoutX="329.0" layoutY="252.0" prefHeight="26.0" prefWidth="189.0" promptText="Health Insurance Number" />
+            <ChoiceBox fx:id="choiceBoxState" layoutX="329.0" layoutY="188.0" prefWidth="150.0" />
+            <TextField fx:id="InputEmergencyNumber" layoutX="328.0" layoutY="318.0" prefHeight="26.0" prefWidth="189.0" promptText="Emergency Contact Number" />
+            <Text fx:id="txtFirstNameError" fill="RED" layoutX="82.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First name error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtDateOfBirthError" fill="RED" layoutX="400.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth Error">
+            <Text fx:id="txtDateOfBirthError" fill="RED" layoutX="87.0" layoutY="474.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtMiddleNameError" fill="RED" layoutX="113.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle name error">
+            <Text fx:id="txtMiddleNameError" fill="RED" layoutX="82.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle name error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtLastNameError" fill="RED" layoutX="111.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last name error">
+            <Text fx:id="txtLastNameError" fill="RED" layoutX="83.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last name error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtAddressError" fill="RED" layoutX="405.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address Error">
+            <Text fx:id="txtAddressError" fill="RED" layoutX="343.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtGenderError" fill="RED" layoutX="108.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender Error">
+            <Text fx:id="txtGenderError" fill="RED" layoutX="85.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtTelephoneError" fill="RED" layoutX="109.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone Error">
+            <Text fx:id="txtTelephoneError" fill="RED" layoutX="84.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtEmailError" fill="RED" layoutX="121.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email Error">
+            <Text fx:id="txtEmailError" fill="RED" layoutX="88.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtStateError" fill="RED" layoutX="397.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State Error">
+            <Text fx:id="txtStateError" fill="RED" layoutX="338.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtHINError" fill="RED" layoutX="412.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HIN Error">
+            <Text fx:id="txtHINError" fill="RED" layoutX="342.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HIN Error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Text fx:id="txtEmergencyNumberError" fill="RED" layoutX="382.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency number error">
+            <Text fx:id="txtEmergencyNumberError" fill="RED" layoutX="345.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emergency number error" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Text>
-            <Button fx:id="btnAddPatient" layoutX="598.0" layoutY="253.0" mnemonicParsing="false" text="Add Patient" />
+            <Text fx:id="txtCityError" fill="RED" layoutX="344.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City Error" visible="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+            <Button fx:id="btnAddPatient" layoutX="368.0" layoutY="431.0" mnemonicParsing="false" onMouseClicked="#AddPatient" text="Save Patient" />
             <Text layoutX="31.0" layoutY="29.0" onMouseClicked="#switchToPatientDirectory" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;" wrappingWidth="18.8583984375">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="356.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="InputCity" layoutX="356.0" layoutY="228.0" prefHeight="26.0" prefWidth="189.0" />
-            <Text fx:id="txtCityError" fill="RED" layoutX="401.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City Error">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Text>
+            <TextField fx:id="InputCity" layoutX="329.0" layoutY="115.0" prefHeight="26.0" prefWidth="189.0" promptText="City" />
          </children>
       </Pane>
    </children>

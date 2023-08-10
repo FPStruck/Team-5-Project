@@ -4,7 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import application.DBConnector;
 import application.Patient;
@@ -87,8 +90,6 @@ public class PatientDirectoryController {
 	@FXML private Text txtHINError;
 	@FXML private Text txtEmergencyNumberError;
 
-
-	
 	String currentFXML;
 	DBConnector dbConnector = new DBConnector();
 	
@@ -104,7 +105,7 @@ public class PatientDirectoryController {
 		stage.show();
 	}
 
-@FXML	
+	@FXML	
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws IOException {
 		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
@@ -154,6 +155,19 @@ public class PatientDirectoryController {
 	    stage.setScene(scene);
 	    stage.show();
 	}
+
+	public void NonMouseEventSwitchToPatientDirectory() throws IOException{
+		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = new Stage();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+	
 	
 	@FXML 
 	public void initialize() throws ClassNotFoundException, SQLException{
@@ -214,6 +228,8 @@ public class PatientDirectoryController {
 			});
 
 			dbConnector.closeConnection();
+		} else if (currentFXML.equals("../fxmlScenes/CreateNewPatient.fxml")){
+			choiceBoxState.getItems().addAll("NSW", "QLD", "VIC", "ACT", "SA", "WA", "NT", "TAS");
 		}
 	}
 	
@@ -258,8 +274,163 @@ public class PatientDirectoryController {
 		}
 	}
 
+	@FXML
+	public void AddPatient(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException, IOException{
+		boolean isValid = true;
+		txtFirstNameError.setVisible(false);
+		txtMiddleNameError.setVisible(false);
+		txtLastNameError.setVisible(false);
+		txtGenderError.setVisible(false);
+		txtAddressError.setVisible(false);
+		txtCityError.setVisible(false);
+		txtStateError.setVisible(false);
+		txtTelephoneError.setVisible(false);
+		txtEmailError.setVisible(false);
+		txtDateOfBirthError.setVisible(false);
+		txtHINError.setVisible(false);
+		txtEmergencyNumberError.setVisible(false);
 
+
+		// Validate First Name
+		String firstName = InputFirstName.getText();
+		if (firstName == null || firstName.trim().isEmpty() || !firstName.matches("[a-zA-Z]{1,50}")) {
+			txtFirstNameError.setText("Must be alphabetic and less than 50 characters.");
+			txtFirstNameError.setVisible(true);
+			isValid = false;
+		} else {
+			txtFirstNameError.setText("");
+		}
+
+		// Validate Middle Name
+		String middleName = InputMiddleName.getText();
+		if (middleName == null || middleName.trim().isEmpty() || !middleName.matches("[a-zA-Z]{1,50}")) {
+			txtMiddleNameError.setText("Must be alphabetic and less than 50 characters.");
+			txtMiddleNameError.setVisible(true);
+			isValid = false;
+		} else {
+			txtMiddleNameError.setText("");
+		}
+
+		// Validate Last Name
+		String lastName = InputLastName.getText();
+		if (lastName == null || lastName.trim().isEmpty() || !lastName.matches("[a-zA-Z]{1,50}")) {
+			txtLastNameError.setText("Must be alphabetic and less than 50 characters.");
+			txtLastNameError.setVisible(true);
+			isValid = false;
+		} else {
+			txtLastNameError.setText("");
+		}
+
+		// Validate Address
+		String address = InputAddress.getText();
+		if (address == null || address.trim().isEmpty() || address.length() > 100) {
+			txtAddressError.setText("Address must be less than 100 characters.");
+			txtAddressError.setVisible(true);
+			isValid = false;
+		} else {
+			txtAddressError.setText("");
+		}
+
+		// Validate City
+		String city = InputCity.getText();
+		if (city == null || city.trim().isEmpty() || !city.matches("[a-zA-Z ]{1,50}")) {
+			txtCityError.setText("City must be alphabetic (with spaces allowed) and less than 50 characters.");
+			txtCityError.setVisible(true);
+			isValid = false;
+		} else {
+			txtCityError.setText("");
+		}
+
+
+		// Validate State
+		String state = choiceBoxState.getValue();
+		if (state == null || state.trim().isEmpty() || !state.matches("[a-zA-Z]{1,50}")) {
+			txtStateError.setText("State must be alphabetic and less than 50 characters.");
+			txtStateError.setVisible(true);
+			isValid = false;
+		} else {
+			txtStateError.setText("");
+		}
+
+		// Validate Telephone
+		String telephone = InputTelephone.getText();
+		if (telephone == null || telephone.trim().isEmpty() || !telephone.matches("\\d{1,20}")) {
+			txtTelephoneError.setText("Telephone must be numerical and less than 20 characters.");
+			txtTelephoneError.setVisible(true);
+			isValid = false;
+		} else {
+			txtTelephoneError.setText("");
+		}
+
+		// Validate Emergency Number
+		String emergencyNumber = InputEmergencyNumber.getText();
+		if (emergencyNumber == null || emergencyNumber.trim().isEmpty() || !emergencyNumber.matches("\\d{1,20}")) {
+			txtEmergencyNumberError.setText("Emergency number must be numeric and less than 20 characters.");
+			txtEmergencyNumberError.setVisible(true);
+			isValid = false;
+		} else {
+			txtEmergencyNumberError.setText("");
+		}
+
+		// Validate Date of Birth
+		LocalDate dob = datePickDateOfBirth.getValue();
+		LocalDate today = LocalDate.now();
+		if (dob == null || dob.isAfter(today)) {
+			txtDateOfBirthError.setText("Date of birth cannot be today, or in the future.");
+			txtDateOfBirthError.setVisible(true);
+			isValid = false;
+		} else {
+			txtDateOfBirthError.setText("");
+		}
+
+		// Validate Health Insurance Number
+		String healthInsuranceNumber = InputHealthInsuranceNumber.getText();
+		if (healthInsuranceNumber == null || healthInsuranceNumber.trim().isEmpty() || healthInsuranceNumber.length() > 50) {
+			txtHINError.setText("Health insurance number must be less than 50 characters.");
+			txtHINError.setVisible(true);
+			isValid = false;
+		} else {
+			txtHINError.setText("");
+		}
+
+		// Validate Email
+		String email = InputEmail.getText();
+		if (email == null || email.trim().isEmpty() || !isValidEmail(email)) {
+			txtEmailError.setText("Invalid or empty email format.");
+			txtEmailError.setVisible(true);
+			isValid = false;
+		} else {
+			txtEmailError.setVisible(false);
+		}
 	
+
+		String gender = "?";
+		if(radBtnFemale.isSelected()){
+			gender = "F";
+		} else if (radBtnMale.isSelected()){
+			gender = "M";
+		} else {
+			txtGenderError.setText("Please select a gender.");
+			isValid = false;
+		}
+
+		// If all fields are valid, proceed with further processing
+		if (isValid) {
+			dbConnector.initialiseDB();
+			dbConnector.createNewPatientExecuteQuery(firstName, middleName, lastName, gender, address, city, state, telephone, email, dob.toString(), healthInsuranceNumber, emergencyNumber);
+			dbConnector.closeConnection();
+			
+		}
+
+	}
+
+	private boolean isValidEmail(String email) {
+		// Regular expression to validate email format
+		String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
 	@FXML	
 	public void highlightAppointmentsPaneOnEnter(MouseEvent mouseEvent) throws IOException {
 		appointmentsDBPane.setStyle("-fx-background-color: #02181f");
