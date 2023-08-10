@@ -8,15 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
-import com.google.protobuf.StringValue;
-
 import application.CreateEncryptedPdf;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
-import javafx.animation.PauseTransition;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -38,8 +33,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import scala.Byte;
 
 public class PatientInfoViewController {
 	private Stage stage;
@@ -575,17 +568,13 @@ public class PatientInfoViewController {
 	//INITIALISE METHOD
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException {
-		
-		if (patient == null) {
-			patient = 1;
-		} else patient--;
-		//setTextFieldsToPatientId(patient.toString());
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);
 		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
 			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
 			inDiagnosisSev.setValue("Mild");
+			txtEnterNoteAsId.setText("Entering note as: " + UserSession.getInstance().getUserName());
 			txtNotePatientName.setText("Patient Name: " + patientNew.getGivenName() + " " + patientNew.getFamilyName());
 			txtAreaNote.textProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue != null && newValue.length() > MAX_LENGTH) {
@@ -682,8 +671,6 @@ public class PatientInfoViewController {
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
-	    Map<String, Object> namespace = loader.getNamespace();
-
 	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 	    scene = new Scene(root);
 	    stage.setScene(scene);
@@ -697,8 +684,6 @@ public class PatientInfoViewController {
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML); 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 		Parent root = loader.load();
-		Map<String, Object> namespace = loader.getNamespace();
-	
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -727,8 +712,6 @@ public class PatientInfoViewController {
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
-	    Map<String, Object> namespace = loader.getNamespace();
-
 	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 	    scene = new Scene(root);
 	    stage.setScene(scene);
@@ -738,13 +721,20 @@ public class PatientInfoViewController {
 	
 	@FXML 
 	public void createPatientPDF(MouseEvent mouseEvent) throws Exception {
-		//windows
-		String userProfile = System.getenv("USERPROFILE");
-		//String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
+		String os = System.getProperty("os.name").toLowerCase();
+		String filePath;
 
-		//macos
-		String filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
-
+		if (os.contains("win")) {
+			// Windows
+			String userProfile = System.getenv("USERPROFILE");
+			filePath = userProfile + "\\Documents\\patientDetails.pdf";
+		} else if (os.contains("mac")) {
+			// macOS
+			filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
+		} else {
+			// Linux - no idea if this works or not, can't test
+			filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
+		}
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
@@ -755,13 +745,20 @@ public class PatientInfoViewController {
 
 	@FXML 
 	public void createMedicationPdf(MouseEvent mouseEvent) throws Exception {
-		//windows
-		String userProfile = System.getenv("USERPROFILE");
-		//String filePath = userProfile + "\\Documents\\encryptedPdf.pdf";
+		String os = System.getProperty("os.name").toLowerCase();
+		String filePath;
 
-		//macos
-		String filePath = System.getProperty("user.home") + "/Documents/medicationDetails.pdf";
-
+		if (os.contains("win")) {
+			// Windows
+			String userProfile = System.getenv("USERPROFILE");
+			filePath = userProfile + "\\Documents\\patientDetails.pdf";
+		} else if (os.contains("mac")) {
+			// macOS
+			filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
+		} else {
+			// Linux - no idea if this works or not, can't test
+			filePath = System.getProperty("user.home") + "/Documents/patientDetails.pdf";
+		}
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		String patientId = String.valueOf(patientNew.getId());
 		String ownerPassword = "owner";
@@ -860,7 +857,7 @@ public class PatientInfoViewController {
 		String role = UserSession.getInstance().getRole();
 		if(radBtnDiagYes.isSelected()){
 			if ("Nurse".equals(role)) {
-				Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add prescribe medication", ButtonType.OK);
+				Alert alert = new Alert(Alert.AlertType.WARNING, "Sorry, only users with role type doctor can add diagnose patients", ButtonType.OK);
 				alert.setTitle("Role Check");
 				alert.setHeaderText(null);
 				alert.showAndWait();
