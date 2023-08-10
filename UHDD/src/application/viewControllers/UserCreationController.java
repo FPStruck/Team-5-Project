@@ -38,7 +38,7 @@ public class UserCreationController {
     Pattern lowerCasePattern = Pattern.compile("[a-z ]"); // lower case regex
     Pattern digitCasePattern = Pattern.compile("[0-9 ]"); // number regex
 	
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws ClassNotFoundException, SQLException {
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws Exception {
 		System.out.println(cbRole.getValue());
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());

@@ -56,7 +56,7 @@ public class Nurse_PatientDirectoryController {
 	
 
 	
-	@FXML public void viewTable(MouseEvent mouseEvent) throws ClassNotFoundException, SQLException, FileNotFoundException {
+	@FXML public void viewTable(MouseEvent mouseEvent) throws Exception {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
 		dbConnection.initialiseDB();

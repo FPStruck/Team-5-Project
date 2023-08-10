@@ -13,7 +13,7 @@ public class CredentialManager {
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
-	public void addNewUserToDB(String username, String password, String email, String role) throws ClassNotFoundException, SQLException {
+	public void addNewUserToDB(String username, String password, String email, String role) throws Exception {
 		dbConnector.initialiseDB();
 		//Get the current date and time
 		LocalDateTime now = LocalDateTime.now();
@@ -28,7 +28,7 @@ public class CredentialManager {
 	}
 
 	//get user email from db
-	public String getUserEmail(String username) throws ClassNotFoundException, SQLException {
+	public String getUserEmail(String username) throws Exception {
 		dbConnector.initialiseDB();
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
 			if (userDetails.next()) {
@@ -51,7 +51,7 @@ public class CredentialManager {
 		return null;
 	}
 
-	public boolean verifyPassword(String username, String password) throws ClassNotFoundException, SQLException {
+	public boolean verifyPassword(String username, String password) throws Exception {
 		dbConnector.initialiseDB();
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
 			if (userDetails.next()) {
@@ -82,7 +82,7 @@ public class CredentialManager {
 		return false;
 	}
 	
-	public void changePasswordInDB(String username, String password) throws ClassNotFoundException, SQLException {
+	public void changePasswordInDB(String username, String password) throws Exception {
 		dbConnector.initialiseDB();
 		//Get the current date and time
 		LocalDateTime now = LocalDateTime.now();
@@ -97,7 +97,7 @@ public class CredentialManager {
 	}
 
 	//Check if password last set date was more than 30 days ago
-	public boolean checkPasswordLastSetDate(String username) throws ClassNotFoundException, SQLException {
+	public boolean checkPasswordLastSetDate(String username) throws Exception {
 		dbConnector.initialiseDB();
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
 			if (userDetails.next()) {
@@ -108,7 +108,8 @@ public class CredentialManager {
 				LocalDate currentDate = LocalDate.now();
 	
 				// Convert the "passwordLastModified" Date to LocalDate
-				LocalDate lastModifiedDate = passwordLastModified.toLocalDate();
+				
+				LocalDate lastModifiedDate = passwordLastModified != null ? passwordLastModified.toLocalDate() : LocalDate.now();
 	
 				// Calculate the difference between the current date and the password last modified date
 				long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(lastModifiedDate, currentDate);
@@ -133,7 +134,7 @@ public class CredentialManager {
 		return false;
 	}
 	
-	public String checkCredentialsInFile(String username, String password) throws ClassNotFoundException, SQLException {
+	public String checkCredentialsInFile(String username, String password) throws Exception {
 		checkPasswordLastSetDate(username);
 		dbConnector.initialiseDB();	    
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {

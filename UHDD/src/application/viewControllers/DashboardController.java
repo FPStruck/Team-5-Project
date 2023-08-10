@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -16,7 +19,12 @@ import com.calendarfx.model.Entry;
 
 import application.CalendarApp;
 import application.DBConnector;
+import application.Main;
+import application.UsernameStorage;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -77,7 +85,8 @@ public class DashboardController {
 	Boolean nextRecurrence;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+	public void initialize() throws Exception{
+		iniUsername();
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		
@@ -176,8 +185,16 @@ public class DashboardController {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
-		//startLoggedInStatusTimer();
+		startDate();
+		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
+	}
+	
+	public void iniUsername() {
+		 String username = UsernameStorage.getUsername();
+	        if (username != null && userText != null) {
+	            userText.setText(username);
+	            currentUser = username;
+	        }
 	}
 	
 	public void setUserText(String username) {
@@ -195,23 +212,59 @@ public class DashboardController {
 	    }, 0, 5000); // Run the task every 5 seconds
 	}
 	
+	private void startDate() {
+	    Timer timerone = new Timer();
+	    timerone.schedule(new TimerTask() {
+	        @Override
+	        public void run() {
+	            checkInactivityStatus(timerone);
+	        }
+	    }, 0, 5000); // Run the task every 5 seconds
+	}
+	
 	private void checkLoggedInStatus(Timer timer) {
 	    Platform.runLater(() -> {
 	        try {
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
-	            if (loggedInStatus == 0) {
+	            if (loggedInStatus == 2) {
 	                // User has been logged out, show alert and provide options to continue or logout
 	                timer.cancel(); // Stop the timer after detecting the change to 0
 
 	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 	                alert.setTitle("Login Attempt Detected");
 	                alert.setHeaderText("Another User Has Attempted to Access This Account:");
-	                alert.setContentText("Do you want to continue the session?");
+	                alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
 	                dbConnector.setLoggedInStatus(currentUser, 1);
 	                ButtonType continueButton = new ButtonType("Continue");
 	                ButtonType logoutButton = new ButtonType("Logout");
 	                alert.getButtonTypes().setAll(continueButton, logoutButton);
+	                
+	             // Create the timer task to automatically select the logoutButton after 10 seconds
+	                Task<Void> timerTask = new Task<Void>() {
+	                    @Override
+	                    protected Void call() throws Exception {
+	                        try {
+	                            Thread.sleep(15000); // 10 seconds
+	                        } catch (InterruptedException e) {
+	                            // Timer interrupted, no need to handle it
+	                        }
+	                        return null;
+	                    }
+	                };
 
+	                // When the timer task completes, select the logoutButton response
+	                timerTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+	                    @Override
+	                    public void handle(WorkerStateEvent event) {
+	                        if (!alert.isShowing()) return; // Alert might be closed by the user
+	                        alert.hide();
+	                        Platform.runLater(() -> alert.setResult(logoutButton));
+	                    }
+	                });
+
+	                // Start the timer task
+	                new Thread(timerTask).start();
+	                
 	                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 	                alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
 
@@ -241,14 +294,103 @@ public class DashboardController {
 	        }
 	    });
 	}
+	
+	private void checkInactivityStatus(Timer timerone) {
+	    Platform.runLater(() -> {
+	        try {
+	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
+	            if (loggedInStatus == 1) {
+	                // User is logged in, check for inactivity
+	                Timestamp lastLoggedInDate = dbConnector.getLastLoggedInDate(currentUser);
+
+	                if (lastLoggedInDate != null) {
+	                    LocalDateTime currentDateTime = LocalDateTime.now();
+	                    Timestamp currentTimestamp = Timestamp.valueOf(currentDateTime);
+
+	                    Duration timeDifference = Duration.between(lastLoggedInDate.toLocalDateTime(), currentDateTime);
+	                    long hoursDifference = timeDifference.toHours();
+
+	                    if (hoursDifference > 5) {
+	                        // User has been inactive for 5 hours or more, show the alert box
+	                        timerone.cancel(); // Stop the timer
+
+	                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	                        alert.setTitle("Inactivity Detected");
+	                        alert.setHeaderText("You have been active for 5 hours or more:");
+	                        alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
+	                        dbConnector.setLoggedInStatus(currentUser, 1);
+	                        ButtonType continueButton = new ButtonType("Continue");
+	                        ButtonType quitButton = new ButtonType("Quit");
+	                        alert.getButtonTypes().setAll(continueButton, quitButton);
+
+	                        // Create the timer task to automatically select the logoutButton after 10 seconds
+	                        Task<Void> timerTask = new Task<Void>() {
+	                            @Override
+	                            protected Void call() throws Exception {
+	                                try {
+	                                    Thread.sleep(15000); // 10 seconds
+	                                } catch (InterruptedException e) {
+	                                    // Timer interrupted, no need to handle it
+	                                }
+	                                return null;
+	                            }
+	                        };
+
+	                        // When the timer task completes, select the logoutButton response
+	                        timerTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+	                            @Override
+	                            public void handle(WorkerStateEvent event) {
+	                                if (!alert.isShowing()) return; // Alert might be closed by the user
+	                                alert.hide();
+	                                Platform.runLater(() -> alert.setResult(quitButton));
+	                            }
+	                        });
+
+	                        // Start the timer task
+	                        new Thread(timerTask).start();
+
+	                        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+	                        alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
+
+	                        alert.showAndWait().ifPresent(response -> {
+	                            if (response == continueButton) {
+	                                // User chose to continue, set logged_in status to 1
+	                                try {
+	                                    dbConnector.setLoggedInStatus(currentUser, 1);
+	                                    dbConnector.setLastLoggedInTime(currentUser, currentTimestamp);
+	                                    startLoggedInStatusTimer(); // Restart the timer
+	                                } catch (SQLException e) {
+	                                    e.printStackTrace();
+	                                }
+	                            } else if (response == quitButton) {
+	                                // User chose to logout, set logged_in status to 0 and go back to the login screen
+	                                try {
+	                                    timerone.cancel();
+	                                    dbConnector.setLoggedInStatus(currentUser, 0);
+	                                    dbConnector.setLastLoggedInTime(currentUser, currentTimestamp);
+	                                    Platform.exit();
+	                                } catch (SQLException e) {
+	                                    e.printStackTrace();
+	                                }
+	                            }
+	                        });
+	                    }
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    });
+	}
     
     @FXML
     private void switchToLoginScreen() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/Login.fxml"));
-        stage = (Stage) userText.getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    	Stage currentStage = (Stage) userText.getScene().getWindow();
+        currentStage.close();
+
+        // Start a new instance of the Main class to run the program again from the beginning
+        Main mainApp = new Main();
+        mainApp.start(new Stage());
     }
 	
 	@FXML 	

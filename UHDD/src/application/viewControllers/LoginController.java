@@ -1,12 +1,16 @@
 package application.viewControllers;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import application.CredentialManager;
 import application.DBConnector;
 import application.EmailManager;
 import application.EmailManager.LoginResult;
+import application.UsernameStorage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +31,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LoginController {
-
     private Stage stage;
     private Scene scene;
     private DBConnector dbConnector;
@@ -35,20 +38,21 @@ public class LoginController {
 
     @FXML
     private TextField userGrabber;
+
     @FXML
     private TextField passGrabber;
+
     @FXML
     private Text actionGrabber;
+
     @FXML
     private Button btnLogin;
-    @FXML
-    private Button btnPwdReset;
 
     public void setDbConnector(DBConnector dbConnector) {
         this.dbConnector = dbConnector;
     }
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException {
+    public boolean loginSuccessful() throws Exception {
         CredentialManager credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
@@ -96,24 +100,15 @@ public class LoginController {
     }
 
     @FXML
-    protected void handlePwdResetAction(ActionEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PasswordReset.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
+    protected void handleSignInAction(ActionEvent event) throws Exception {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
 
         String username = userGrabber.getText();
-        
+
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {
@@ -129,13 +124,21 @@ public class LoginController {
             actionGrabber.setText("Another user is already logged in with this username");
             actionGrabber.setFill(Color.RED);
             System.out.println("A user: " + username + " has attempted access from another device (all users logged out): " + formattedDateTime);
-            dbConnector.setLoggedInStatus(username, 0);
+            dbConnector.setLoggedInStatus(username, 2);
         } else { 
         	
         	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
+                Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
+                dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
-
+                
+                dbConnector.updateLastLoggedInDateAndStatus(username, loginTimestamp);
+                dbConnector.checkAndSetLoggedOutStatus();
+                
+                UsernameStorage.setUsername(username);
+                System.out.println(UsernameStorage.getUsername());
+                
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
                 Parent root = loader.load();
                 DashboardController dashboardController = loader.getController();
@@ -177,5 +180,5 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
-
+    
 }

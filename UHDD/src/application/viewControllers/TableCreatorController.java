@@ -213,7 +213,7 @@ public class TableCreatorController {
 		
 	}
 	
-	@FXML public void viewTable(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
+	@FXML public void viewTable(ActionEvent event) throws Exception {
 		System.out.println("view table");
 		// TODO Auto-generated method stub
 		dbConnection.initialiseDB();

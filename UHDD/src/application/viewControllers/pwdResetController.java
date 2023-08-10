@@ -39,7 +39,7 @@ public class pwdResetController {
   
 
     
-    public void resetPwd() throws SQLException, ClassNotFoundException {
+    public void resetPwd() throws Exception {
         String oldPwd = txtOldPwd.getText();
         String newPwd = txtNewPwd.getText();
         String verifyPwd = txtVerifyPwd.getText();
@@ -98,7 +98,7 @@ public class pwdResetController {
     }
 
     @FXML
-    protected void handlePwdResetAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException{
+    protected void handlePwdResetAction(ActionEvent event) throws Exception{
         resetPwd();
     }
 }
