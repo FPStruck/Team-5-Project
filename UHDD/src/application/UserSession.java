@@ -4,10 +4,13 @@ public class UserSession {
 
     private static UserSession instance;
 
-    private String userName;
-    private String email; // added email field
+    private static String userName;
+    private static String email; // added email field
+    
+    public UserSession() { // added email parameter
+    }
 
-    private UserSession(String userName, String email) { // added email parameter
+    public UserSession(String userName, String email) { // added email parameter
         this.userName = userName;
         this.email = email;
     }
@@ -28,6 +31,14 @@ public class UserSession {
     public String getUserName() {
         return userName;
     }
+    
+    public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
     public String getEmail() { // added getEmail method
         return email;

@@ -112,8 +112,10 @@ public class LoginController {
         String formattedDateTime = currentDateTime.format(formatter);
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
+        UserSession us = new UserSession();
 
         String username = userGrabber.getText();
+        us.setEmail(username);
         
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 

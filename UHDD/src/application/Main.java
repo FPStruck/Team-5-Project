@@ -1,6 +1,9 @@
 package application;
 	
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +15,7 @@ public class Main extends Application {
 	
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/resource/Login.fxml"));
 			Scene scene = new Scene(root,915,500);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -21,7 +24,17 @@ public class Main extends Application {
 		}
 	}
 	
+	@Override
+	 public void stop() throws SQLException, ClassNotFoundException{
+		UserSession us = new UserSession();
+		DBConnector db = new DBConnector();
+		db.initialiseDB();
+		String name = us.getUserName();
+		System.out.println("Stage is closing: " + name);
+		db.setLoggedInStatus(name, 0);
+	 } 
+	
 	public static void main(String[] args) {
-		launch(args);
+		Main.launch(args);
 	}
 }
