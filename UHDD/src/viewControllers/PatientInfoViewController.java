@@ -760,7 +760,7 @@ public class PatientInfoViewController {
 		String ownerPassword = "owner";
 		String userPassword = "user";
 		String patientName = patientNew.getGivenName() + " " + patientNew.getFamilyName();
-		CreateEncryptedPdf.createPatientDetailsPdf(patientId, filePath, ownerPassword, userPassword, patientName);
+		CreateEncryptedPdf.crecatePatientDetailsPdf(patientId, filePath, ownerPassword, userPassword, patientName);
 	}
 
 	@FXML 

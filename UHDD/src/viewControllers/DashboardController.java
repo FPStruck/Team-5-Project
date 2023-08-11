@@ -516,7 +516,7 @@ public class DashboardController {
 
 	@FXML	
 	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+		currentFXML = "/fxmlScenes/PatientInfoViewPatientNotes.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
