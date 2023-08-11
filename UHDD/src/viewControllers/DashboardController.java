@@ -103,10 +103,11 @@ public class DashboardController {
 	Boolean nextRecurring;
 	String nextRRule;
 	Boolean nextRecurrence;
+	UserSession us = new UserSession();
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-		userText.setText(UserSession.getInstance().getUserName());
+//		userText.setText(UserSession.getUserName()); // #BUG this line is wont allow the calendar to open
 		Platform.runLater(() -> {
 	        try {
 	            updateNextAppointment();
@@ -250,6 +251,7 @@ public class DashboardController {
 		System.out.println("After loop next apppointment: " + nextAppointment);			
 		startDate();
 		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
+		dbConnector.closeConnection();
 	}
 	
 	private void startLoggedInStatusTimer() {
@@ -284,6 +286,7 @@ public class DashboardController {
 	    Platform.runLater(() -> {
 	        try {
 				dbConnector.initialiseDB();
+				System.out.println("Dashboard controller line 288 logginStatus");
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
 	            if (loggedInStatus == 2) {
 	                // User has been logged out, show alert and provide options to continue or logout
@@ -546,7 +549,7 @@ public class DashboardController {
 		
 			myCalendar = new CalendarApp();
 			myCalendar.start(calendarStage);
-			} else calendarStage.show();
+		} else calendarStage.show();
 	}
 	
 	@FXML	

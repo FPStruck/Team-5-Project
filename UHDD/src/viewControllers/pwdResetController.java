@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import application.CredentialManager;
 import application.LoginResult;
+import application.UserSession;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

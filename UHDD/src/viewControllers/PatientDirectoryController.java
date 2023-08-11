@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import application.CalendarApp;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
+import application.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,9 +33,14 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import application.UserSession;
 
 public class PatientDirectoryController {
+	private static Stage calendarStage;
+	private static Parent calendarRoot;
+	private static CalendarApp myCalendar;
 	private Stage stage;
 	private Scene scene;
 	@FXML private Button back;
@@ -111,6 +118,19 @@ public class PatientDirectoryController {
 	    scene = new Scene(root);
 	    stage.setScene(scene);
 	    stage.show();
+	}
+	
+	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
+		 if (myCalendar == null) {
+		 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxmlScenes/Calendar.fxml"));
+		 calendarRoot = (Parent) fxmlLoader.load();
+		 calendarStage = new Stage();
+		 calendarStage.setScene(new Scene(calendarRoot));
+		 calendarStage.show();
+		 
+		 myCalendar = new CalendarApp();
+		 myCalendar.start(calendarStage);
+		 } else calendarStage.show();
 	}
 
 	@FXML	

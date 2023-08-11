@@ -41,7 +41,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
+            <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseClicked="#switchToCalendar" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">
                      <font>

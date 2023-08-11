@@ -29,7 +29,7 @@ public class UserSession {
         return instance;
     }
 
-    public String getUserName() {
+    public static String getUserName() {
         return userName;
     }
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.CalendarApp;
 import application.DBConnector;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class Nurse_PatientDirectoryController {
+	private static Stage calendarStage;
+	private static Parent calendarRoot;
+	private static CalendarApp myCalendar;
 	private Stage stage;
 	private Scene scene;
 	@FXML private Button back;
@@ -54,7 +58,27 @@ public class Nurse_PatientDirectoryController {
 		stage.show();
 	}
 	
+	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
+		 if (myCalendar == null) {
+		 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxmlScenes/Calendar.fxml"));
+		 calendarRoot = (Parent) fxmlLoader.load();
+		 calendarStage = new Stage();
+		 calendarStage.setScene(new Scene(calendarRoot));
+		 calendarStage.show();
+		 
+		myCalendar = new CalendarApp();
+		 myCalendar.start(calendarStage);
+		 } else calendarStage.show();
+	 }
 
+	@FXML 
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+	 Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Nurse_PatientInfoView.fxml"));
+	 stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	 scene = new Scene(root);
+	 stage.setScene(scene);
+	 stage.show();
+	 }
 	
 	@FXML public void viewTable(MouseEvent mouseEvent) throws Exception {
 		System.out.println("view table");

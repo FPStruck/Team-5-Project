@@ -8,10 +8,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+
+import application.CalendarApp;
 import application.CreateEncryptedPdf;
 import application.DBConnector;
 import application.Patient;
 import application.PatientService;
+import application.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -33,8 +36,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import application.UserSession;
 
 public class PatientInfoViewController {
+	private static Stage calendarStage;
+	private static Parent calendarRoot;
+	private static CalendarApp myCalendar;
 	private Stage stage;
 	private Scene scene;
 	@FXML
@@ -663,6 +670,19 @@ public class PatientInfoViewController {
 	    scene = new Scene(root);
 	    stage.setScene(scene);
 	    stage.show();
+	}
+	
+	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
+		 if (myCalendar == null) {
+		 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxmlScenes/Calendar.fxml"));
+		 calendarRoot = (Parent) fxmlLoader.load();
+		 calendarStage = new Stage();
+		 calendarStage.setScene(new Scene(calendarRoot));
+		 calendarStage.show();
+		 
+		myCalendar = new CalendarApp();
+		 myCalendar.start(calendarStage);
+		 } else calendarStage.show();
 	}
 	
 	@FXML	
