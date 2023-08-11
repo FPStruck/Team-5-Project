@@ -1,4 +1,4 @@
-package application.viewControllers;
+
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -12,6 +12,7 @@ import application.DBConnector;
 import application.LoginResult;
 import application.Patient;
 import application.PatientService;
+import application.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +51,7 @@ public class LoginController {
 
     DBConnector dbConnector = new DBConnector();
     String currentFXML;
+    UserSession us = new UserSession();
     
 
     public boolean loginSuccessful() throws Exception {
@@ -150,6 +152,8 @@ public class LoginController {
         dbConnector.initialiseDB();
 
         String username = userGrabber.getText();
+        us.setUserName(username);
+        System.out.println("Username: " + us.getUserName());
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {
@@ -173,7 +177,7 @@ public class LoginController {
                 Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
                 dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
-                currentFXML = "../fxmlScenes/Dashboard.fxml";
+                currentFXML = "/fxmlScenes/Dashboard.fxml";
                 CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
                 Parent root = loader.load();

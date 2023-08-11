@@ -1,14 +1,11 @@
 package application;
 
+
 import javafx.stage.Stage;
-
-import java.sql.SQLException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 
 public class Main extends Application {
 	
@@ -29,7 +26,7 @@ public class Main extends Application {
 	}
 	
 	@Override
-	 public void stop() throws SQLException, ClassNotFoundException{
+	 public void stop() throws Exception{
 		UserSession us = new UserSession();
 		DBConnector db = new DBConnector();
 		db.initialiseDB();

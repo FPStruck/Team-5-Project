@@ -1,4 +1,4 @@
-package application.viewControllers;
+
 
 public class CurrentFXMLInstance {
 
