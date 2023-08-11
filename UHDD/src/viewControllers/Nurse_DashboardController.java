@@ -81,7 +81,7 @@ public class Nurse_DashboardController {
 	Boolean nextRecurrence;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+	public void initialize() throws Exception{
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		

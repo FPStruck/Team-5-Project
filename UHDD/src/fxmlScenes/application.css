@@ -1,20 +1,23 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#patientDataInputAnchor{
-	-fx-background-color:  #0066C5;
-}
-
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
-    -fx-background-color :#0066C5;
-    -fx-border-color :#0066C5;
+    -fx-background-color :transparent; 
+    -fx-border-color :transparent; 
     -fx-background-radius : 0.0em;
     -fx-border-radius :2.0em;
 }
 
+
 .scroll-bar:horizontal .track-background,
 .scroll-bar:vertical .track-background{
-	-fx-background-color :#0066C5;
-    -fx-border-color :#0066C5;
+	-fx-background-color :transparent; 
+    -fx-border-color :transparent; 
+}
+
+
+.scroll-bar:horizontal,
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
 }
 
 

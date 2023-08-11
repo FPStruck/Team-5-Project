@@ -65,7 +65,7 @@ public class Nurse_PatientInformationController {
 	DBConnector dbConnection = new DBConnector();
 	
 	
-	@FXML public void view(ActionEvent event) throws ClassNotFoundException, SQLException, FileNotFoundException {
+	@FXML public void view(ActionEvent event) throws Exception {
 		System.out.println("viewed");
 		String query = "SELECT * FROM `testdb`.`test3` WHERE ID = '" + textId.getText().trim() + "'";
 		dbConnection.initialiseDB();
@@ -146,7 +146,7 @@ public class Nurse_PatientInformationController {
 	}
 	
 	@FXML 
-	private void insert(ActionEvent event) throws SQLException, ClassNotFoundException {
+	private void insert(ActionEvent event) throws Exception {
 		dbConnection.initialiseDB();
 		
 		// old query to long 
@@ -232,7 +232,7 @@ public class Nurse_PatientInformationController {
 	}
 
 	@FXML 
-	private void update(ActionEvent event) throws ClassNotFoundException, SQLException {
+	private void update(ActionEvent event) throws Exception {
 		dbConnection.initialiseDB();
 		// old query to long and hard to maintain 
 //		String updateQuery = "UPDATE `testdb`.`test3` SET "

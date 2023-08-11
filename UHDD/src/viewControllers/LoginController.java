@@ -1,21 +1,23 @@
-
+package application.viewControllers;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import application.CredentialManager;
 import application.DBConnector;
-import application.EmailManager;
-import application.EmailManager.LoginResult;
-import application.UserSession;
+import application.LoginResult;
+import application.Patient;
+import application.PatientService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -28,34 +30,41 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LoginController {
-
     private Stage stage;
     private Scene scene;
-    private DBConnector dbConnector;
+    
+    private CredentialManager credentialManager;
     private static String currentUser;
-    public static String username = "";
 
     @FXML
     private TextField userGrabber;
+
     @FXML
     private TextField passGrabber;
+
     @FXML
     private Text actionGrabber;
+
     @FXML
     private Button btnLogin;
-    @FXML
-    private Button btnPwdReset;
 
-    public void setDbConnector(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-    }
+    DBConnector dbConnector = new DBConnector();
+    String currentFXML;
+    
 
-    public boolean loginSuccessful() throws ClassNotFoundException, SQLException, IOException {
-        CredentialManager credentialManager = new CredentialManager();
+    public boolean loginSuccessful() throws Exception {
+        credentialManager = new CredentialManager();
         String userLog = userGrabber.getText();
         String passLog = passGrabber.getText();
-        String emailTo = credentialManager.checkCredentialsInFile(userLog, passLog);
-        UserSession.initInstance(userLog,emailTo);
+        String emailTo = credentialManager.verifyPasswordAndReturnEmail(userLog, passLog);
+        ResultSet userRole = dbConnector.QueryReturnResultsForUserSession(userLog);
+        if(userRole.next()){
+            String id = userRole.getString("id");
+            String role = userRole.getString("role");
+            UserSession.initInstance(userLog,role,id);
+        }
+
+        //Check if password last set date was more than 30 days ago - returns true if password has expired
         if(!credentialManager.checkPasswordLastSetDate(userLog)){
             if (emailTo == null) {
                 actionGrabber.setText("No user match found");
@@ -64,20 +73,19 @@ public class LoginController {
             }
 
             //2FA verification
-            EmailManager emailManager = new EmailManager();
-            LoginResult result = emailManager.verifyLogin(emailTo);
+            LoginResult result = credentialManager.verifyMFA(userLog);
 
             if (result == LoginResult.SUCCESSFUL) {
                 // Handle successful login
                 return true;
             } else if (result == LoginResult.WRONG_CODE) {
                 // Handle wrong code scenario
-                actionGrabber.setText("Wrong code input. Email verification cancelled");
+                actionGrabber.setText("Wrong code input. MFA verification cancelled");
                 actionGrabber.setFill(Color.RED);
                 return false;
             } else if (result == LoginResult.CANCELLED) {
                 // Handle login cancelled scenario
-                actionGrabber.setText("Email verification cancelled");
+                actionGrabber.setText("MFA verification cancelled");
                 actionGrabber.setFill(Color.RED);
                 return false;
             } else {
@@ -88,7 +96,7 @@ public class LoginController {
             actionGrabber.setText("Password has expired. Please reset your password");
             //Open popup window
             Stage popupStage = new Stage();
-            Parent popupRoot = FXMLLoader.load(getClass().getResource("/fxmlScenes/PopUpPwdExpired.fxml"));
+            Parent popupRoot = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PopUpPwdExpired.fxml"));
             Scene popupScene = new Scene(popupRoot);
             popupStage.setScene(popupScene);
             popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -97,9 +105,36 @@ public class LoginController {
         }
     }
 
+    
+    public void updatePatientInMem(int id) throws Exception{
+		dbConnector.initialiseDB();
+		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(String.valueOf(id));
+		Patient patient;
+		while(patientDetails.next()){
+			String familyName = patientDetails.getString("lastName");
+			String givenName = patientDetails.getString("firstName");
+			String middleName = patientDetails.getString("middleName");
+			String gender = patientDetails.getString("gender");
+			String address = patientDetails.getString("address");
+			String city = patientDetails.getString("city");
+			String state = patientDetails.getString("state");
+			String telephone = patientDetails.getString("telephone");
+			String email = patientDetails.getString("email");
+			String dateOfBirth = patientDetails.getString("dateOfBirth");
+			String healthInsuranceNumber = patientDetails.getString("healthInsuranceNumber");
+			String emergencyContactNumber = patientDetails.getString("emergencyContactNumber");
+			patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber);
+			PatientService.getInstance().setCurrentPatient(patient);
+		}
+	}
+
+    @FXML public void initialize() throws Exception{
+        updatePatientInMem(1);
+    }
+    
     @FXML
     protected void handlePwdResetAction(ActionEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/PasswordReset.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PasswordReset.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -107,17 +142,14 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleSignInAction(ActionEvent event) throws IOException, ClassNotFoundException, SQLException {
+    protected void handleSignInAction(ActionEvent event) throws Exception {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY hh:mm:ss a");
         String formattedDateTime = currentDateTime.format(formatter);
         DBConnector dbConnector = new DBConnector();
         dbConnector.initialiseDB();
-        UserSession us = new UserSession();
-        
-        username = userGrabber.getText();
-        us.setEmail(username);
-        
+
+        String username = userGrabber.getText();
         int loggedInStatus = dbConnector.getLoggedInStatus(username);
 
         if (userGrabber.getText().isEmpty() && passGrabber.getText().isEmpty()) {
@@ -133,19 +165,20 @@ public class LoginController {
             actionGrabber.setText("Another user is already logged in with this username");
             actionGrabber.setFill(Color.RED);
             System.out.println("A user: " + username + " has attempted access from another device (all users logged out): " + formattedDateTime);
-            dbConnector.setLoggedInStatus(username, 0);
+            dbConnector.setLoggedInStatus(username, 2);
         } else { 
         	
         	if (loginSuccessful()) {
                 System.out.println("A user: " + username + " has successfully logged in at: " + formattedDateTime);
+                Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
+                dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlScenes/Dashboard.fxml"));
+                currentFXML = "../fxmlScenes/Dashboard.fxml";
+                CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
                 Parent root = loader.load();
-                DashboardController dashboardController = loader.getController();
-                dashboardController.setUserText(username);
-
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -154,7 +187,7 @@ public class LoginController {
 
                 // Redirect the current user to the login.fxml scene
                 if (currentUser != null && currentUser.equals(username)) {
-                    Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Login.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Login.fxml"));
                     stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -166,7 +199,7 @@ public class LoginController {
 
     @FXML
     public void switchToCreateUser(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/UserCreation.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/UserCreation.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -175,12 +208,11 @@ public class LoginController {
 
     @FXML
     public void bypassUserLogin(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxmlScenes/Dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Dashboard.fxml"));
         stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-
+    
 }
-
