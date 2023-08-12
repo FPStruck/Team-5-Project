@@ -92,7 +92,7 @@ public class PatientDirectoryController {
 	
 	@FXML
 	public void switchToDashBoard(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/Dashboard.fxml";
+		currentFXML = "/application/fxmlScenes/Dashboard.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -104,7 +104,7 @@ public class PatientDirectoryController {
 
 	@FXML	
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		currentFXML = "/application/fxmlScenes/PatientDirectory.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -117,7 +117,7 @@ public class PatientDirectoryController {
 
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -137,7 +137,7 @@ public class PatientDirectoryController {
 			alert.setHeaderText(null);
 			alert.showAndWait();
 		} else {
-			currentFXML = "../fxmlScenes/CreateNewPatient.fxml";
+			currentFXML = "/application/fxmlScenes/CreateNewPatient.fxml";
 			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 			Parent root = loader.load();
@@ -149,7 +149,7 @@ public class PatientDirectoryController {
 	}
 
 	public void NonMouseEventSwitchToPatientInfoView() throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -161,7 +161,7 @@ public class PatientDirectoryController {
 	}
 
 	public void NonMouseEventSwitchToPatientDirectory() throws IOException{
-		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		currentFXML = "/application/fxmlScenes/PatientDirectory.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -177,7 +177,7 @@ public class PatientDirectoryController {
 	public void initialize() throws Exception{
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);
-		if(currentFXML.equals("../fxmlScenes/PatientDirectory.fxml")){
+		if(currentFXML.equals("/application/fxmlScenes/PatientDirectory.fxml")){
 			System.out.println("Initialise PD");
 			ObservableList<Patient> patientOL = FXCollections.observableArrayList();
 
@@ -232,7 +232,7 @@ public class PatientDirectoryController {
 			});
 
 			dbConnector.closeConnection();
-		} else if (currentFXML.equals("../fxmlScenes/CreateNewPatient.fxml")){
+		} else if (currentFXML.equals("/application/fxmlScenes/CreateNewPatient.fxml")){
 			choiceBoxState.getItems().addAll("NSW", "QLD", "VIC", "ACT", "SA", "WA", "NT", "TAS");
 		}
 	}

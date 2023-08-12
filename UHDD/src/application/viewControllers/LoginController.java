@@ -173,7 +173,7 @@ public class LoginController {
                 Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
                 dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
-                currentFXML = "../fxmlScenes/Dashboard.fxml";
+                currentFXML = "/application/fxmlScenes/Dashboard.fxml";
                 CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
                 Parent root = loader.load();

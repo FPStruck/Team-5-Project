@@ -105,9 +105,10 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-		userText.setText(UserSession.getInstance().getUserName());
+		//userText.setText(UserSession.getInstance().getUserName());
 		Platform.runLater(() -> {
 	        try {
+				
 	            updateNextAppointment();
 	            updatePatientDirectoryDBTableView();
 	            updatePrescribedMedsDBTableView();
@@ -468,7 +469,7 @@ public class DashboardController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -477,7 +478,7 @@ public class DashboardController {
 	
 	@FXML 
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
-		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		currentFXML = "/application/fxmlScenes/PatientDirectory.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -490,7 +491,7 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToTableCreator(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/TableCreator.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/TableCreator.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -499,7 +500,7 @@ public class DashboardController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+		currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -512,7 +513,7 @@ public class DashboardController {
 
 	@FXML	
 	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+		currentFXML = "/application/fxmlScenes/PatientInfoViewPatientNotes.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -525,7 +526,7 @@ public class DashboardController {
 
 	@FXML
 	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
-			currentFXML = "../fxmlScenes/PopUpAddPatientNote.fxml";
+			currentFXML = "/application/fxmlScenes/PopUpAddPatientNote.fxml";
 			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 			Stage popupStage = new Stage();
             Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
@@ -535,9 +536,10 @@ public class DashboardController {
             popupStage.showAndWait();
 	}
 	
+	@FXML
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
 		if (myCalendar == null) {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxmlScenes/Calendar.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Calendar.fxml"));
 	        calendarRoot = (Parent) fxmlLoader.load();
 			calendarStage = new Stage();
 			calendarStage.setScene(new Scene(calendarRoot));

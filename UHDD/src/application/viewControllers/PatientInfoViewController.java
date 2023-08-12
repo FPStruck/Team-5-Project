@@ -178,7 +178,7 @@ public class PatientInfoViewController {
 		insuranceNumberTXT.setText(patient.getHealthInsuranceNumber());
 		//currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println(currentFXML + " on set patient overview");
-		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
+		if(currentFXML.equals("/application/fxmlScenes/PatientInfoViewOverview.fxml")){
 			phoneNoTXT.setText(patient.getTelephone());
 			emailTXT.setText(patient.getEmail());
 			addressTXT.setText(patient.getAddress());
@@ -571,7 +571,7 @@ public class PatientInfoViewController {
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);
-		if(currentFXML.equals("../fxmlScenes/PopUpAddPatientNote.fxml")){
+		if(currentFXML.equals("/application/fxmlScenes/PopUpAddPatientNote.fxml")){
 			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
 			inDiagnosisSev.setValue("Mild");
 			txtEnterNoteAsId.setText("Entering note as: " + UserSession.getInstance().getUserName());
@@ -584,17 +584,17 @@ public class PatientInfoViewController {
 					txtCharCountWarn.setVisible(false);
 				}
 			});
-		} else if (currentFXML.equals("../fxmlScenes/PopUpAddProgressPlan.fxml")){
+		} else if (currentFXML.equals("/application/fxmlScenes/PopUpAddProgressPlan.fxml")){
 			
 		}
 		else {setPatientOverviewTxtFields(patientNew);}
 		
-		if(currentFXML.equals("../fxmlScenes/PatientInfoViewOverview.fxml")){
+		if(currentFXML.equals("/application/fxmlScenes/PatientInfoViewOverview.fxml")){
 			setMedicationOverviewTxtFields(patientNew);
 			setDiagnosisOverviewTxtFields(patientNew);
-		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewPatientNotes.fxml")){
+		} else if (currentFXML.equals("/application/fxmlScenes/PatientInfoViewPatientNotes.fxml")){
 			setNoteSummaryDetails(patientNew);
-		} else if (currentFXML.equals("../fxmlScenes/PatientInfoViewProgressPlan.fxml")){
+		} else if (currentFXML.equals("/application/fxmlScenes/PatientInfoViewProgressPlan.fxml")){
 			System.out.println("Are we getting here?");
 			setProgressPlan(String.valueOf(patientNew.getId()));
 		}	
@@ -603,7 +603,7 @@ public class PatientInfoViewController {
 
 	@FXML
 	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
-			currentFXML = "../fxmlScenes/PopUpAddPatientNote.fxml";
+			currentFXML = "/application/fxmlScenes/PopUpAddPatientNote.fxml";
 			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 			Stage popupStage = new Stage();
             Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
@@ -615,7 +615,7 @@ public class PatientInfoViewController {
 
 	@FXML
 	public void addPatientProgressPlan(MouseEvent mouseEvent) throws IOException{
-			currentFXML = "../fxmlScenes/PopUpAddProgressPlan.fxml";
+			currentFXML = "/application/fxmlScenes/PopUpAddProgressPlan.fxml";
 			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 			Stage popupStage = new Stage();
             Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
@@ -632,7 +632,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -641,7 +641,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToDasboard(MouseEvent mouseEvent) throws Exception {
-		currentFXML = "../fxmlScenes/Dashboard.fxml";	
+		currentFXML = "/application/fxmlScenes/Dashboard.fxml";	
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -654,7 +654,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientDirectory.fxml";
+		currentFXML = "/application/fxmlScenes/PatientDirectory.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -667,7 +667,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-	    currentFXML = "../fxmlScenes/PatientInfoViewOverview.fxml";
+	    currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -680,7 +680,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoViewProgressPlan(MouseEvent mouseEvent) throws IOException {
-		currentFXML = "../fxmlScenes/PatientInfoViewProgressPlan.fxml";
+		currentFXML = "/application/fxmlScenes/PatientInfoViewProgressPlan.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML); 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 		Parent root = loader.load();
@@ -693,7 +693,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
-	    currentFXML = "../fxmlScenes/PatientInfoViewPatientNotes.fxml";
+	    currentFXML = "/application/fxmlScenes/PatientInfoViewPatientNotes.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
@@ -708,7 +708,7 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoViewDocuments(MouseEvent mouseEvent) throws IOException {
-	    currentFXML = "../fxmlScenes/PatientInfoViewDocuments.fxml";
+	    currentFXML = "/application/fxmlScenes/PatientInfoViewDocuments.fxml";
 		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
 	    Parent root = loader.load();
