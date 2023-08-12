@@ -59,6 +59,8 @@ public class PatientInfoViewController {
 	@FXML
 	private Button nextPatientBTN;
 	@FXML
+	private Button prevPatientBTN;
+	@FXML
 	private Text viewPatientInfoBtn;
 	@FXML
 	private Text viewPatientInfoBtn2;
@@ -122,6 +124,12 @@ public class PatientInfoViewController {
 	@FXML
 	public void nextPatient() throws Exception {
 		setTextFieldsToPatientId(patient.toString());
+	}
+	
+	@FXML
+	public void prevPatient() throws Exception {
+	        patient = patient - 2;
+	        setTextFieldsToPatientId(patient.toString());
 	}
 	
 	@FXML 	

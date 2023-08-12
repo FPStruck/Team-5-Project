@@ -52,7 +52,35 @@ public class PatientDirectoryController {
 		stage.show();
 	}
 	
-
+	@FXML 	
+	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInformation.fxml"));		
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML 
+	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientDirectory.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	
+	@FXML	
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoView.fxml"));
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	
 	
 	@FXML public void viewTable(MouseEvent mouseEvent) throws Exception {
 		System.out.println("view table");
