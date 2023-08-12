@@ -12,11 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateEncryptedPdf {
-
-    
-
-    
-    public static void createPatientDetailsPdf(String patientId,String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception {
+	
+    public static void crecatePatientDetailsPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception {
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();
