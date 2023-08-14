@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -26,26 +26,32 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Text>
-      <TextField fx:id="clientGrabberCreator" layoutX="435.0" layoutY="191.0" promptText="enter the client name" stylesheets="@application.css" />
-      <TextField fx:id="doctorGrabberCreator" layoutX="435.0" layoutY="236.0" promptText="enter the doctor name" stylesheets="@application.css" />
-      <TextField fx:id="patientIdGrabberCreator" layoutX="435.0" layoutY="281.0" promptText="enter the Patient Id" stylesheets="@application.css" />
-      <TextField fx:id="timeIdGrabberCreator" layoutX="435.0" layoutY="317.0" promptText="enter the time" stylesheets="@application.css" />
-      <Text fill="#063847" layoutX="339.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client name:" wrappingWidth="85.0">
+      <TextField fx:id="clientGrabberCreator" layoutX="435.0" layoutY="178.0" promptText="enter the client name" stylesheets="@application.css" />
+      <TextField fx:id="doctorGrabberCreator" layoutX="435.0" layoutY="212.0" promptText="enter the doctor name" stylesheets="@application.css" />
+      <TextField fx:id="patientIdGrabberCreator" layoutX="435.0" layoutY="252.0" promptText="enter the Patient Id" stylesheets="@application.css" />
+      <TextField fx:id="timeGrabberCreator" layoutX="435.0" layoutY="288.0" promptText="enter the time 1 to 24" stylesheets="@application.css" />
+      <DatePicker fx:id="dateGrabberCreator" layoutX="416.0" layoutY="318.0" promptText="select a date" />
+      <Text fill="#063847" layoutX="339.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client name:" wrappingWidth="85.0">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fill="#063847" layoutX="335.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doctor name:">
+      <Text fill="#063847" layoutX="337.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doctor name:">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fill="#063847" layoutX="346.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Id:">
+      <Text fill="#063847" layoutX="348.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Id:">
          <font>
             <Font size="15.0" /> 
          </font>
       </Text>
-      <Text fill="#063847" layoutX="364.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:">
+      <Text fill="#063847" layoutX="364.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text fill="#063847" layoutX="364.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:">
          <font>
             <Font size="15.0" />
          </font>

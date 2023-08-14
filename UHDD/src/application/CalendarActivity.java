@@ -11,8 +11,61 @@ public class CalendarActivity {
     private String clientName;
     private String doctorName;
     private Integer patiantId;
+    private Integer year;
+    private Integer month;
+    private Integer day;
+    private Integer hour;
+    private Integer minute;
 
-    public CalendarActivity(ZonedDateTime date, String clientName, Integer patientNo) {
+    public Integer getPatiantId() {
+		return patiantId;
+	}
+
+	public void setPatiantId(Integer patiantId) {
+		this.patiantId = patiantId;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+
+	public Integer getHour() {
+		return hour;
+	}
+
+	public void setHour(Integer hour) {
+		this.hour = hour;
+	}
+
+	public Integer getMinute() {
+		return minute;
+	}
+
+	public void setMinute(Integer minute) {
+		this.minute = minute;
+	}
+
+	public CalendarActivity(ZonedDateTime date, String clientName, Integer patientNo) {
         this.date = date;
         this.clientName = clientName;
         this.patiantId = patientNo;

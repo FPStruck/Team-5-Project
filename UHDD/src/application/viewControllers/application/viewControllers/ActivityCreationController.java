@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -24,19 +25,30 @@ public class ActivityCreationController {
 	 @FXML
 	 private TextField patientIdGrabberCreator ;
 	 
+	 @FXML
+	 private TextField timeGrabberCreator;
+	 
+	 @FXML
+	 private DatePicker dateGrabberCreator;
+	 
 	 public CalendarActivity getCa() {
 		return ca;
-	}
-
-	@FXML
-	 private TextField timeGrabberCreator;
+	 }
 	 
 	 @FXML	
 	 public void handleCreateNewActivityAction(MouseEvent mouseEvent) throws IOException{
 		  ca.setClientName(clientGrabberCreator.getText());
 		  ca.setDoctorName(doctorGrabberCreator.getText());
-		  ca.setPatientNo(Integer.parseInt(patientIdGrabberCreator.getText()));	
+		  ca.setPatientNo(Integer.parseInt(patientIdGrabberCreator.getText()));
+		  ca.setHour(Integer.parseInt(timeGrabberCreator.getText()));
+		  System.out.println("The date from date picker: " + dateGrabberCreator.getValue().toString());
 		  
+		  String date = dateGrabberCreator.getValue().toString();
+		  String [] arrOfStr = date.split("-", 3);
+		  ca.setYear(Integer.parseInt(arrOfStr[0]));
+		  ca.setMonth(Integer.parseInt(arrOfStr[1]));
+		  ca.setDay(Integer.parseInt(arrOfStr[2]));
+			    
 		  // zone date example 2023-08-21T23:00+10:00[Australia/Sydney]
 		  
 		  // year the year to represent, from MIN_YEAR to MAX_YEAR
@@ -48,7 +60,7 @@ public class ActivityCreationController {
 		  // nanoOfSecond the nano-of-second to represent, from 0 to 999,999,999
 		  // zone the time-zone, not null
 		  ZonedDateTime dateFocus = ZonedDateTime.now(); ;
-		  ZonedDateTime time = ZonedDateTime.of(2023, 8, 14, 6, 30, 0, 0, dateFocus.getZone());
+		  ZonedDateTime time = ZonedDateTime.of(ca.getYear(), ca.getMonth(), ca.getDay(), ca.getHour(), 0, 0, 0, dateFocus.getZone());
 		  ca.setDate(time);
 		  System.out.println(time);
 		  switchToHomepage(mouseEvent);
