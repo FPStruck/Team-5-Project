@@ -55,7 +55,7 @@
             <Font size="13.0" />
          </font>
       </Button>
-      <Button fx:id="createNewUser" layoutX="475.0" layoutY="357.0" mnemonicParsing="false" onAction="#handleCreateNewActivityAction" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Create Activity" textFill="#fcfcfc">
+      <Button fx:id="createNewActivity" layoutX="475.0" layoutY="357.0" mnemonicParsing="false" onMouseClicked="#handleCreateNewActivityAction" style="-fx-background-color: #063847;" stylesheets="@application.css" text="Create Activity" textFill="#fcfcfc">
          <font>
             <Font size="13.0" />
          </font>

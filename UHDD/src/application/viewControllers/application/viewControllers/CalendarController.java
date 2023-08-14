@@ -170,6 +170,7 @@ public class CalendarController implements Initializable {
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
             ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27)+1, random.nextInt(23)+1,0,0,0,dateFocus.getZone()); // make sure the activity is between 1 and 28
+            System.out.println("Time: " + time);
             calendarActivities.add(new CalendarActivity(time, "Toby", random.nextInt()));
         }
 

@@ -17,8 +17,19 @@ public class CalendarActivity {
         this.clientName = clientName;
         this.patiantId = patientNo;
     }
+    
+    public CalendarActivity(ZonedDateTime string, String clientName, String doctorName, Integer i) {
+    	this.date = string;
+        this.clientName = clientName;
+        this.doctorName = doctorName;
+        this.patiantId = i;
+    }
 
-    public ZonedDateTime getDate() {
+    public CalendarActivity() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ZonedDateTime getDate() {
         return date;
     }
 
@@ -34,11 +45,11 @@ public class CalendarActivity {
         this.clientName = clientName;
     }
 
-    public Integer getServiceNo() {
+    public Integer getPatientNo() {
         return patiantId;
     }
 
-    public void setServiceNo(Integer patientNo) {
+    public void setPatientNo(Integer patientNo) {
         this.patiantId = patientNo;
     }
 
