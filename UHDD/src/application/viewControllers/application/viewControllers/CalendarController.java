@@ -42,6 +42,7 @@ public class CalendarController implements Initializable {
         dateFocus = ZonedDateTime.now(); // get the local zone date
         today = ZonedDateTime.now(); // get the local zone time
         drawCalendar(); // the FXML is blank apart from the edit text boxes
+        System.out.println("Drawing");
     }
 
     @FXML
@@ -153,6 +154,7 @@ public class CalendarController implements Initializable {
                 System.out.println(text.getText());
             });
         }
+        
         // make sure the vbox fits inside the rectangle date box
         calendarActivityBox.setTranslateY((rectangleHeight / 2) * 0.20);
         calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
@@ -168,9 +170,9 @@ public class CalendarController implements Initializable {
         
         // create a random activity 
         Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27)+1, random.nextInt(23)+1,0,0,0,dateFocus.getZone()); // make sure the activity is between 1 and 28
-            System.out.println("Time: " + time);
+        for (int i = 0; i < dateFocus.getMonth().maxLength(); i += 2) {
+            ZonedDateTime time = ZonedDateTime.of(year, month, i+1, random.nextInt(23)+1,0,0,0,dateFocus.getZone()); // make sure the activity is between 1 and 28
+//            System.out.println("Time: " + time);
             calendarActivities.add(new CalendarActivity(time, "Toby", random.nextInt()));
         }
 
@@ -179,7 +181,7 @@ public class CalendarController implements Initializable {
     
     private Map<Integer, List<CalendarActivity>> createCalendarMap(List<CalendarActivity> calendarActivities) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>(); // create a hash map
-
+        ActivityCreationController ca = new ActivityCreationController();
         for (CalendarActivity activity: calendarActivities) { // loop through the list
             int activityDate = activity.getDate().getDayOfMonth(); // get the date from each element in the list
             if(!calendarActivityMap.containsKey(activityDate)){
@@ -192,6 +194,12 @@ public class CalendarController implements Initializable {
                 newList.add(activity);
                 calendarActivityMap.put(activityDate, newList); // insert the list into the map with a key
             }
+        }
+        if (!(ca.getCa().getDate() == null)) {
+	        int caActivityDate = ca.getCa().getDate().getDayOfMonth(); // get the date from each element in the list
+	        List<CalendarActivity> caList = new ArrayList<>();
+	        caList.add(ca.getCa());
+	        calendarActivityMap.put(caActivityDate, caList); // insert the list into the map with a key
         }
         return  calendarActivityMap; // return the map
     }

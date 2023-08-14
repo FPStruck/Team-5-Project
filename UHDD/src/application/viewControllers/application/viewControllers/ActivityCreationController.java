@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class ActivityCreationController {
+	 public static CalendarActivity ca = new CalendarActivity();
 	
 	 @FXML
 	 private TextField clientGrabberCreator;
@@ -23,17 +24,21 @@ public class ActivityCreationController {
 	 @FXML
 	 private TextField patientIdGrabberCreator ;
 	 
-	 @FXML
+	 public CalendarActivity getCa() {
+		return ca;
+	}
+
+	@FXML
 	 private TextField timeGrabberCreator;
 	 
 	 @FXML	
 	 public void handleCreateNewActivityAction(MouseEvent mouseEvent) throws IOException{
-		  CalendarActivity ca = new CalendarActivity();
 		  ca.setClientName(clientGrabberCreator.getText());
 		  ca.setDoctorName(doctorGrabberCreator.getText());
 		  ca.setPatientNo(Integer.parseInt(patientIdGrabberCreator.getText()));	
 		  
 		  // zone date example 2023-08-21T23:00+10:00[Australia/Sydney]
+		  
 		  // year the year to represent, from MIN_YEAR to MAX_YEAR
 		  // month the month-of-year to represent, from 1 (January) to 12 (December)
 		  // dayOfMonth the day-of-month to represent, from 1 to 31
@@ -43,7 +48,7 @@ public class ActivityCreationController {
 		  // nanoOfSecond the nano-of-second to represent, from 0 to 999,999,999
 		  // zone the time-zone, not null
 		  ZonedDateTime dateFocus = ZonedDateTime.now(); ;
-		  ZonedDateTime time = ZonedDateTime.of(2023, 8, 15, 6, 30, 0, 0, dateFocus.getZone());
+		  ZonedDateTime time = ZonedDateTime.of(2023, 8, 14, 6, 30, 0, 0, dateFocus.getZone());
 		  ca.setDate(time);
 		  System.out.println(time);
 		  switchToHomepage(mouseEvent);
