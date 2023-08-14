@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -128,6 +129,12 @@ public class CalendarController implements Initializable {
                 calendarActivityBox.getChildren().add(moreActivities);
                 moreActivities.setOnMouseClicked(mouseEvent -> {
                     //On ... click print all activities for given date
+                	try {
+						switchToActivityCreation(mouseEvent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     System.out.println(calendarActivities);
                 });
                 break;
@@ -137,6 +144,12 @@ public class CalendarController implements Initializable {
             calendarActivityBox.getChildren().add(text);
             text.setOnMouseClicked(mouseEvent -> {
                 //On Text clicked
+            	try {
+					switchToActivityCreation(mouseEvent);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 System.out.println(text.getText());
             });
         }
@@ -181,4 +194,13 @@ public class CalendarController implements Initializable {
         }
         return  calendarActivityMap; // return the map
     }
+    
+    @FXML	
+	public void switchToActivityCreation(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlscenes/ActivityCreation.fxml"));
+		Stage stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();		
+	}
 }
