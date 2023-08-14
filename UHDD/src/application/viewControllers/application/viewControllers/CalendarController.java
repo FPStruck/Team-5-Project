@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -27,6 +28,8 @@ public class CalendarController implements Initializable {
 
     ZonedDateTime dateFocus;
     ZonedDateTime today;
+    static Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>(); // create a hash map
+    static List<CalendarActivity> newList = new ArrayList<>();
 
     @FXML
     private Text year;
@@ -164,23 +167,23 @@ public class CalendarController implements Initializable {
     }
 
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime dateFocus) {
-        List<CalendarActivity> calendarActivities = new ArrayList<>(); // create a list to return
+    	List<CalendarActivity> calendarActivities = new ArrayList<>(); // create a list to return
         int year = dateFocus.getYear();
         int month = dateFocus.getMonth().getValue();
         
         // create a random activity 
-        Random random = new Random();
-        for (int i = 0; i < dateFocus.getMonth().maxLength(); i += 2) {
-            ZonedDateTime time = ZonedDateTime.of(year, month, i+1, random.nextInt(23)+1,0,0,0,dateFocus.getZone()); // make sure the activity is between 1 and 28
-//            System.out.println("Time: " + time);
-            calendarActivities.add(new CalendarActivity(time, "Toby", random.nextInt()));
-        }
+//        Random random = new Random();
+//        for (int i = 0; i < dateFocus.getMonth().maxLength(); i += 2) {
+//            ZonedDateTime time = ZonedDateTime.of(year, month, i+1, random.nextInt(23)+1,0,0,0,dateFocus.getZone()); // make sure the activity is between 1 and 28
+////            System.out.println("Time: " + time);
+//            calendarActivities.add(new CalendarActivity(time, "Toby", random.nextInt()));
+//        }
 
         return createCalendarMap(calendarActivities); // return a map which is created by the function below
     }
     
     private Map<Integer, List<CalendarActivity>> createCalendarMap(List<CalendarActivity> calendarActivities) {
-        Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>(); // create a hash map
+        
         ActivityCreationController ca = new ActivityCreationController();
         for (CalendarActivity activity: calendarActivities) { // loop through the list
             int activityDate = activity.getDate().getDayOfMonth(); // get the date from each element in the list
@@ -190,16 +193,16 @@ public class CalendarController implements Initializable {
                 // make a new list from the old list
             	List<CalendarActivity> OldListByDate = calendarActivityMap.get(activityDate);
 
-                List<CalendarActivity> newList = new ArrayList<>(OldListByDate);
+                newList = new ArrayList<>(OldListByDate);
                 newList.add(activity);
                 calendarActivityMap.put(activityDate, newList); // insert the list into the map with a key
             }
         }
         if (!(ca.getCa().getDate() == null)) {
 	        int caActivityDate = ca.getCa().getDate().getDayOfMonth(); // get the date from each element in the list
-	        List<CalendarActivity> caList = new ArrayList<>();
-	        caList.add(ca.getCa());
-	        calendarActivityMap.put(caActivityDate, caList); // insert the list into the map with a key
+//	        List<CalendarActivity> caList = new ArrayList<>();
+	        newList.add(ca.getCa());
+	        calendarActivityMap.put(caActivityDate, newList); // insert the list into the map with a key
         }
         return  calendarActivityMap; // return the map
     }
