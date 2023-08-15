@@ -112,6 +112,7 @@
 	    <version>1.14</version>
 	</dependency>
 
+
 	<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
 	<dependency>
 	    <groupId>javax.activation</groupId>
@@ -170,5 +171,12 @@
       <artifactId>scala-library</artifactId>
       <version>2.13.0</version>
     </dependency>
+    
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.6</version> 
+    </dependency>
+    
   </dependencies>
 </project>
