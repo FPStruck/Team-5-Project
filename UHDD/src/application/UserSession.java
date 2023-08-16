@@ -10,7 +10,7 @@ public class UserSession {
     public UserSession() { 
     }
     
-    private UserSession(String userName, String role, String id) { // Modified constructor
+    public UserSession(String userName, String role, String id) { // Modified constructor
         this.userName = userName;
         this.role = role;
         this.id = id;

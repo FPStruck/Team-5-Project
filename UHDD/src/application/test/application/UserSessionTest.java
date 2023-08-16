@@ -1,4 +1,4 @@
-/*
+
 package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import application.UserSession;
 
 class UserSessionTest {
-	UserSession us = new UserSession("500");
+	UserSession us = new UserSession("500", "Nurse", "1000");
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -28,8 +28,7 @@ class UserSessionTest {
 	@Test
 	void test() {
 //		fail("Not yet implemented");
-		System.out.println(us.getUserId());
+		System.out.println(us.getId());
 	}
 
 }
-*/

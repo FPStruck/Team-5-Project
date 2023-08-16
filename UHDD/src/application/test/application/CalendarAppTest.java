@@ -1,4 +1,4 @@
-/*package application.test.application;
+package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,4 +34,3 @@ class CalendarAppTest {
 	}
 
 }
-*/
