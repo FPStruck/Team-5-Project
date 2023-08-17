@@ -540,23 +540,23 @@ public class DashboardController {
 	}
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
-//		if (myCalendar == null) {
-//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Calendar.fxml"));
-//	        calendarRoot = (Parent) fxmlLoader.load();
-//			calendarStage = new Stage();
-//			calendarStage.setScene(new Scene(calendarRoot));
-//			calendarStage.show();
-//		
-//			myCalendar = new CalendarApp();
-//			myCalendar.start(calendarStage);	
-//			
-//		} else calendarStage.show();
+		if (myCalendar == null) {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Calendar.fxml"));
+	        calendarRoot = (Parent) fxmlLoader.load();
+			calendarStage = new Stage();
+			calendarStage.setScene(new Scene(calendarRoot));
+			calendarStage.show();
 		
-		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Calendar_new.fxml"));
-		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+			myCalendar = new CalendarApp();
+			myCalendar.start(calendarStage);	
+			
+		} else calendarStage.show();
+		
+//		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Calendar_new.fxml"));
+//		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+//		scene = new Scene(root);
+//		stage.setScene(scene);
+//		stage.show();
 	}
 	
 	@FXML	

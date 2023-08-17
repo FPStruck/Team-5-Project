@@ -639,7 +639,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../application/fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
