@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import application.CredentialManager;
 import application.LoginResult;
+import application.UserSession;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,9 +30,6 @@ public class pwdResetController {
     private TextField txtVerifyPwd;
     @FXML
     private Text txtStatus;
-
-  
-
     
     public void resetPwd() throws Exception {
         String oldPwd = txtOldPwd.getText();
@@ -91,3 +89,4 @@ public class pwdResetController {
         resetPwd();
     }
 }
+

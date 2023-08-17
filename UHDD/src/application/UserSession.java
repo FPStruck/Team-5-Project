@@ -1,13 +1,15 @@
-package application.viewControllers;
-
+package application;
 public class UserSession {
 
     private static UserSession instance;
 
-    private String userName;
-    private String role; // Added role member variable
-    private String id;      // Added id member variable
+    private static String userName;
+    private static String role; // Added role member variable
+    private static String id;      // Added id member variable
 
+    public UserSession() { 
+    }
+    
     private UserSession(String userName, String role, String id) { // Modified constructor
         this.userName = userName;
         this.role = role;
@@ -27,7 +29,7 @@ public class UserSession {
         return instance;
     }
 
-    public String getUserName() {
+    public static String getUserName() {
         return userName;
     }
 
@@ -45,4 +47,8 @@ public class UserSession {
         id = "";        // or any default value
         instance = null;
     }
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }
