@@ -149,14 +149,17 @@ public class DashboardController {
 						if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
 							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextTitle);
 							System.out.println("This is the patient details: " + patientDetails);
-							if(patientDetails.next()) {
-								String name =  patientDetails.getString("FirstName") + " " 
-										+ patientDetails.getString("MiddleName") + " " 
-										+ patientDetails.getString("LastName");
-								fullName.setText(name);
-								phoneNumber.setText(patientDetails.getString("Telephone"));
-								pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-								progressNotes.setText(patientDetails.getString("ProgressNotes"));
+							if (patientDetails.next()) {
+							    String name =  patientDetails.getString("FirstName") + " " 
+							            + patientDetails.getString("MiddleName") + " " 
+							            + patientDetails.getString("LastName");
+							    fullName.setText(name);
+							    phoneNumber.setText(patientDetails.getString("Telephone"));
+							    pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+							    progressNotes.setText(patientDetails.getString("ProgressNotes"));
+							} else {
+							    // Handle the case where no patient details are found
+							    System.out.println("No patient details found for title: " + nextTitle);
 							}
 						}
 					}		// this is where it previously breaks because nestAppointment was null

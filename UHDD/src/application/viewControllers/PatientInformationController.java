@@ -1,10 +1,18 @@
 package application.viewControllers;
 
 import java.io.FileNotFoundException;
+import java.security.Key;
+import java.security.SecureRandom;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import application.DBConnector;
 import javafx.event.ActionEvent;
@@ -95,26 +103,27 @@ public class PatientInformationController {
 		stage.show();
 	}
 	
-	private void loadFields(ResultSet results) throws SQLException {
+	private void loadFields(ResultSet results) throws Exception {
 		if (results.next()) {
-			textLastName.setText(results.getString(2));
-			textFirstName.setText(results.getString(3));
-			textMiddleName.setText(results.getString(4));
-			textAddress.setText(results.getString(5));
-			textCity.setText(results.getString(6));
-			textState.setText(results.getString(7));
-			textTelephone.setText(results.getString(8));
-			textEmail.setText(results.getString(9));
-			textHealthInsuranceNumber.setText(results.getString(10));
-			textEmergencyContactNumber.setText(results.getString(11));
-			textAllergies.setText(results.getString(12));
-			textPastMedicalConditions.setText(results.getString(13));
-			textSurgeriesOrProcedures.setText(results.getString(14));
-			textMedications.setText(results.getString(15));
-			textImmunisations.setText(results.getString(16));
-			textDetails.setText(results.getString(17));
-			textFamilyMedicalHistory.setText(results.getString(18));
-			textProgressNotes.setText(results.getString(19));
+			String encryptionKey = results.getString(21);
+			textLastName.setText(decryptAndDecode(results.getString(2), encryptionKey));
+			textFirstName.setText(decryptAndDecode(results.getString(3), encryptionKey));
+			textMiddleName.setText(decryptAndDecode(results.getString(4), encryptionKey));
+			textAddress.setText(decryptAndDecode(results.getString(5), encryptionKey));
+			textCity.setText(decryptAndDecode(results.getString(6), encryptionKey));
+			textState.setText(decryptAndDecode(results.getString(7), encryptionKey));
+			textTelephone.setText(decryptAndDecode(results.getString(8), encryptionKey));
+			textEmail.setText(decryptAndDecode(results.getString(9), encryptionKey));
+			textHealthInsuranceNumber.setText(decryptAndDecode(results.getString(10), encryptionKey));
+			textEmergencyContactNumber.setText(decryptAndDecode(results.getString(11), encryptionKey));
+			textAllergies.setText(decryptAndDecode(results.getString(12), encryptionKey));
+			textPastMedicalConditions.setText(decryptAndDecode(results.getString(13), encryptionKey));
+			textSurgeriesOrProcedures.setText(decryptAndDecode(results.getString(14), encryptionKey));
+			textMedications.setText(decryptAndDecode(results.getString(15), encryptionKey));
+			textImmunisations.setText(decryptAndDecode(results.getString(16), encryptionKey));
+			textDetails.setText(decryptAndDecode(results.getString(17), encryptionKey));
+			textFamilyMedicalHistory.setText(decryptAndDecode(results.getString(18), encryptionKey));
+			textProgressNotes.setText(decryptAndDecode(results.getString(19), encryptionKey));
 			datePicker.setPromptText(results.getString(20));
 			labelStatus.setText("Record found");
 			
@@ -159,33 +168,37 @@ public class PatientInformationController {
 //		
 //		System.out.println(insertQuery); // this line is to ensure the query is formatted correctly 
 		
+		String encryptionKey = generateAESKey();
+		    
 		// new query easier to read
 		String insertQuery1 = "INSERT INTO `testdb`.`test3` (ID, FirstName, MiddleName, LastName, Address, City, "
 				+ "State, Telephone, Email, HealthInsuranceNumber, EmergencyContactNumber, Allergies, "
-				+ "PastMedicalConditions, SurgeriesOrProcedures, Medications, Immunisations, Details, FamilyMedicalHistory, ProgressNotes, DateOfBirth) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "PastMedicalConditions, SurgeriesOrProcedures, Medications, Immunisations, Details, FamilyMedicalHistory, ProgressNotes, DateOfBirth, EncryptionKey) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement statement = dbConnection.connection.prepareStatement(insertQuery1);
 		statement.setString(1, textId.getText().trim());
-		statement.setString(2, textFirstName.getText().trim());
-		statement.setString(3, textMiddleName.getText().trim());
-		statement.setString(4, textLastName.getText().trim());
-		statement.setString(5, textAddress.getText().trim());
-		statement.setString(6, textCity.getText().trim());
-		statement.setString(7, textState.getText().trim());
-		statement.setString(8, textTelephone.getText().trim());
-		statement.setString(9, textEmail.getText().trim());
-		statement.setString(10, textHealthInsuranceNumber.getText().trim());
-		statement.setString(11, textEmergencyContactNumber.getText().trim());
-		statement.setString(12, textAllergies.getText().trim());
-		statement.setString(13, textPastMedicalConditions.getText().trim());
-		statement.setString(14, textSurgeriesOrProcedures.getText().trim());
-		statement.setString(15, textMedications.getText().trim());
-		statement.setString(16, textImmunisations.getText().trim());
-		statement.setString(17, textDetails.getText().trim());
-		statement.setString(18, textFamilyMedicalHistory.getText().trim());
-		statement.setString(19, textProgressNotes.getText().trim());
-		statement.setString(20, datePicker.getValue().toString());
-		 
+		
+		statement.setString(2, Base64.getEncoder().encodeToString(encrypt(textFirstName.getText().trim(), encryptionKey)));
+		statement.setString(3, Base64.getEncoder().encodeToString(encrypt(textMiddleName.getText().trim(), encryptionKey)));
+		statement.setString(4, Base64.getEncoder().encodeToString(encrypt(textLastName.getText().trim(), encryptionKey)));
+		statement.setString(5, Base64.getEncoder().encodeToString(encrypt(textAddress.getText().trim(), encryptionKey)));
+		statement.setString(6, Base64.getEncoder().encodeToString(encrypt(textCity.getText().trim(), encryptionKey)));
+		statement.setString(7, Base64.getEncoder().encodeToString(encrypt(textState.getText().trim(), encryptionKey)));
+		statement.setString(8, Base64.getEncoder().encodeToString(encrypt(textTelephone.getText().trim(), encryptionKey)));
+		statement.setString(9, Base64.getEncoder().encodeToString(encrypt(textEmail.getText().trim(), encryptionKey)));
+		statement.setString(10, Base64.getEncoder().encodeToString(encrypt(textHealthInsuranceNumber.getText().trim(), encryptionKey)));
+		statement.setString(11, Base64.getEncoder().encodeToString(encrypt(textEmergencyContactNumber.getText().trim(), encryptionKey)));
+		statement.setString(12, Base64.getEncoder().encodeToString(encrypt(textAllergies.getText().trim(), encryptionKey)));
+		statement.setString(13, Base64.getEncoder().encodeToString(encrypt(textPastMedicalConditions.getText().trim(), encryptionKey)));
+		statement.setString(14, Base64.getEncoder().encodeToString(encrypt(textSurgeriesOrProcedures.getText().trim(), encryptionKey)));
+		statement.setString(15, Base64.getEncoder().encodeToString(encrypt(textMedications.getText().trim(), encryptionKey)));
+		statement.setString(16, Base64.getEncoder().encodeToString(encrypt(textImmunisations.getText().trim(), encryptionKey)));
+		statement.setString(17, Base64.getEncoder().encodeToString(encrypt(textDetails.getText().trim(), encryptionKey)));
+		statement.setString(18, Base64.getEncoder().encodeToString(encrypt(textFamilyMedicalHistory.getText().trim(), encryptionKey)));
+		statement.setString(19, Base64.getEncoder().encodeToString(encrypt(textProgressNotes.getText().trim(), encryptionKey)));
+		statement.setString(20, datePicker.getValue().toString());		
+		statement.setString(21, encryptionKey);
+
 		System.out.println(insertQuery1); // this line is to ensure the query is formatted correctly 
 		
 		try {
@@ -247,48 +260,81 @@ public class PatientInformationController {
 //		
 //		System.out.println(updateQuery);
 		
-		// new query easier to read
-		String updateQuery1 = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, "
-				+ "HealthInsuranceNumber = ?, EmergencyContactNumber = ?, Allergies = ?, PastMedicalConditions = ?, SurgeriesOrProcedures = ?, Medications = ?, Immunisations = ?,"
-				+ "Details =?, FamilyMedicalHistory = ?, ProgressNotes = ?, DateOfBirth = ? WHERE ID = ?";
-		PreparedStatement statement = dbConnection.connection.prepareStatement(updateQuery1);
-		statement.setString(1, textFirstName.getText().trim());
-		statement.setString(2, textMiddleName.getText().trim());
-		statement.setString(3, textLastName.getText().trim());
-		statement.setString(4, textAddress.getText().trim());
-		statement.setString(5, textCity.getText().trim());
-		statement.setString(6, textState.getText().trim());
-		statement.setString(7, textTelephone.getText().trim());
-		statement.setString(8, textEmail.getText().trim());
-		statement.setString(9, textHealthInsuranceNumber.getText().trim());
-		statement.setString(10, textEmergencyContactNumber.getText().trim());
-		statement.setString(11, textAllergies.getText().trim());
-		statement.setString(12, textPastMedicalConditions.getText().trim());
-		statement.setString(13, textSurgeriesOrProcedures.getText().trim());
-		statement.setString(14, textMedications.getText().trim());
-		statement.setString(15, textImmunisations.getText().trim());
-		statement.setString(16, textDetails.getText().trim());
-		statement.setString(17, textFamilyMedicalHistory.getText().trim());
-		statement.setString(18, textProgressNotes.getText().trim());
-		statement.setString(19, datePicker.getValue().toString());
-		statement.setString(20, textId.getText().trim());
 		
+		String newEncryptionKey = generateAESKey();
+		
+		// new query easier to read
+		String updateQuery = "UPDATE `testdb`.`test3` SET FirstName = ?, MiddleName = ?, LastName = ?, Address = ?, City = ?, State = ?, Telephone = ?, Email = ?, "
+	            + "HealthInsuranceNumber = ?, EmergencyContactNumber = ?, Allergies = ?, PastMedicalConditions = ?, SurgeriesOrProcedures = ?, Medications = ?, Immunisations = ?,"
+	            + "Details =?, FamilyMedicalHistory = ?, ProgressNotes = ?, DateOfBirth = ?, EncryptionKey = ? WHERE ID = ?";
+	    PreparedStatement statement = dbConnection.connection.prepareStatement(updateQuery);
+	    statement.setString(1, Base64.getEncoder().encodeToString(encrypt(textFirstName.getText().trim(), newEncryptionKey)));
+	    statement.setString(2, Base64.getEncoder().encodeToString(encrypt(textMiddleName.getText().trim(), newEncryptionKey)));
+	    statement.setString(3, Base64.getEncoder().encodeToString(encrypt(textLastName.getText().trim(), newEncryptionKey)));
+	    statement.setString(4, Base64.getEncoder().encodeToString(encrypt(textAddress.getText().trim(), newEncryptionKey)));
+	    statement.setString(5, Base64.getEncoder().encodeToString(encrypt(textCity.getText().trim(), newEncryptionKey)));
+	    statement.setString(6, Base64.getEncoder().encodeToString(encrypt(textState.getText().trim(), newEncryptionKey)));
+	    statement.setString(7, Base64.getEncoder().encodeToString(encrypt(textTelephone.getText().trim(), newEncryptionKey)));
+	    statement.setString(8, Base64.getEncoder().encodeToString(encrypt(textEmail.getText().trim(), newEncryptionKey)));
+	    statement.setString(9, Base64.getEncoder().encodeToString(encrypt(textHealthInsuranceNumber.getText().trim(), newEncryptionKey)));
+	    statement.setString(10, Base64.getEncoder().encodeToString(encrypt(textEmergencyContactNumber.getText().trim(), newEncryptionKey)));
+	    statement.setString(11, Base64.getEncoder().encodeToString(encrypt(textAllergies.getText().trim(), newEncryptionKey)));
+	    statement.setString(12, Base64.getEncoder().encodeToString(encrypt(textPastMedicalConditions.getText().trim(), newEncryptionKey)));
+	    statement.setString(13, Base64.getEncoder().encodeToString(encrypt(textSurgeriesOrProcedures.getText().trim(), newEncryptionKey)));
+	    statement.setString(14, Base64.getEncoder().encodeToString(encrypt(textMedications.getText().trim(), newEncryptionKey)));
+	    statement.setString(15, Base64.getEncoder().encodeToString(encrypt(textImmunisations.getText().trim(), newEncryptionKey)));
+	    statement.setString(16, Base64.getEncoder().encodeToString(encrypt(textDetails.getText().trim(), newEncryptionKey)));
+	    statement.setString(17, Base64.getEncoder().encodeToString(encrypt(textFamilyMedicalHistory.getText().trim(), newEncryptionKey)));
+	    statement.setString(18, Base64.getEncoder().encodeToString(encrypt(textProgressNotes.getText().trim(), newEncryptionKey)));
+	    statement.setString(19, datePicker.getValue().toString());
+	    statement.setString(20, newEncryptionKey);
+	    statement.setString(21, textId.getText().trim());
+
 		 
-		System.out.println(updateQuery1); // this line is to ensure the query is formatted correctly 
+		System.out.println(updateQuery); // this line is to ensure the query is formatted correctly 
 		
 		try {
-			// execute statement
-//			dbConnection.executeUpdate(updateQuery); // old query
-			statement.executeUpdate();
-			labelStatus.setText("Update completed");
-			labelStatus.setTextFill(Color.GREEN);
-			System.out.println("Update suceeded");
-			
-		} catch (SQLException Ex){
-			labelStatus.setText("Update failed");
-			labelStatus.setTextFill(Color.RED);
-			System.out.println(Ex.getMessage());
-		}
-		dbConnection.closeConnection();
+	        statement.executeUpdate();
+	        labelStatus.setText("Update completed");
+	        labelStatus.setTextFill(Color.GREEN);
+	        System.out.println("Update succeeded");
+	    } catch (SQLException Ex){
+	        labelStatus.setText("Update failed");
+	        labelStatus.setTextFill(Color.RED);
+	        System.out.println(Ex.getMessage());
+	    }
+	    dbConnection.closeConnection();
 	}
+												//ENCRYPTING METHODS
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	private static byte[] encrypt(String data, String encryptionKey) throws Exception {
+	    SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+	    Cipher cipher = Cipher.getInstance("AES");
+	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+	    return cipher.doFinal(data.getBytes("UTF-8"));
+	}
+	
+	private String decryptAndDecode(String encryptedValue, String encryptionKey) throws Exception {
+	    byte[] decodedEncryptedValue = Base64.getDecoder().decode(encryptedValue);
+	    byte[] decryptedBytes = decrypt(decodedEncryptedValue, encryptionKey);
+	    return new String(decryptedBytes, "UTF-8");
+	}
+
+	private byte[] decrypt(byte[] encryptedData, String encryptionKey) throws Exception {
+	    SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+	    Cipher cipher = Cipher.getInstance("AES");
+	    cipher.init(Cipher.DECRYPT_MODE, keySpec);
+	    return cipher.doFinal(encryptedData);
+	}
+	
+	private String generateAESKey() throws Exception {
+	    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+	    keyGenerator.init(128); // 128-bit key size
+	    SecretKey secretKey = keyGenerator.generateKey();
+	    byte[] encodedKey = secretKey.getEncoded();
+	    return Base64.getEncoder().encodeToString(encodedKey);
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

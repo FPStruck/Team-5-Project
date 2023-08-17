@@ -251,16 +251,30 @@ public class DBConnector {
 	    }
 		
 		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
-			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
-			String[] name = patientName.split(" ");
-			String fName = name[0];
-			String lName = name[1];
-			statement.setString(1, fName);
-			statement.setString(2, lName);
-			System.out.println(statement);
-	        return statement.executeQuery();
-	    }
+		    String sql = "SELECT * FROM testdb.test3 WHERE firstName LIKE ? AND lastName LIKE ?";
+		    PreparedStatement statement = connection.prepareStatement(sql);
+		    String[] name = patientName.split(" ");
+
+		    String fName = "";
+		    String lName = "";
+
+		    if (name.length >= 2) {
+		        fName = name[0];
+		        lName = name[1];
+		    } else if (name.length == 1) {
+		        fName = name[0];
+		        lName = ""; // Set last name as empty if not provided
+		    } else {
+		        throw new IllegalArgumentException("Invalid patient name format");
+		    }
+
+		    statement.setString(1, "%" + fName + "%");
+		    statement.setString(2, "%" + lName + "%");
+		    System.out.println(statement);
+
+		    return statement.executeQuery();
+		}
+
 		
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,
