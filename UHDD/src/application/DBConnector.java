@@ -518,7 +518,8 @@ public class DBConnector {
 			// grabs all the rows from the doctor_calendar DB
 			String query = "SELECT * FROM testdb.doctor_calendar";
 			ResultSet rs = this.executeQueryReturnResults(query);
-			System.out.println(rs.getRow());
+			//Reduce noise
+			//System.out.println(rs.getRow());
 			while (rs.next()) {
 				nextTitle = rs.getString("Title");
 				nextId = rs.getString("Id");
@@ -531,12 +532,14 @@ public class DBConnector {
 				nextRecurring = Boolean.valueOf(rs.getString("Recurring"));
 				nextRRule = rs.getString("RRule");
 				nextRecurrence = Boolean.valueOf(rs.getString("Recurrence"));
-				
+				/*
+				 * Reduce noise whilst bug fixing
+				 
 				System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
 				+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
 				+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
 				+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
-				
+				*/
 				// need to add amap list
 				Map<LocalDate, List<Entry<?>>> newMapEntry = null;
 				Entry newEntry = new Entry<Object>();
@@ -550,8 +553,9 @@ public class DBConnector {
 				newEntry.changeZoneId(nextZoneId);
 				newEntry.setRecurrenceRule(nextRRule);
 				
-				System.out.println("New Entry: " + newEntry);
+				//System.out.println("New Entry: " + newEntry);
 				 // add the new entry to the doctor calendar
+				 
 				CalendarApp.getDoctors().addEntry(newEntry);
 			} 
 			
