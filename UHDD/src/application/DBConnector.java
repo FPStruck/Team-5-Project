@@ -555,6 +555,7 @@ public class DBConnector {
 				
 				//System.out.println("New Entry: " + newEntry);
 				 // add the new entry to the doctor calendar
+				 
 				CalendarApp.getDoctors().addEntry(newEntry);
 			} 
 			
