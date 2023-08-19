@@ -56,82 +56,94 @@ public class UserCreationController {
 		return SwingFXUtils.toFXImage(bufferedImage, null);
 	}
 
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws WriterException, NoSuchAlgorithmException, MessagingException, IOException  {
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws Exception  {
 		System.out.println(cbRole.getValue());
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());
 		System.out.println("Matcher: " + matcher);
 		CredentialManager CredentialManager = new CredentialManager();
-			if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
-				actionGrabberCreator.setText("All fields cannot be empty");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(userGrabberCreator.getText().equals("")) {
-				actionGrabberCreator.setText("Username cannot be empty");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(passGrabberCreator.getText().equals("")) {
-				actionGrabberCreator.setText("Password cannot be empty");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(checkPasswordRequirements(passGrabberCreator.getText()) < 3) {
-				actionGrabberCreator.setText("Password has to be at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(emailGrabberCreator.getText().equals("")) {
-				actionGrabberCreator.setText("Email cannot be empty");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(!(matcher.matches())) {
-				actionGrabberCreator.setText("Email is not a valid email address");
-				actionGrabberCreator.setFill(Color.RED);
-			} else if(cbRole.getValue() == null) {
-				actionGrabberCreator.setText("Role cannot be empty");
-				actionGrabberCreator.setFill(Color.RED);
-			}  
-			else {
-				//MFA OTP
-				otpService = new OTPService();
-				String secretKey = otpService.generateSecretKey();
-				System.out.println("this is the secret key:  " + secretKey);
-				BufferedImage qrCode = otpService.generateQRCode(secretKey, userGrabberCreator.getText(), "UHDB");
-				/* 
-				// Convert the QR code to an FX image - no longer required as we are sending the QR code as an attachment
-				Image qrCodeFxImage = convertToFxImage(qrCode);
-				qrCodeView.setImage(qrCodeFxImage);
-				*/
-				// Create a new task for sending email
-				Task<Void> emailTask = new Task<Void>() {
-					@Override
-					protected Void call() throws Exception {
-						EmailManager emailManager = new EmailManager();
-						emailManager.sendEmailWithImage(emailGrabberCreator.getText(), "UHDB MFA QR Code", "Please scan the QR code to set up MFA", qrCode);
-						return null;
-					}
-				};
-				
-				//Provide status for user
-				actionGrabberCreator.setText("Email with MFA QR Code sending...");
-				actionGrabberCreator.setFill(Color.GREEN);
-				// Handle task completion or failure
-				emailTask.setOnSucceeded(e -> {
-					actionGrabberCreator.setText("User Creation Successful - check email for MFA setup");
-					actionGrabberCreator.setFill(Color.GREEN);
-					String userCreate = userGrabberCreator.getText();
-					String passCreate = passGrabberCreator.getText();
-					String emailCreate = emailGrabberCreator.getText();
-					String roleCreate = cbRole.getValue();
-					try {
-						CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				});
-
-				emailTask.setOnFailed(e -> {
-					actionGrabberCreator.setText("Failed to send email");
-					actionGrabberCreator.setFill(Color.RED);
-				});
-
-				// Start the task on a new thread
-				new Thread(emailTask).start();
-			}
+		boolean usernameExists = false;
+		try {
+			usernameExists = CredentialManager.doesUsernameExist(userGrabberCreator.getText());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			actionGrabberCreator.setText("Error checking username uniqueness");
+			actionGrabberCreator.setFill(Color.RED);
+			return; // Exit the method early due to the error
 		}
+		if(userGrabberCreator.getText().equals("") & passGrabberCreator.getText().equals("") & emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("All fields cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(userGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("Username cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if (usernameExists){
+			actionGrabberCreator.setText("Username already exists");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(passGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("Password cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(checkPasswordRequirements(passGrabberCreator.getText()) < 3) {
+			actionGrabberCreator.setText("Password has to be at least 8 to 64 characters. It requires 3 out of 4 of lowercase, uppercase, numbers, or symbols");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(emailGrabberCreator.getText().equals("")) {
+			actionGrabberCreator.setText("Email cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(!(matcher.matches())) {
+			actionGrabberCreator.setText("Email is not a valid email address");
+			actionGrabberCreator.setFill(Color.RED);
+		} else if(cbRole.getValue() == null) {
+			actionGrabberCreator.setText("Role cannot be empty");
+			actionGrabberCreator.setFill(Color.RED);
+		}  
+		else {
+			//MFA OTP
+			otpService = new OTPService();
+			String secretKey = otpService.generateSecretKey();
+			System.out.println("this is the secret key:  " + secretKey);
+			BufferedImage qrCode = otpService.generateQRCode(secretKey, userGrabberCreator.getText(), "UHDB");
+			/* 
+			// Convert the QR code to an FX image - no longer required as we are sending the QR code as an attachment
+			Image qrCodeFxImage = convertToFxImage(qrCode);
+			qrCodeView.setImage(qrCodeFxImage);
+			*/
+			// Create a new task for sending email
+			Task<Void> emailTask = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
+					EmailManager emailManager = new EmailManager();
+					emailManager.sendEmailWithImage(emailGrabberCreator.getText(), "UHDB MFA QR Code", "Please scan the QR code to set up MFA", qrCode);
+					return null;
+				}
+			};
+			
+			//Provide status for user
+			actionGrabberCreator.setText("Email with MFA QR Code sending...");
+			actionGrabberCreator.setFill(Color.GREEN);
+			// Handle task completion or failure
+			emailTask.setOnSucceeded(e -> {
+				actionGrabberCreator.setText("User Creation Successful - check email for MFA setup");
+				actionGrabberCreator.setFill(Color.GREEN);
+				String userCreate = userGrabberCreator.getText();
+				String passCreate = passGrabberCreator.getText();
+				String emailCreate = emailGrabberCreator.getText();
+				String roleCreate = cbRole.getValue();
+				try {
+					CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+
+			emailTask.setOnFailed(e -> {
+				actionGrabberCreator.setText("Failed to send email");
+				actionGrabberCreator.setFill(Color.RED);
+			});
+
+			// Start the task on a new thread
+			new Thread(emailTask).start();
+		}
+	}
 	
 	public int checkPasswordRequirements(String password) {
 		int passwordCount = 0;
