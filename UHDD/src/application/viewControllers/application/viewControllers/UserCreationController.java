@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
+
 import com.google.zxing.WriterException;
 
 import application.CredentialManager;
+import application.EmailManager;
 import application.OTPService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +56,7 @@ public class UserCreationController {
 		return SwingFXUtils.toFXImage(bufferedImage, null);
 	}
 
-	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws WriterException, NoSuchAlgorithmException  {
+	@FXML protected void handleCreateNewUsernAction(ActionEvent event) throws WriterException, NoSuchAlgorithmException, MessagingException, IOException  {
 		System.out.println(cbRole.getValue());
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher= pattern.matcher(emailGrabberCreator.getText());
@@ -86,21 +90,46 @@ public class UserCreationController {
 				String secretKey = otpService.generateSecretKey();
 				System.out.println("this is the secret key:  " + secretKey);
 				BufferedImage qrCode = otpService.generateQRCode(secretKey, userGrabberCreator.getText(), "UHDB");
+				/* 
+				// Convert the QR code to an FX image - no longer required as we are sending the QR code as an attachment
 				Image qrCodeFxImage = convertToFxImage(qrCode);
 				qrCodeView.setImage(qrCodeFxImage);
-				//
-				actionGrabberCreator.setText("User Creation Successful");
+				*/
+				// Create a new task for sending email
+				Task<Void> emailTask = new Task<Void>() {
+					@Override
+					protected Void call() throws Exception {
+						EmailManager emailManager = new EmailManager();
+						emailManager.sendEmailWithImage(emailGrabberCreator.getText(), "UHDB MFA QR Code", "Please scan the QR code to set up MFA", qrCode);
+						return null;
+					}
+				};
+				
+				//Provide status for user
+				actionGrabberCreator.setText("Email with MFA QR Code sending...");
 				actionGrabberCreator.setFill(Color.GREEN);
-				String userCreate = userGrabberCreator.getText();
-				String passCreate = passGrabberCreator.getText();
-				String emailCreate = emailGrabberCreator.getText();
-				String roleCreate = cbRole.getValue();
-				try {
-					CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				// Handle task completion or failure
+				emailTask.setOnSucceeded(e -> {
+					actionGrabberCreator.setText("User Creation Successful - check email for MFA setup");
+					actionGrabberCreator.setFill(Color.GREEN);
+					String userCreate = userGrabberCreator.getText();
+					String passCreate = passGrabberCreator.getText();
+					String emailCreate = emailGrabberCreator.getText();
+					String roleCreate = cbRole.getValue();
+					try {
+						CredentialManager.addNewUserToDB(userCreate, passCreate, emailCreate, roleCreate, secretKey);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				});
+
+				emailTask.setOnFailed(e -> {
+					actionGrabberCreator.setText("Failed to send email");
+					actionGrabberCreator.setFill(Color.RED);
+				});
+
+				// Start the task on a new thread
+				new Thread(emailTask).start();
 			}
 		}
 	
