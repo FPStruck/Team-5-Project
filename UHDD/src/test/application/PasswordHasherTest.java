@@ -1,3 +1,4 @@
+package application;
 /*
 package application.test.application;
 
@@ -8,11 +9,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.UserSession;
+import application.PasswordHash;
+import application.PasswordHasher;
 
-class UserSessionTest {
-	UserSession us = new UserSession("500");
-	
+class PasswordHasherTest {
+	PasswordHasher ph = new PasswordHasher();
+
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -23,12 +25,21 @@ class UserSessionTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		
 	}
 
 	@Test
-	void test() {
+	void hashPasswordTest() {
 //		fail("Not yet implemented");
-		System.out.println(us.getUserId());
+		PasswordHash pw = ph.hashPassword("Password");
+		System.out.println(pw.getHashAsString());
+	}
+	
+	@Test
+	void verifyPasswordTest() {
+//		fail("Not yet implemented");
+		PasswordHash pw = ph.hashPassword("Password");
+		ph.verifyPassword("password", pw);
 	}
 
 }
