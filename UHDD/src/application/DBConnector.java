@@ -269,7 +269,6 @@ public class DBConnector {
 			    }
 			}
     
-	
 
 		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date, String noteId, String prescribedBy)
 		  throws SQLException {
