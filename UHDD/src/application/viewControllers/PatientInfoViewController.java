@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
+import application.DataEncryptor;
 import application.DBConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,25 +78,46 @@ public class PatientInfoViewController {
 	DBConnector dbConnector = new DBConnector();
 	
 	public void setTextFieldsToPatientId(String Id) throws Exception {
-		dbConnector.initialiseDB();
-		ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
-		ResultSetMetaData meta = patientDetails.getMetaData(); // not need at the moment, this will get the mata data such as column size
-		
-		if(patientDetails.next()) {
-			fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
-			emailTXT.setText(patientDetails.getString("Email"));
-			dobTXT.setText(patientDetails.getString("DateOfBirth"));
-			locationTXT.setText(patientDetails.getString("City"));
-			patientIdTXT.setText(patientDetails.getString("ID"));
-			phoneNoTXT.setText(patientDetails.getString("Telephone"));
-			addressTXT.setText(patientDetails.getString("Address"));
-			insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
-			detailsTXT.setText(patientDetails.getString("Details"));
-			cityTXT.setText(patientDetails.getString("City"));
-			emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
-			familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
-			progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
-			
+        dbConnector.initialiseDB();
+        ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientId(Id);
+        
+        if (patientDetails.next()) {
+            String encryptionKey = patientDetails.getString("EncryptionKey");
+            
+            // Check if the encryption key is null
+            if (encryptionKey != null) {
+                // Decrypt and set each field with the appropriate decryption key
+                fullnameTXT.setText(DataEncryptor.decrypt(patientDetails.getString("FirstName"), encryptionKey)
+                        + " " + DataEncryptor.decrypt(patientDetails.getString("MiddleName"), encryptionKey)
+                        + " " + DataEncryptor.decrypt(patientDetails.getString("LastName"), encryptionKey));
+
+                emailTXT.setText(DataEncryptor.decrypt(patientDetails.getString("Email"), encryptionKey));
+                dobTXT.setText(patientDetails.getString("DateOfBirth"));
+                locationTXT.setText(DataEncryptor.decrypt(patientDetails.getString("City"), encryptionKey));
+                patientIdTXT.setText(patientDetails.getString("ID"));
+                phoneNoTXT.setText(DataEncryptor.decrypt(patientDetails.getString("Telephone"), encryptionKey));
+                addressTXT.setText(DataEncryptor.decrypt(patientDetails.getString("Address"), encryptionKey));
+                insuranceNumberTXT.setText(DataEncryptor.decrypt(patientDetails.getString("HealthInsuranceNumber"), encryptionKey));
+                detailsTXT.setText(DataEncryptor.decrypt(patientDetails.getString("Details"), encryptionKey));
+                cityTXT.setText(DataEncryptor.decrypt(patientDetails.getString("City"), encryptionKey));
+                emergencyNoTXT.setText(DataEncryptor.decrypt(patientDetails.getString("EmergencyContactNumber"), encryptionKey));
+                familyMedicalHistoryTXT.setText(DataEncryptor.decrypt(patientDetails.getString("FamilyMedicalHistory"), encryptionKey));
+                progressNotesTXT.setText(DataEncryptor.decrypt(patientDetails.getString("ProgressNotes"), encryptionKey));
+            } else {
+				fullnameTXT.setText(patientDetails.getString("FirstName") + " " + patientDetails.getString("MiddleName") + " " + patientDetails.getString("LastName"));
+				emailTXT.setText(patientDetails.getString("Email"));
+				dobTXT.setText(patientDetails.getString("DateOfBirth"));
+				locationTXT.setText(patientDetails.getString("City"));
+				patientIdTXT.setText(patientDetails.getString("ID"));
+				phoneNoTXT.setText(patientDetails.getString("Telephone"));
+				addressTXT.setText(patientDetails.getString("Address"));
+				insuranceNumberTXT.setText(patientDetails.getString("HealthInsuranceNumber"));
+				detailsTXT.setText(patientDetails.getString("Details"));
+				cityTXT.setText(patientDetails.getString("City"));
+				emergencyNoTXT.setText(patientDetails.getString("EmergencyContactNumber"));
+				familyMedicalHistoryTXT.setText(patientDetails.getString("FamilyMedicalHistory"));
+				progressNotesTXT.setText(patientDetails.getString("ProgressNotes"));
+            }
 //			if(patientDetails.getString("gender").equals("M")){
 //				genderTXT.setText("Male");
 //			} else if(patientDetails.getString("gender").equals("F")) {
