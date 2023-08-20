@@ -20,8 +20,13 @@ import com.calendarfx.model.Entry;
 import application.CalendarApp;
 import application.DBConnector;
 import application.Main;
-import application.UsernameStorage;
+import application.Medication;
+import application.Patient;
+import application.PatientService;
+import application.UserSession;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -33,9 +38,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DashboardController {
@@ -46,9 +55,20 @@ public class DashboardController {
 	private static CalendarApp myCalendar;
 	private String currentUser;
 	private Timer timer;
+	String currentFXML;
 	
-	@FXML
-	private Pane patientDirectoryDBPane;
+	@FXML private TableView<Patient> patientDirectoryDBTV;
+	@FXML private TableColumn<Patient, Integer> patientDirectoryDBTVId;
+	@FXML private TableColumn<Patient, String> patientDirectoryDBTVFamilyName;
+	@FXML private TableColumn<Patient, String> patientDirectoryDBTVGivenName;
+
+	@FXML private TableView<Medication> prescribedMedsDBTV;
+	@FXML private TableColumn<Medication, Integer> prescribedMedsDBTVScriptId;
+	@FXML private TableColumn<Medication, String> prescribedMedsDBTVMedicationName;
+	@FXML private TableColumn<Medication, LocalDate> prescribedMedsDBTVPrescribedDate;
+	@FXML private TableColumn<Medication, LocalDate> prescribedMedsDBTVExpiredDate;
+
+	@FXML private Pane patientDirectoryDBPane;
 	@FXML
 	private Pane appointmentsDBPane;
 	@FXML
@@ -83,27 +103,92 @@ public class DashboardController {
 	Boolean nextRecurring;
 	String nextRRule;
 	Boolean nextRecurrence;
+	UserSession us = new UserSession();
 	
 	@FXML
-	public void initialize() throws Exception{
-		iniUsername();
+	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
+//		userText.setText(UserSession.getUserName()); // #BUG this line is wont allow the calendar to open
+		Platform.runLater(() -> {
+	        try {
+	            updateNextAppointment();
+	            updatePatientDirectoryDBTableView();
+	            updatePrescribedMedsDBTableView();
+	        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
+	            e.printStackTrace();
+	        } catch (Exception e) {
+				e.printStackTrace();
+			}
+	    });
+	}
+
+	public void updatePatientDirectoryDBTableView() throws Exception{
+		ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+		
+		patientDirectoryDBTVId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		patientDirectoryDBTVFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
+		patientDirectoryDBTVGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
+			
+		dbConnector.initialiseDB();
+		ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
+		while (rs.next()) {
+			int id = rs.getInt("patientId");
+			String familyName = rs.getString("lastName");
+			String givenName = rs.getString("firstName");
+			Patient patient = new Patient(id, familyName, givenName);
+			patientOL.add(patient);
+			//Commenting out to reduce noise whilst bug fixing
+			//System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+		}
+		patientDirectoryDBTV.setItems(patientOL);
+		dbConnector.closeConnection();
+
+	}
+	
+	public void updatePrescribedMedsDBTableView() throws Exception{
+		ObservableList<Medication> medicationOL = FXCollections.observableArrayList();
+		
+		prescribedMedsDBTVScriptId.setCellValueFactory(new PropertyValueFactory<>("scriptId"));
+		prescribedMedsDBTVMedicationName.setCellValueFactory(new PropertyValueFactory<>("medicationName"));
+		prescribedMedsDBTVPrescribedDate.setCellValueFactory(new PropertyValueFactory<>("prescribedDate"));
+		prescribedMedsDBTVExpiredDate.setCellValueFactory(new PropertyValueFactory<>("expiredDate"));		
+		
+		dbConnector.initialiseDB();
+		ResultSet rs = dbConnector.QueryReturnResultsFromMedication();
+		while (rs.next()) {
+			int scriptId = rs.getInt("scriptId");
+			int patientId = rs.getInt("patientId");
+			String medicationName = rs.getString("medication_name");
+			LocalDate prescribedDate = rs.getDate("prescribed_date").toLocalDate();
+			LocalDate expiredDate = rs.getDate("expired_date").toLocalDate();
+			Medication medication = new Medication(scriptId,patientId, medicationName, prescribedDate, expiredDate);
+			medicationOL.add(medication);
+		}
+		prescribedMedsDBTV.setItems(medicationOL);
+		dbConnector.closeConnection();
+
+	}
+
+	
+
+	public void updateNextAppointment() throws Exception{
 		LocalTime LastEndTime = LocalTime.MAX ; // need a time to compare that is the Max
 		dbConnector.initialiseDB();
 		
 		// grabs the events from the database and inserts to the calendar
 		dbConnector.getCalendarEvents(); // this will ensure that the next appointment is displayed 
 		
-		// get the next appointment 
-		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
+		// get the next appointment
+		//commenting out to reduce noise whilst bug fixing 
+		//System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
-		System.out.println("This is the entry: " + entry);	
-		System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
+		//System.out.println("This is the entry: " + entry);	
+		//System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
 			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
-				System.out.println("This is the list: " + l);
+				//System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
-				System.out.println("This is entry: " + e);
+				//System.out.println("This is entry: " + e);
 				nextA = e.get(0).getTitle();
-				System.out.println("First entry: " + nextA);
+				//System.out.println("First entry: " + nextA);
 				// this will set the next appointment text 
 				if (nextAppointment != null) { // this fixed the bug 
 					nextAppointment.setText(nextA);
@@ -122,12 +207,15 @@ public class DashboardController {
 					nextRecurring = ee.isRecurring();
 					nextRRule = ee.recurrenceRuleProperty().getValue();
 					nextRecurrence = ee.isRecurrence();
+					/*
+					 * Reduce noise whilst bug fixing
 					
 					System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
 					+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
 					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
 					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
-					
+					*/
+
 					// adds the event to the database
 					try {dbConnector.addCalendarEvent(nextTitle, nextId, nextFullDay, nextStartDate, 
 							nextEndDate, nextStartTime,	nextEndTime, nextZoneId,
@@ -147,19 +235,16 @@ public class DashboardController {
 						LastEndTime = nextEndTime;
 						// this will display the next patient appointment details
 						if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
-							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextTitle);
+							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(nextId);
 							System.out.println("This is the patient details: " + patientDetails);
-							if (patientDetails.next()) {
-							    String name =  patientDetails.getString("FirstName") + " " 
-							            + patientDetails.getString("MiddleName") + " " 
-							            + patientDetails.getString("LastName");
-							    fullName.setText(name);
-							    phoneNumber.setText(patientDetails.getString("Telephone"));
-							    pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
-							    progressNotes.setText(patientDetails.getString("ProgressNotes"));
-							} else {
-							    // Handle the case where no patient details are found
-							    System.out.println("No patient details found for title: " + nextTitle);
+							if(patientDetails.next()) {
+								String name =  patientDetails.getString("FirstName") + " " 
+										+ patientDetails.getString("MiddleName") + " " 
+										+ patientDetails.getString("LastName");
+								fullName.setText(name);
+								phoneNumber.setText(patientDetails.getString("Telephone"));
+								pastMedicalConditions.setText(patientDetails.getString("PastMedicalConditions"));
+								progressNotes.setText(patientDetails.getString("ProgressNotes"));
 							}
 						}
 					}		// this is where it previously breaks because nestAppointment was null
@@ -167,42 +252,12 @@ public class DashboardController {
 					
 				}
 			}
-		System.out.println("After loop: " + nextA);	
-		System.out.println("After loop next apppointment: " + nextAppointment);			
-		
-		// serialize and save the file to desktop, not serializable (only works with Events
-//		try {
-//			serialize("C:\\Users\\User\\Desktop\\test.ser", entry);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		// de-serialize the file from the desktop, not serializable
-//		try {
-//			System.out.println("Return deserialize: " + deserialize("C:\\Users\\User\\Desktop\\test.ser"));
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		//Reduce noise whilst bug fixing
+		//System.out.println("After loop: " + nextA);	
+		//System.out.println("After loop next apppointment: " + nextAppointment);			
 		startDate();
 		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
-	}
-	
-	public void iniUsername() {
-		 String username = UsernameStorage.getUsername();
-	        if (username != null && userText != null) {
-	            userText.setText(username);
-	            currentUser = username;
-	        }
-	}
-	
-	public void setUserText(String username) {
-	    userText.setText(username);
-	    currentUser = username;
+		dbConnector.closeConnection();
 	}
 	
 	private void startLoggedInStatusTimer() {
@@ -210,9 +265,13 @@ public class DashboardController {
 	    timer.schedule(new TimerTask() {
 	        @Override
 	        public void run() {
-	            checkLoggedInStatus(timer);
+	            try {
+					checkLoggedInStatus(timer);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 	        }
-	    }, 0, 5000); // Run the task every 5 seconds
+	    }, 0, 60000); // Run the task every 5 seconds
 	}
 	
 	private void startDate() {
@@ -220,14 +279,20 @@ public class DashboardController {
 	    timerone.schedule(new TimerTask() {
 	        @Override
 	        public void run() {
-	            checkInactivityStatus(timerone);
+	            try {
+					checkInactivityStatus(timerone);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 	        }
 	    }, 0, 5000); // Run the task every 5 seconds
 	}
 	
-	private void checkLoggedInStatus(Timer timer) {
+	private void checkLoggedInStatus(Timer timer) throws SQLException {
 	    Platform.runLater(() -> {
 	        try {
+				dbConnector.initialiseDB();
+				System.out.println("Dashboard controller line 288 logginStatus");
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
 	            if (loggedInStatus == 2) {
 	                // User has been logged out, show alert and provide options to continue or logout
@@ -251,6 +316,7 @@ public class DashboardController {
 	                        } catch (InterruptedException e) {
 	                            // Timer interrupted, no need to handle it
 	                        }
+							dbConnector.closeConnection();
 	                        return null;
 	                    }
 	                };
@@ -292,15 +358,22 @@ public class DashboardController {
 	                    }
 	                });
 	            }
-	        } catch (SQLException e) {
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
+			try {
+				dbConnector.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	    });
 	}
 	
-	private void checkInactivityStatus(Timer timerone) {
-	    Platform.runLater(() -> {
+	private void checkInactivityStatus(Timer timerone) throws Exception {
+	    
+		Platform.runLater(() -> {
 	        try {
+				dbConnector.initialiseDB();
 	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
 	            if (loggedInStatus == 1) {
 	                // User is logged in, check for inactivity
@@ -335,6 +408,7 @@ public class DashboardController {
 	                                } catch (InterruptedException e) {
 	                                    // Timer interrupted, no need to handle it
 	                                }
+									dbConnector.closeConnection();
 	                                return null;
 	                            }
 	                        };
@@ -380,10 +454,16 @@ public class DashboardController {
 	                    }
 	                }
 	            }
-	        } catch (SQLException e) {
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
+			try {
+				dbConnector.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	    });
+		
 	}
     
     @FXML
@@ -398,7 +478,7 @@ public class DashboardController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -407,34 +487,82 @@ public class DashboardController {
 	
 	@FXML 
 	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientDirectory.fxml"));
+		currentFXML = "/application/fxmlScenes/PatientDirectory.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
 	
-	
 	@FXML	
-	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("../fxmlScenes/PatientInfoView.fxml"));
+	public void switchToTableCreator(MouseEvent mouseEvent) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/TableCreator.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	@FXML	
+	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+
+	@FXML	
+	public void switchToPatientInfoViewPatientNotes(MouseEvent mouseEvent) throws IOException {
+		currentFXML = "/application/fxmlScenes/PatientInfoViewPatientNotes.fxml";
+		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+	    Parent root = loader.load();
+	    Map<String, Object> namespace = loader.getNamespace();
+	    stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+	    scene = new Scene(root);
+	    stage.setScene(scene);
+	    stage.show();
+	}
+
+	@FXML
+	public void addPatientNote(MouseEvent mouseEvent) throws IOException{
+			currentFXML = "/application/fxmlScenes/PopUpAddPatientNote.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+			Stage popupStage = new Stage();
+            Parent popupRoot = FXMLLoader.load(getClass().getResource(currentFXML));
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
 	}
 	
 	public void switchToCalendar(MouseEvent mouseEvent) throws Exception {
 		if (myCalendar == null) {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxmlScenes/Calendar.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/application/fxmlScenes/Calendar.fxml"));
 	        calendarRoot = (Parent) fxmlLoader.load();
 			calendarStage = new Stage();
 			calendarStage.setScene(new Scene(calendarRoot));
 			calendarStage.show();
 		
 			myCalendar = new CalendarApp();
-			myCalendar.start(calendarStage);
-			} else calendarStage.show();
+			myCalendar.start(calendarStage);	
+			
+		} else calendarStage.show();
+		
+//		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Calendar_new.fxml"));
+//		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+//		scene = new Scene(root);
+//		stage.setScene(scene);
+//		stage.show();
 	}
 	
 	@FXML	

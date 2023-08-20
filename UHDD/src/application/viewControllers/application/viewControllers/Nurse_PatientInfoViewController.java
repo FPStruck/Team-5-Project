@@ -1,10 +1,11 @@
-package application;
+package application.viewControllers;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import application.DBConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,11 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class PatientInfoViewController {
+public class Nurse_PatientInfoViewController {
 	private Stage stage;
 	private Scene scene;
 	@FXML
@@ -59,6 +62,10 @@ public class PatientInfoViewController {
 	private Text viewPatientInfoBtn;
 	@FXML
 	private Text viewPatientInfoBtn2;
+	@FXML
+	private Text viewPatientInfoBtn3;
+	@FXML
+	private Text viewPatientInfoBtn4;
 	@FXML
 	private Text familyMedicalHistoryTXT;
 	@FXML
@@ -119,7 +126,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Nurse_PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -128,7 +135,16 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToDasboard(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Nurse_Dashboard.fxml"));		
+		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML 
+	public void switchToPatientDirectory(MouseEvent mouseEvent) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Nurse_PatientDirectory.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -137,38 +153,87 @@ public class PatientInfoViewController {
 	
 	@FXML	
 	public void switchToPatientInfoView(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/Nurse_PatientInfoView.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
 	
+	// not needed anymore because a new function was created to change the layout without using a new fxml file
 	@FXML	
 	public void switchToPatientInfoView2(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView2.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInfoView2.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
 	
+	// not needed anymore because a new function was created to change the layout without using a new fxml file
 	@FXML	
 	public void switchToPatientInfoView3(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView3.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInfoView3.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
 	
+	// not needed anymore because a new function was created to change the layout without using a new fxml file
 	@FXML	
 	public void switchToPatientInfoView4(MouseEvent mouseEvent) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("PatientInfoView4.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInfoView4.fxml"));
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	@FXML
+	public void switchToOverviewTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", FontWeight.BOLD, 14));
+		viewPatientInfoBtn2.setFont(Font.font("System",  14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(false);
+		// overview tab has no text to view as of code written 
+	}
+	
+	@FXML
+	public void switchToPatientProgressAndPlanTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", FontWeight.BOLD, 14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(true);
+		progressNotesTXT.setVisible(false);;
+	}
+	
+	@FXML
+	public void switchToPatientNotesTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", 14));
+		viewPatientInfoBtn3.setFont(Font.font("System",FontWeight.BOLD , 14));
+		viewPatientInfoBtn4.setFont(Font.font("System", 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(true);;
+	}
+	
+	@FXML
+	public void switchToPatientDocumentsTab(MouseEvent mouseEvent) throws IOException {
+		// this will change the subheader text to bold and make the text visible 
+		viewPatientInfoBtn.setFont(Font.font("System", 14));
+		viewPatientInfoBtn2.setFont(Font.font("System", 14));
+		viewPatientInfoBtn3.setFont(Font.font("System", 14));
+		viewPatientInfoBtn4.setFont(Font.font("System",FontWeight.BOLD , 14));
+		familyMedicalHistoryTXT.setVisible(false);
+		progressNotesTXT.setVisible(false);;
+		// document tab has no text to view as of code written 
 	}
 	
 	@FXML	

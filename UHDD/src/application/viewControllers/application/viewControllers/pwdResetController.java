@@ -1,17 +1,12 @@
 package application.viewControllers;
 
 import java.io.IOException;
-import java.sql.ResultSet;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-import com.mysql.cj.protocol.Resultset;
-
 import application.CredentialManager;
-import application.DBConnector;
-import application.EmailManager;
-import application.EmailManager.LoginResult;
-import application.PasswordHash;
-import application.PasswordHasher;
+import application.LoginResult;
+import application.UserSession;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,16 +30,13 @@ public class pwdResetController {
     private TextField txtVerifyPwd;
     @FXML
     private Text txtStatus;
-
-  
-
     
     public void resetPwd() throws Exception {
         String oldPwd = txtOldPwd.getText();
         String newPwd = txtNewPwd.getText();
         String verifyPwd = txtVerifyPwd.getText();
         String username = UserSession.getInstance().getUserName();
-        String email = UserSession.getInstance().getEmail();
+        //String email = UserSession.getInstance().getEmail();
         System.out.println(username + " is the username");
         CredentialManager credentialManager = new CredentialManager();
     
@@ -58,41 +50,36 @@ public class pwdResetController {
         } else if (newPwd.length() < 8 || newPwd.length() > 64) {
             txtStatus.setText("New password must be between 8 and 64 characters");
         } else if (credentialManager.verifyPassword(username, oldPwd)){
-            
-            EmailManager emailManager = new EmailManager();
-            LoginResult result = emailManager.verifyLogin(email);
-
+            LoginResult result = credentialManager.verifyMFA(username);
             if (result == LoginResult.SUCCESSFUL) {
                 // Handle successful login
                 credentialManager.changePasswordInDB(username, newPwd);
                 txtStatus.setText("Password Updated");
                 txtStatus.setStroke(javafx.scene.paint.Color.GREEN);
-
                 PauseTransition delay = new PauseTransition(Duration.seconds(2)); // Creates a 2 seconds pause
                 delay.setOnFinished( event -> {
                     // Closes the window after the pause
                     Stage stage = (Stage) txtStatus.getScene().getWindow(); 
                     stage.close();
                 });
-                delay.play();
+                delay.play();               
             } else if (result == LoginResult.WRONG_CODE) {
-                // Handle wrong code scenario
-                txtStatus.setText("Wrong code input. Email verification cancelled");
-                txtStatus.setFill(Color.RED);
-                
+                txtStatus.setText("Wrong code input. MFA verification cancelled");
+                txtStatus.setFill(Color.RED);        
             } else if (result == LoginResult.CANCELLED) {
                 // Handle login cancelled scenario
-                txtStatus.setText("Email verification cancelled");
-                txtStatus.setFill(Color.RED);
-                
+                txtStatus.setText("MFA verification cancelled");
+                txtStatus.setFill(Color.RED);  
             } else {
                 // Handle any other result if necessary
-                
-            }
-
-            
+               
+            }     
         }
         else {
+            System.out.print(UserSession.getInstance().getUserName());
+            if(credentialManager.verifyPassword(username, oldPwd)){
+                System.out.println("Password is correct");
+            }
             txtStatus.setText("Old password is incorrect");
         }
     }
@@ -102,3 +89,4 @@ public class pwdResetController {
         resetPwd();
     }
 }
+

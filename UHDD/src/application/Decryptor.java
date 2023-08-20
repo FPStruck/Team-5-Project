@@ -1,9 +1,14 @@
 package application;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -40,7 +45,7 @@ public class Decryptor {
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
     
-    public static String decrypt(String encryptedInput) throws Exception {
+    public static String decrypt(String encryptedInput) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException  {
         byte[] salt = new byte[16];
         // Generate the same salt that was used during encryption.
         for (int i = 0; i < 16; i++) {
@@ -57,6 +62,7 @@ public class Decryptor {
         return new String(decryptedBytes);
         
     }
+
 
 }
 
