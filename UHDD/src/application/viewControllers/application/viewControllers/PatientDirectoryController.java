@@ -38,6 +38,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import application.UserSession;
+import application.DataEncryptorDecryptor;
 
 public class PatientDirectoryController {
 	private static Stage calendarStage;
@@ -195,111 +196,152 @@ public class PatientDirectoryController {
 	
 	@FXML 
 	public void initialize() throws Exception{
-		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
-		System.out.println("Current FXML: " + currentFXML);
-		if(currentFXML.equals("/application/fxmlScenes/PatientDirectory.fxml")){
-			System.out.println("Initialise PD");
-			ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+	    currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
+	    System.out.println("Current FXML: " + currentFXML);
+	    
+	    if(currentFXML.equals("/application/fxmlScenes/PatientDirectory.fxml")){
+	        System.out.println("Initialize PD");
+	        ObservableList<Patient> patientOL = FXCollections.observableArrayList();
 
-			pdTableViewId.setCellValueFactory(new PropertyValueFactory<>("id"));
-			pdTableViewFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
-			pdTableViewGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
-			pdTableViewGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-			pdTableViewDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-			pdTableViewAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-			pdTableViewCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-			pdTableViewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+	        pdTableViewId.setCellValueFactory(new PropertyValueFactory<>("id"));
+	        pdTableViewFamilyName.setCellValueFactory(new PropertyValueFactory<>("familyName"));
+	        pdTableViewGivenName.setCellValueFactory(new PropertyValueFactory<>("givenName"));
+	        pdTableViewGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+	        pdTableViewDOB.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+	        pdTableViewAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+	        pdTableViewCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+	        pdTableViewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-			dbConnector.initialiseDB();
-			ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
-			while (rs.next()) {
-				int id = rs.getInt("patientId");
-				String familyName = rs.getString("lastName");
-				String givenName = rs.getString("firstName");
-				String middleName = rs.getString("middleName");
-				String gender = rs.getString("gender");
-				String address = rs.getString("address");
-				String city = rs.getString("city");
-				String state = rs.getString("state");
-				String telephone = rs.getString("telephone");
-				String email = rs.getString("email");
-				String dob = rs.getString("dateOfBirth");
-				String HIN = rs.getString("healthInsuranceNumber");
-				String emergencyContactNumber = rs.getString("emergencyContactNumber");
-				Patient patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
-				patientOL.add(patient);
-				System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
-			}
-			patientDirectorytableView.setItems(patientOL);
+	        dbConnector.initialiseDB();
+	        ResultSet rs = dbConnector.QueryReturnResultsFromPatients();
+	        
+	        while (rs.next()) {
+	            int id = rs.getInt("patientId");
+	            String lastName = rs.getString("lastName");
+	            String firstName = rs.getString("firstName");
+	            String middleName = rs.getString("middleName");
+	            String gender = rs.getString("gender");
+	            String address = rs.getString("address");
+	            String city = rs.getString("city");
+	            String state = rs.getString("state");
+	            String telephone = rs.getString("telephone");
+	            String email = rs.getString("email");
+	            String dob = rs.getString("dateOfBirth");
+	            String HIN = rs.getString("healthInsuranceNumber");
+	            String emergencyContactNumber = rs.getString("emergencyContactNumber");
+	            String encryptionKey = rs.getString("EncryptionKey"); // Retrieve the encryption key
 
-			// Set row factory for clickable rows
-			patientDirectorytableView.setRowFactory(tv -> {
-				TableRow<Patient> row = new TableRow<>();
-				row.setOnMouseClicked(event -> {
-					if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-						Patient clickedPatient = row.getItem();
-						PatientService.getInstance().setCurrentPatient(clickedPatient);
-						System.out.println("Clicked on: " + clickedPatient.getFamilyName() + " " + clickedPatient.getGivenName());
-						try {
-							NonMouseEventSwitchToPatientInfoView();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					
-					}
-				});
-				return row;
-			});
+	            if (encryptionKey != null && !encryptionKey.isEmpty()) {
+	                // Decrypt encrypted fields using the encryption key
+	                lastName = DataEncryptorDecryptor.decrypt(lastName, encryptionKey);
+	                firstName = DataEncryptorDecryptor.decrypt(firstName, encryptionKey);
+	                middleName = DataEncryptorDecryptor.decrypt(middleName, encryptionKey);
+	                gender = rs.getString("gender");
+	                address = DataEncryptorDecryptor.decrypt(address, encryptionKey);
+	                city = DataEncryptorDecryptor.decrypt(city, encryptionKey);
+	                state = DataEncryptorDecryptor.decrypt(state, encryptionKey);
+	                telephone = DataEncryptorDecryptor.decrypt(telephone, encryptionKey);
+	                email = DataEncryptorDecryptor.decrypt(email, encryptionKey);
+	                dob = rs.getString("dateOfBirth");
+	                HIN = DataEncryptorDecryptor.decrypt(HIN, encryptionKey);
+	                emergencyContactNumber = DataEncryptorDecryptor.decrypt(emergencyContactNumber, encryptionKey);
+	            }
 
-			dbConnector.closeConnection();
-		} else if (currentFXML.equals("/application/fxmlScenes/CreateNewPatient.fxml")){
-			choiceBoxState.getItems().addAll("NSW", "QLD", "VIC", "ACT", "SA", "WA", "NT", "TAS");
-		}
+	            Patient patient = new Patient(id, lastName, firstName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
+	            patientOL.add(patient);
+	            System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+	        }
+
+	        patientDirectorytableView.setItems(patientOL);
+
+	        // Set row factory for clickable rows
+	        patientDirectorytableView.setRowFactory(tv -> {
+	            TableRow<Patient> row = new TableRow<>();
+	            row.setOnMouseClicked(event -> {
+	                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+	                    Patient clickedPatient = row.getItem();
+	                    PatientService.getInstance().setCurrentPatient(clickedPatient);
+	                    System.out.println("Clicked on: " + clickedPatient.getFamilyName() + " " + clickedPatient.getGivenName());
+	                    try {
+	                        NonMouseEventSwitchToPatientInfoView();
+	                    } catch (IOException e) {
+	                        e.printStackTrace();
+	                    }
+	                
+	                }
+	            });
+	            return row;
+	        });
+
+	        dbConnector.closeConnection();
+	    } else if (currentFXML.equals("/application/fxmlScenes/CreateNewPatient.fxml")){
+	        choiceBoxState.getItems().addAll("NSW", "QLD", "VIC", "ACT", "SA", "WA", "NT", "TAS");
+	    }
 	}
+
 	
 	@FXML
 	public void searchTable(MouseEvent mouseEvent) throws Exception {
-		Boolean patientIdValid = false;
-		dbConnector.initialiseDB();
-		String patientId = searchTxtId.getText();
-		try {
-			int parsedDiagnosisId = Integer.parseInt(patientId);
-			if(dbConnector.verifyPatientIdExists(String.valueOf(parsedDiagnosisId))){
-				patientIdValid = true;
-			} else {
-				txtPatientIdStatus.setText(patientId + " Does not exist");
-			}
-		} catch (NumberFormatException e) {
-			txtPatientIdStatus.setText(patientId + " is not a number");
-		}
-        
-		if(patientIdValid){
-			ObservableList<Patient> patientOL = FXCollections.observableArrayList();
-			ResultSet rs = dbConnector.QueryReturnResultsFromPatientDataId(patientId);
-			while (rs.next()) {
-				int id = rs.getInt("patientId");
-				String familyName = rs.getString("lastName");
-				String givenName = rs.getString("firstName");
-				String middleName = rs.getString("middleName");
-				String gender = rs.getString("gender");
-				String address = rs.getString("address");
-				String city = rs.getString("city");
-				String state = rs.getString("state");
-				String telephone = rs.getString("telephone");
-				String email = rs.getString("email");
-				String dob = rs.getString("dateOfBirth");
-				String HIN = rs.getString("healthInsuranceNumber");
-				String emergencyContactNumber = rs.getString("emergencyContactNumber");
-				Patient patient = new Patient(id, familyName, givenName, middleName, gender, address, city, state, telephone, email, dob, HIN, emergencyContactNumber);
-				patientOL.add(patient);
-				System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
-			}
-        patientDirectorytableView.setItems(patientOL);
-		}
+	    Boolean patientIdValid = false;
+	    dbConnector.initialiseDB();
+	    String patientId = searchTxtId.getText();
+	    try {
+	        int parsedPatientId = Integer.parseInt(patientId);
+	        if (dbConnector.verifyPatientIdExists(String.valueOf(parsedPatientId))) {
+	            patientIdValid = true;
+	        } else {
+	            txtPatientIdStatus.setText(patientId + " Does not exist");
+	        }
+	    } catch (NumberFormatException e) {
+	        txtPatientIdStatus.setText(patientId + " is not a number");
+	    }
+
+	    if (patientIdValid) {
+	        ObservableList<Patient> patientOL = FXCollections.observableArrayList();
+	        ResultSet rs = dbConnector.QueryReturnResultsFromPatientDataId(patientId);
+
+	        while (rs.next()) {
+	            int id = rs.getInt("patientId");
+	            String lastName = rs.getString("lastName");
+	            String firstName = rs.getString("firstName");
+	            String middleName = rs.getString("middleName");
+	            String gender = rs.getString("gender");
+	            String address = rs.getString("address");
+	            String city = rs.getString("city");
+	            String state = rs.getString("state");
+	            String telephone = rs.getString("telephone");
+	            String email = rs.getString("email");
+	            String dob = rs.getString("dateOfBirth");
+	            String healthInsuranceNumber = rs.getString("healthInsuranceNumber");
+	            String emergencyContactNumber = rs.getString("emergencyContactNumber");
+	            String encryptionKey = rs.getString("EncryptionKey"); // Retrieve the encryption key
+
+	            if (encryptionKey != null && !encryptionKey.isEmpty()) {
+	            lastName = DataEncryptorDecryptor.decrypt(lastName, encryptionKey);
+	            firstName = DataEncryptorDecryptor.decrypt(firstName, encryptionKey);
+	            middleName = DataEncryptorDecryptor.decrypt(middleName, encryptionKey);
+	            gender = rs.getString("gender");
+	            address = DataEncryptorDecryptor.decrypt(address, encryptionKey);
+	            city = DataEncryptorDecryptor.decrypt(city, encryptionKey);
+	            state = DataEncryptorDecryptor.decrypt(state, encryptionKey);
+	            telephone = DataEncryptorDecryptor.decrypt(telephone, encryptionKey);
+	            email = DataEncryptorDecryptor.decrypt(email, encryptionKey);
+	            dob = rs.getString("dateOfBirth");
+	            healthInsuranceNumber = DataEncryptorDecryptor.decrypt(healthInsuranceNumber, encryptionKey);
+	            emergencyContactNumber = DataEncryptorDecryptor.decrypt(emergencyContactNumber, encryptionKey);
+	            }
+	            Patient patient = new Patient(id, lastName, firstName, middleName, gender, address, city, state, telephone, email, dob, healthInsuranceNumber, emergencyContactNumber);
+	            patientOL.add(patient);
+	            System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+	        }
+
+	        patientDirectorytableView.setItems(patientOL);
+	    }
 	}
 
 	@FXML
 	public void AddPatient(MouseEvent mouseEvent) throws Exception{
+
 		boolean isValid = true;
 		txtFirstNameError.setVisible(false);
 		txtMiddleNameError.setVisible(false);
@@ -439,14 +481,31 @@ public class PatientDirectoryController {
 		}
 
 		// If all fields are valid, proceed with further processing
-		if (isValid) {
-			dbConnector.initialiseDB();
-			dbConnector.createNewPatientExecuteQuery(firstName, middleName, lastName, gender, address, city, state, telephone, email, dob.toString(), healthInsuranceNumber, emergencyNumber);
-			dbConnector.closeConnection();
-			
-		}
+		 if (isValid) {
+		        String encryptionKey = DataEncryptorDecryptor.generateAESKey();
+		        String encryptedFirstName = DataEncryptorDecryptor.encrypt(firstName, encryptionKey);
+		        String encryptedMiddleName = DataEncryptorDecryptor.encrypt(middleName, encryptionKey);
+		        String encryptedLastName = DataEncryptorDecryptor.encrypt(lastName, encryptionKey);
+		        String encryptedAddress = DataEncryptorDecryptor.encrypt(address, encryptionKey);
+		        String encryptedCity = DataEncryptorDecryptor.encrypt(city, encryptionKey);
+		        String encryptedState = DataEncryptorDecryptor.encrypt(state, encryptionKey);
+		        String encryptedTelephone = DataEncryptorDecryptor.encrypt(telephone, encryptionKey);
+		        String encryptedEmail = DataEncryptorDecryptor.encrypt(email, encryptionKey);
+		        String encryptedHealthInsuranceNumber = DataEncryptorDecryptor.encrypt(healthInsuranceNumber, encryptionKey);
+		        String encryptedEmergencyNumber = DataEncryptorDecryptor.encrypt(emergencyNumber, encryptionKey);
+		        String dobValue = dob.toString();
 
-	}
+		        dbConnector.initialiseDB();
+		        dbConnector.createNewPatientExecuteQuery(
+		                encryptedFirstName, encryptedMiddleName, encryptedLastName,
+		                gender, encryptedAddress, encryptedCity, encryptedState,
+		                encryptedTelephone, encryptedEmail, dobValue,
+		                encryptedHealthInsuranceNumber, encryptedEmergencyNumber, encryptionKey,
+		                dbConnector.getConnection() // Pass the Connection object
+		        );
+		        dbConnector.closeConnection();
+		    }
+		}
 
 	private boolean isValidEmail(String email) {
 		// Regular expression to validate email format
