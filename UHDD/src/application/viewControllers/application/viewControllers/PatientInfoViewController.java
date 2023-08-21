@@ -578,7 +578,7 @@ public class PatientInfoViewController {
 		Patient patientNew = PatientService.getInstance().getCurrentPatient();
 		currentFXML = CurrentFXMLInstance.getInstance().getCurrentFXML();
 		System.out.println("Current FXML: " + currentFXML);
-		if(currentFXML.equals("../application/fxmlScenes/PopUpAddPatientNote.fxml")){
+		if(currentFXML.equals("/application/fxmlScenes/PopUpAddPatientNote.fxml")){
 			inDiagnosisSev.getItems().addAll("Mild", "Moderate", "Severe");
 			inDiagnosisSev.setValue("Mild");
 			txtEnterNoteAsId.setText("Entering note as: " + UserSession.getInstance().getUserName());
@@ -639,7 +639,7 @@ public class PatientInfoViewController {
 	
 	@FXML 	
 	public void switchToPatientInformation(MouseEvent mouseEvent) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("../application/fxmlScenes/PatientInformation.fxml"));		
+		Parent root = FXMLLoader.load(getClass().getResource("/application/fxmlScenes/PatientInformation.fxml"));		
 		stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
