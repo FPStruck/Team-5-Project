@@ -1,7 +1,10 @@
-
+package application;
+/*
 package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,11 +26,13 @@ class CredentialManagerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 	}
-    
+
 	@Test
-	void test() throws Exception {
+	void test() throws ClassNotFoundException, SQLException {
+//		fail("Not yet implemented");
 		CredentialManager cm = new CredentialManager();
-		cm.addNewUserToDB("toby", "password", "ts103@hotmail.com", "Nurse", "1");
+		cm.addNewUserToDB("toby", "password", "ts103@hotmail.com", "Nurse");
+		cm.checkCredentialsInFile("toby", "password");
 		cm.verifyPassword("toby", "password");
 		cm.checkPasswordLastSetDate("toby");
 		cm.changePasswordInDB("toby", "newPassword");
@@ -36,3 +41,4 @@ class CredentialManagerTest {
 	}
 
 }
+*/

@@ -136,7 +136,8 @@ public class DashboardController {
 			String givenName = rs.getString("firstName");
 			Patient patient = new Patient(id, familyName, givenName);
 			patientOL.add(patient);
-			System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
+			//Commenting out to reduce noise whilst bug fixing
+			//System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
 		}
 		patientDirectoryDBTV.setItems(patientOL);
 		dbConnector.closeConnection();
@@ -176,17 +177,18 @@ public class DashboardController {
 		// grabs the events from the database and inserts to the calendar
 		dbConnector.getCalendarEvents(); // this will ensure that the next appointment is displayed 
 		
-		// get the next appointment 
-		System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
+		// get the next appointment
+		//commenting out to reduce noise whilst bug fixing 
+		//System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
-		System.out.println("This is the entry: " + entry);	
-		System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
+		//System.out.println("This is the entry: " + entry);	
+		//System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
 			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
-				System.out.println("This is the list: " + l);
+				//System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
-				System.out.println("This is entry: " + e);
+				//System.out.println("This is entry: " + e);
 				nextA = e.get(0).getTitle();
-				System.out.println("First entry: " + nextA);
+				//System.out.println("First entry: " + nextA);
 				// this will set the next appointment text 
 				if (nextAppointment != null) { // this fixed the bug 
 					nextAppointment.setText(nextA);
@@ -205,12 +207,15 @@ public class DashboardController {
 					nextRecurring = ee.isRecurring();
 					nextRRule = ee.recurrenceRuleProperty().getValue();
 					nextRecurrence = ee.isRecurrence();
+					/*
+					 * Reduce noise whilst bug fixing
 					
 					System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
 					+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
 					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
 					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
-					
+					*/
+
 					// adds the event to the database
 					try {dbConnector.addCalendarEvent(nextTitle, nextId, nextFullDay, nextStartDate, 
 							nextEndDate, nextStartTime,	nextEndTime, nextZoneId,
@@ -230,7 +235,7 @@ public class DashboardController {
 						LastEndTime = nextEndTime;
 						// this will display the next patient appointment details
 						if (nextA != null && nextAppointment != null) { // there was a bug where it broke if the next appointment was null, fixed by adding nextAppointment
-							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientName(nextTitle);
+							ResultSet patientDetails = dbConnector.QueryReturnResultsFromPatientDataId(nextId);
 							System.out.println("This is the patient details: " + patientDetails);
 							if(patientDetails.next()) {
 								String name =  patientDetails.getString("FirstName") + " " 
@@ -247,8 +252,9 @@ public class DashboardController {
 					
 				}
 			}
-		System.out.println("After loop: " + nextA);	
-		System.out.println("After loop next apppointment: " + nextAppointment);			
+		//Reduce noise whilst bug fixing
+		//System.out.println("After loop: " + nextA);	
+		//System.out.println("After loop next apppointment: " + nextAppointment);			
 		startDate();
 		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
 		dbConnector.closeConnection();

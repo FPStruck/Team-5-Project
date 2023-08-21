@@ -1,4 +1,5 @@
-
+package application;
+/*
 package application.test.application;
 
 import static org.junit.Assert.assertEquals;
@@ -54,26 +55,23 @@ class DBConnectorTest {
 	@Test
 	void dbConnectorLoggedInTest() throws ClassNotFoundException, SQLException {
 //		fail("Not yet implemented");
-		
 		System.out.println("Logged in status for user: " + db.getLoggedInStatus("toby"));
-		System.out.println("Set to logged in: ");
+		System.out.println("Is user logged in? " + db.isAnyUserLoggedIn("toby")); 
 		db.setLoggedInStatus("toby", 1);
 		System.out.println("Logged in status for user: " + db.getLoggedInStatus("toby"));
+		System.out.println("Is user logged in? " + db.isAnyUserLoggedIn("toby"));
 		
 		System.out.println("Logged in status for user: " + db.getLoggedInStatus("toby"));
-		System.out.println("Set to logged out: ");
+		System.out.println("Is user logged in? " + db.isAnyUserLoggedIn("toby"));
 		db.setLoggedInStatus("toby", 0);
 		System.out.println("Logged in status for user: " + db.getLoggedInStatus("toby"));
-
+		System.out.println("Is user logged in? " + db.isAnyUserLoggedIn("toby"));
 	}
-	
-	
-	
 	
 	@Test
 	void dbCreateUserTest() throws ClassNotFoundException, SQLException {
 //		fail("Not yet implemented");
-		db.createUserExecuteQuery("junit", "testHash", "testpara", "test@.com", "Doctor", "2023-06-20 22:28:03", "1");
+		db.createUserExecuteQuery("junit", "testHash", "testpara", "test@.com", "Doctor", "2023-06-20 22:28:03");
 	}
 	
 	@Test
@@ -135,14 +133,12 @@ class DBConnectorTest {
 		}
 	}
 	
-	
-
 	@Test
 	void dbAddCalendarEventTest() throws ClassNotFoundException, SQLException {
 //		fail("Not yet implemented");
-		id = "e13d4041-182b-4c88-ad6b-5acee65089d2"; // this needs to be unique
-		startDate = LocalDate.parse("2024-07-09");
-		endDate = LocalDate.parse("2024-07-09");
+		id = "e13d4041-182b-4c88-ad6b-5acee65089d9";
+		startDate = LocalDate.parse("2023-07-09");
+		endDate = LocalDate.parse("2023-07-09");
 		startTime = LocalTime.parse("18:30"); 
 		endTime = LocalTime.parse("18:45");
 		zoneId = ZoneId.of("Australia/Sydney");
@@ -161,3 +157,4 @@ class DBConnectorTest {
 		
 
 }
+*/

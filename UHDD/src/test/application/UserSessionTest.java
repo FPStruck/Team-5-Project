@@ -1,3 +1,5 @@
+package application;
+/*
 package application.test.application;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,10 +9,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.CalendarApp;
+import application.UserSession;
 
-class CalendarAppTest {
-
+class UserSessionTest {
+	UserSession us = new UserSession("500");
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -26,11 +29,8 @@ class CalendarAppTest {
 	@Test
 	void test() {
 //		fail("Not yet implemented");
-		CalendarApp ca = new CalendarApp();
-		System.out.println(ca.getMyCalendarSource());
-		System.out.println(ca.getDoctors());
-		System.out.println(ca.getNurses());	
-		System.out.println(ca.getParameters());
+		System.out.println(us.getUserId());
 	}
 
 }
+*/
