@@ -213,6 +213,24 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 		return false;
 	}
+
+	public boolean doesUsernameExist(String username) throws Exception  {
+		dbConnector.initialiseDB();
+		//maybe this could use a query that is not a select * but just a select username
+		//didn't feel like implementing it right now
+		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
+			if (userDetails.next()) {
+				dbConnector.closeConnection();
+				return true;
+			} else {
+				dbConnector.closeConnection();
+				return false;
+			}
+		} catch (SQLException e) {
+			dbConnector.closeConnection();
+		}
+		return false;
+    }
 	
 	public String verifyPasswordAndReturnEmail(String username, String password) throws Exception {
 		checkPasswordLastSetDate(username);
