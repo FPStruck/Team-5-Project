@@ -110,7 +110,7 @@ public class UserCreationController {
 			// Create a new task for sending email
 			Task<Void> emailTask = new Task<Void>() {
 				@Override
-				protected Void call() throws Exception {
+				protected Void call() throws MessagingException, Exception {
 					EmailManager emailManager = new EmailManager();
 					emailManager.sendEmailWithImage(emailGrabberCreator.getText(), "UHDB MFA QR Code", "Please scan the QR code to set up MFA", qrCode);
 					return null;
