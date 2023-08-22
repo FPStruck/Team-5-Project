@@ -10,8 +10,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +26,7 @@ import application.Medication;
 import application.Patient;
 import application.PatientService;
 import application.UserSession;
+import application.UsernameStorage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +39,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
@@ -104,10 +108,12 @@ public class DashboardController {
 	String nextRRule;
 	Boolean nextRecurrence;
 	UserSession us = new UserSession();
-	
+	private Timer loggedInStatusTimer;
+	private Timer inactivityStatusTimer;
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-//		userText.setText(UserSession.getUserName()); // #BUG this line is wont allow the calendar to open
+	public void initialize() throws Exception{
+		setUserText();
+		currentUser = UsernameStorage.getUsername();
 		Platform.runLater(() -> {
 	        try {
 	            updateNextAppointment();
@@ -140,7 +146,6 @@ public class DashboardController {
 			//System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
 		}
 		patientDirectoryDBTV.setItems(patientOL);
-		dbConnector.closeConnection();
 
 	}
 	
@@ -164,8 +169,6 @@ public class DashboardController {
 			medicationOL.add(medication);
 		}
 		prescribedMedsDBTV.setItems(medicationOL);
-		dbConnector.closeConnection();
-
 	}
 
 	
@@ -255,217 +258,171 @@ public class DashboardController {
 		//Reduce noise whilst bug fixing
 		//System.out.println("After loop: " + nextA);	
 		//System.out.println("After loop next apppointment: " + nextAppointment);			
-		startDate();
+		startInactivityStatusTimer();
 		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
-		dbConnector.closeConnection();
 	}
 	
+	private void setUserText() {
+	    String username = UsernameStorage.getUsername();
+	    userText.setText(username); // Set the userText to the username obtained from UsernameStorage
+	}
+	
+	
+	// Call this method to start the timer
+		private void startInactivityStatusTimer() {
+			inactivityStatusTimer = new Timer();
+			inactivityStatusTimer.scheduleAtFixedRate(new TimerTask() {
+	            @Override
+	            public void run() {
+	                checkInactivityStatus();
+	            }
+	        }, 0, 5000); // Run the task every 5 seconds
+	    }
+	
+	// Call this method to start the timer
 	private void startLoggedInStatusTimer() {
-	    Timer timer = new Timer();
-	    timer.schedule(new TimerTask() {
-	        @Override
-	        public void run() {
-	            try {
-					checkLoggedInStatus(timer);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-	        }
-	    }, 0, 60000); // Run the task every 5 seconds
-	}
-	
-	private void startDate() {
-	    Timer timerone = new Timer();
-	    timerone.schedule(new TimerTask() {
-	        @Override
-	        public void run() {
-	            try {
-					checkInactivityStatus(timerone);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        }
-	    }, 0, 5000); // Run the task every 5 seconds
-	}
-	
-	private void checkLoggedInStatus(Timer timer) throws SQLException {
-	    Platform.runLater(() -> {
-	        try {
-				dbConnector.initialiseDB();
-				System.out.println("Dashboard controller line 288 logginStatus");
-	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
-	            if (loggedInStatus == 2) {
-	                // User has been logged out, show alert and provide options to continue or logout
-	                timer.cancel(); // Stop the timer after detecting the change to 0
+        loggedInStatusTimer = new Timer();
+        loggedInStatusTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    checkLoggedInStatus();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 5000); // Run the task every 5 seconds
+    }
 
-	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-	                alert.setTitle("Login Attempt Detected");
-	                alert.setHeaderText("Another User Has Attempted to Access This Account:");
-	                alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
-	                dbConnector.setLoggedInStatus(currentUser, 1);
-	                ButtonType continueButton = new ButtonType("Continue");
-	                ButtonType logoutButton = new ButtonType("Logout");
-	                alert.getButtonTypes().setAll(continueButton, logoutButton);
-	                
-	             // Create the timer task to automatically select the logoutButton after 10 seconds
-	                Task<Void> timerTask = new Task<Void>() {
-	                    @Override
-	                    protected Void call() throws Exception {
-	                        try {
-	                            Thread.sleep(15000); // 10 seconds
-	                        } catch (InterruptedException e) {
-	                            // Timer interrupted, no need to handle it
-	                        }
-							dbConnector.closeConnection();
-	                        return null;
-	                    }
-	                };
-
-	                // When the timer task completes, select the logoutButton response
-	                timerTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-	                    @Override
-	                    public void handle(WorkerStateEvent event) {
-	                        if (!alert.isShowing()) return; // Alert might be closed by the user
-	                        alert.hide();
-	                        Platform.runLater(() -> alert.setResult(logoutButton));
-	                    }
-	                });
-
-	                // Start the timer task
-	                new Thread(timerTask).start();
-	                
-	                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-	                alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
-
-	                alert.showAndWait().ifPresent(response -> {
-	                    if (response == continueButton) {
-	                        // User chose to continue, set logged_in status to 1
-	                        try {
-	                            dbConnector.setLoggedInStatus(currentUser, 1);
-	                            startLoggedInStatusTimer(); // Restart the timer
-	                        } catch (SQLException e) {
-	                            e.printStackTrace();
-	                        }
-	                    } else if (response == logoutButton) {
-	                        // User chose to logout, set logged_in status to 0 and go back to the login screen
-	                        try {
-	                        	timer.cancel();
-	                            dbConnector.setLoggedInStatus(currentUser, 0);
-	                            switchToLoginScreen();
-	                        } catch (SQLException | IOException e) {
-	                            e.printStackTrace();
-	                        }
-	                    }
-	                });
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-			try {
-				dbConnector.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-	    });
-	}
-	
-	private void checkInactivityStatus(Timer timerone) throws Exception {
-	    
-		Platform.runLater(() -> {
-	        try {
-				dbConnector.initialiseDB();
-	            int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
-	            if (loggedInStatus == 1) {
-	                // User is logged in, check for inactivity
-	                Timestamp lastLoggedInDate = dbConnector.getLastLoggedInDate(currentUser);
-
-	                if (lastLoggedInDate != null) {
-	                    LocalDateTime currentDateTime = LocalDateTime.now();
-	                    Timestamp currentTimestamp = Timestamp.valueOf(currentDateTime);
-
-	                    Duration timeDifference = Duration.between(lastLoggedInDate.toLocalDateTime(), currentDateTime);
-	                    long hoursDifference = timeDifference.toHours();
-
-	                    if (hoursDifference > 5) {
-	                        // User has been inactive for 5 hours or more, show the alert box
-	                        timerone.cancel(); // Stop the timer
-
-	                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-	                        alert.setTitle("Inactivity Detected");
-	                        alert.setHeaderText("You have been active for 5 hours or more:");
-	                        alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
-	                        dbConnector.setLoggedInStatus(currentUser, 1);
-	                        ButtonType continueButton = new ButtonType("Continue");
-	                        ButtonType quitButton = new ButtonType("Quit");
-	                        alert.getButtonTypes().setAll(continueButton, quitButton);
-
-	                        // Create the timer task to automatically select the logoutButton after 10 seconds
-	                        Task<Void> timerTask = new Task<Void>() {
-	                            @Override
-	                            protected Void call() throws Exception {
-	                                try {
-	                                    Thread.sleep(15000); // 10 seconds
-	                                } catch (InterruptedException e) {
-	                                    // Timer interrupted, no need to handle it
-	                                }
-									dbConnector.closeConnection();
-	                                return null;
-	                            }
-	                        };
-
-	                        // When the timer task completes, select the logoutButton response
-	                        timerTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-	                            @Override
-	                            public void handle(WorkerStateEvent event) {
-	                                if (!alert.isShowing()) return; // Alert might be closed by the user
-	                                alert.hide();
-	                                Platform.runLater(() -> alert.setResult(quitButton));
-	                            }
-	                        });
-
-	                        // Start the timer task
-	                        new Thread(timerTask).start();
-
-	                        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-	                        alertStage.setAlwaysOnTop(true); // Make the alert window stay on top
-
-	                        alert.showAndWait().ifPresent(response -> {
-	                            if (response == continueButton) {
-	                                // User chose to continue, set logged_in status to 1
-	                                try {
-	                                    dbConnector.setLoggedInStatus(currentUser, 1);
-	                                    dbConnector.setLastLoggedInTime(currentUser, currentTimestamp);
-	                                    startLoggedInStatusTimer(); // Restart the timer
-	                                } catch (SQLException e) {
-	                                    e.printStackTrace();
-	                                }
-	                            } else if (response == quitButton) {
-	                                // User chose to logout, set logged_in status to 0 and go back to the login screen
-	                                try {
-	                                    timerone.cancel();
-	                                    dbConnector.setLoggedInStatus(currentUser, 0);
-	                                    dbConnector.setLastLoggedInTime(currentUser, currentTimestamp);
-	                                    Platform.exit();
-	                                } catch (SQLException e) {
-	                                    e.printStackTrace();
-	                                }
-	                            }
-	                        });
-	                    }
-	                }
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-			try {
-				dbConnector.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-	    });
-		
-	}
+    // Modify this method to check the loggedInStatus
+    private void checkLoggedInStatus() throws IOException {
+        Platform.runLater(() -> {
+            try {
+                dbConnector.initialiseDB();
+                int loggedInStatus = dbConnector.getLoggedInStatus(currentUser);
+                if (loggedInStatus == 2) {
+                    loggedInStatusTimer.cancel(); // Stop the timer
+                    displayLoginAlert();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
     
+    private void checkInactivityStatus() {
+        try {
+            dbConnector.initialiseDB();
+            Timestamp lastLoggedInDate = dbConnector.getLastLoggedInDate(currentUser);
+
+            if (lastLoggedInDate != null) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                Timestamp currentTimeStamp = Timestamp.valueOf(currentDateTime);
+
+                Duration timeDifference = Duration.between(lastLoggedInDate.toLocalDateTime(), currentDateTime);
+                long hoursDifference = timeDifference.toHours();
+
+                if (hoursDifference > 5) {
+                    // User has been inactive for 5 hours or more, show the inactivity alert
+                    displayInactivityAlert();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean dialogDisplayed = false; // Add this field
+
+	 // Modify the displayLoginAlert method
+	 private void displayLoginAlert() {
+	     if (dialogDisplayed) {
+	         return; // Don't display the dialog if it's already shown
+	     }
+	     
+	     dialogDisplayed = true; // Set the flag to true to indicate that the dialog is displayed
+	
+	     Alert alert = new Alert(AlertType.CONFIRMATION);
+	     alert.setTitle("Login Attempt Detected");
+	     alert.setHeaderText("Another User Has Attempted to Access This Account:");
+	     alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
+	
+	     ButtonType continueButton = new ButtonType("Continue");
+	     ButtonType quitButton = new ButtonType("Quit");
+	
+	     alert.getButtonTypes().setAll(continueButton, quitButton);
+	
+	     Optional<ButtonType> result = alert.showAndWait();
+	
+	     if (result.isPresent() && result.get() == continueButton) {
+	         // User chose to continue, set logged_in status to 1
+	         try {
+	             dbConnector.setLoggedInStatus(UsernameStorage.getUsername(), 1);
+	             startInactivityStatusTimer(); // Restart the timer
+	         } catch (SQLException e) {
+	             e.printStackTrace();
+	         }
+	     } else if (result.isPresent() && result.get() == quitButton) {
+	         // User chose to logout, set logged_in status to 0 and go back to the login screen
+	         try {
+	             dbConnector.setLoggedInStatus(currentUser, 0);
+	             Platform.exit();
+	         } catch (SQLException e) {
+	             e.printStackTrace();
+	         }
+	     }
+	 }
+	
+	
+	 private void displayInactivityAlert() {
+		    if (dialogDisplayed) {
+		        return; // Don't display the dialog if it's already shown
+		    }
+
+		    dialogDisplayed = true; // Set the flag to true to indicate that the dialog is displayed
+
+		    Platform.runLater(() -> {
+		        Alert alert = new Alert(AlertType.CONFIRMATION);
+		        alert.setTitle("Inactivity Detected");
+		        alert.setHeaderText("You Have Been Logged In For An Extended Period:");
+		        alert.setContentText("Do you want to continue the session? (You will be automatically logged out within 15 seconds if an option is not chosen)");
+
+		        ButtonType continueButton = new ButtonType("Continue");
+		        ButtonType quitButton = new ButtonType("Quit");
+
+		        alert.getButtonTypes().setAll(continueButton, quitButton);
+
+		        Optional<ButtonType> result = alert.showAndWait();
+
+		        if (result.isPresent() && result.get() == continueButton) {
+		            // User chose to continue, set logged_in status to 1
+		            try {
+		                dbConnector.setLoggedInStatus(UsernameStorage.getUsername(), 1);
+
+		                // Set the lastLoggedInTime to the current date and time
+		                LocalDateTime currentDateTime = LocalDateTime.now();
+		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		                String formattedDateTime = currentDateTime.format(formatter);
+		                Timestamp currentTimestamp = Timestamp.valueOf(formattedDateTime);
+
+		                dbConnector.setLastLoggedInTime(UsernameStorage.getUsername(), currentTimestamp);
+
+		                startLoggedInStatusTimer(); // Restart the timer
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        } else if (result.isPresent() && result.get() == quitButton) {
+		            // User chose to logout, set logged_in status to 0 and go back to the login screen
+		            try {
+		                dbConnector.setLoggedInStatus(currentUser, 0);
+		                Platform.exit();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    });
+		}
+	 
     @FXML
     private void switchToLoginScreen() throws IOException {
     	Stage currentStage = (Stage) userText.getScene().getWindow();

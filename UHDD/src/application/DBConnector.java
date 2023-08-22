@@ -39,7 +39,7 @@ public class DBConnector {
 		
 			// loads and checks the driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Driver loaded:");
+			
 		
 			// connection for database...make sure the URL is correct JDBC:MYSQL
 			// connect to Jonathan's cloud
@@ -55,7 +55,7 @@ public class DBConnector {
 			// connect to the database
 			try {
 				connection = DriverManager.getConnection(url, username, password);
-				System.out.println("Database connected:");
+				
 				
 				connection.createStatement();
 			} catch (SQLException ex) {

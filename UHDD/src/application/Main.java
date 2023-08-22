@@ -33,7 +33,6 @@ public class Main extends Application {
 		String name = us.getUserName();
 		System.out.println("Stage is closing: " + name);
 		db.setLoggedInStatus(name, 0);
-		db.closeConnection();
 	 } 
 	
 }

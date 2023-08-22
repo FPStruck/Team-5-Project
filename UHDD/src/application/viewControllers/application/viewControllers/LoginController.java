@@ -13,6 +13,7 @@ import application.LoginResult;
 import application.Patient;
 import application.PatientService;
 import application.UserSession;
+import application.UsernameStorage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -177,6 +178,7 @@ public class LoginController {
                 Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
                 dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
+                UsernameStorage.setUsername(username);
                 currentFXML = "/application/fxmlScenes/Dashboard.fxml";
                 CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
