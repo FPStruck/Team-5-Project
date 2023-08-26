@@ -367,6 +367,7 @@ public class DashboardController {
 	         try {
 	             dbConnector.setLoggedInStatus(currentUser, 0);
 	             Platform.exit();
+	             dbConnector.closeConnection();
 	         } catch (SQLException e) {
 	             e.printStackTrace();
 	         }
@@ -416,6 +417,7 @@ public class DashboardController {
 		            try {
 		                dbConnector.setLoggedInStatus(currentUser, 0);
 		                Platform.exit();
+		                dbConnector.closeConnection();
 		            } catch (SQLException e) {
 		                e.printStackTrace();
 		            }
