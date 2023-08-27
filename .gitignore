@@ -1,4 +1,5 @@
 /bin/
-.classpath
-UHDD/.classpath
 /target/
+UHDD/.settings/org.eclipse.jdt.core.prefs
+UHDD/.project
+.project
