@@ -18,13 +18,25 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
 
-
+/**
+ * This is used to add a user to the database, verify the password, verify the OTP and anything to do with the user credentials
+ * @author Team 5
+ *
+ */
 public class CredentialManager {
-
 	
 	DBConnector dbConnector = new DBConnector();
 	PasswordHasher passwordHasher = new PasswordHasher();
 	
+	/**
+	 * This will add a new user to the database
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @param role
+	 * @param OTPSecretKey
+	 * @throws Exception
+	 */
 	public void addNewUserToDB(String username, String password, String email, String role, String OTPSecretKey) throws Exception {
 		dbConnector.initialiseDB();
 		//Get the current date and time
@@ -39,6 +51,13 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 	}
 
+	/**
+	 * This will verify the password
+	 * @param username
+	 * @param password
+	 * @return - a boolean type
+	 * @throws Exception
+	 */
 	public boolean verifyPassword(String username, String password) throws Exception {
 		dbConnector.initialiseDB();	
 		try (ResultSet userDetailsFromDb = dbConnector.QueryReturnResultsFromUser(username)) {
@@ -73,6 +92,13 @@ public class CredentialManager {
 	
 	}
 
+	/**
+	 * This will verify the OTP with the OTP from database
+	 * @param username
+	 * @param OTP
+	 * @return - a boolean type
+	 * @throws Exception
+	 */
 	public boolean verifyOTP(String username, int OTP) throws Exception{
 		OTPService otpService;
 		try {
@@ -104,6 +130,12 @@ public class CredentialManager {
 		}
 	}
 	
+	/**
+	 * This will get the OTP from the database
+	 * @param username
+	 * @return - a OTP is a string
+	 * @throws Exception
+	 */
 	public String getOTPSecretKeyFromDatabase(String username) throws Exception{
 		try {
 			dbConnector.initialiseDB();
@@ -121,7 +153,12 @@ public class CredentialManager {
 		return null;
 	}
 	
-	
+	/**
+	 * This will change the password in the database, hashing included   
+	 * @param username
+	 * @param password
+	 * @throws Exception
+	 */
 	public void changePasswordInDB(String username, String password) throws Exception {
 		dbConnector.initialiseDB();
 		//Get the current date and time
@@ -136,6 +173,12 @@ public class CredentialManager {
 		dbConnector.closeConnection();
 	}
 
+	/**
+	 * This will verify the MFA by using the OPT service
+	 * @param username
+	 * @return
+	 * @throws Exception
+	 */
 	public LoginResult verifyMFA(String username) throws Exception{
             int inputCode = 0;
         
@@ -176,7 +219,12 @@ public class CredentialManager {
             return LoginResult.CANCELLED;
     }
 
-	//Check if password last set date was more than 30 days ago
+	/**
+	 * Check if password last set date was more than 30 days ago
+	 * @param username
+	 * @return - a boolean type
+	 * @throws Exception
+	 */
 	public boolean checkPasswordLastSetDate(String username) throws Exception {
 		dbConnector.initialiseDB();
 		try (ResultSet userDetails = dbConnector.QueryReturnResultsFromUser(username)) {
@@ -214,6 +262,12 @@ public class CredentialManager {
 		return false;
 	}
 
+	/**
+	 * This will check the username is the database
+	 * @param username
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean doesUsernameExist(String username) throws Exception  {
 		dbConnector.initialiseDB();
 		//maybe this could use a query that is not a select * but just a select username
@@ -232,6 +286,13 @@ public class CredentialManager {
 		return false;
     }
 	
+	/**
+	 * This will check the user's email in the database
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
 	public String verifyPasswordAndReturnEmail(String username, String password) throws Exception {
 		checkPasswordLastSetDate(username);
 		dbConnector.initialiseDB();	    
