@@ -38,6 +38,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import application.UserSession;
 
+/**
+ * This is used to control the patient info view FXML/UI
+ * @author User
+ *
+ */
 public class PatientInfoViewController {
 	private static Stage calendarStage;
 	private static Parent calendarRoot;

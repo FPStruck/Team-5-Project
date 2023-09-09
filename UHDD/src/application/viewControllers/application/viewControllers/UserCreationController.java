@@ -33,6 +33,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This is used to control the user creation FXML/UI
+ * @author User
+ *
+ */
 public class UserCreationController {
 	private Stage stage;
 	private Scene scene;

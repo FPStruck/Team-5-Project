@@ -37,6 +37,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class Nurse_DashboardController {
 	private Stage stage;
 	private static Stage calendarStage;

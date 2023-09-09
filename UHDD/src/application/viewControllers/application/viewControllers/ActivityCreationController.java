@@ -13,6 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * This class is used for the calendar controller for the new calendar which maybe redundant 
+ * @author User
+ *
+ */
 public class ActivityCreationController {
 	 public static CalendarActivity ca = new CalendarActivity();
 	

@@ -27,6 +27,11 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class Nurse_PatientDirectoryController {
 	private static Stage calendarStage;
 	private static Parent calendarRoot;

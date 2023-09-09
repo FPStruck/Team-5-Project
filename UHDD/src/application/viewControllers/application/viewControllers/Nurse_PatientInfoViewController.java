@@ -19,6 +19,11 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class Nurse_PatientInfoViewController {
 	private Stage stage;
 	private Scene scene;

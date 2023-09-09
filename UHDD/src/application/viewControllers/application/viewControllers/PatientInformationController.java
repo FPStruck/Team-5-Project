@@ -22,6 +22,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class PatientInformationController {
 	private Stage stage;
 	private Scene scene;

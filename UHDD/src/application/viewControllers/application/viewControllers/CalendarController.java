@@ -24,6 +24,11 @@ import java.util.*;
 
 import application.CalendarActivity;
 
+/**
+ * This class is used for the new calendar which maybe redundant 
+ * @author User
+ *
+ */
 public class CalendarController implements Initializable {
 
     ZonedDateTime dateFocus;

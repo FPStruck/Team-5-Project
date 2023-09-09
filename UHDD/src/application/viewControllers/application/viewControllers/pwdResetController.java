@@ -17,6 +17,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * This is used to control the password reset FXML/UI
+ * @author User
+ *
+ */
 public class pwdResetController {
     @FXML
     private Button btnResetPwd;
