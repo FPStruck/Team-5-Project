@@ -7,6 +7,11 @@ import java.util.Arrays;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 
+/**
+ * This class is used in the credential manager
+ * @author User
+ *
+ */
 public class PasswordHasher {
     private SecureRandom random;
     private Argon2BytesGenerator gen;
@@ -16,6 +21,11 @@ public class PasswordHasher {
         this.gen = new Argon2BytesGenerator();
     }
 
+    /**
+     * This is used in the credential manager 
+     * @param password
+     * @return
+     */
     public PasswordHash hashPassword(String password) {
         // Generate a secure random salt
         byte[] salt = new byte[16];
@@ -37,6 +47,12 @@ public class PasswordHasher {
         return new PasswordHash(hash, params);
     }
 
+    /**
+     * This is used inthe password reset and the credential manager
+     * @param password
+     * @param passwordHash
+     * @return
+     */
     public boolean verifyPassword(String password, PasswordHash passwordHash) {
         gen.init(passwordHash.getParams());
         byte[] inputHash = new byte[32]; // 256-bit hash

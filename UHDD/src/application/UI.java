@@ -116,7 +116,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javax.mail.SendFailedException;
 
-
+/**
+ * This might be redundant, need to verify
+ * @author Team 5
+ *
+ */
 public class UI {
 	private Stage stage;
 	private Scene scene;

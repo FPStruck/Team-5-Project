@@ -1,5 +1,10 @@
 package application;
 
+/**
+ * This may be redundant 
+ * @author User
+ *
+ */
 public class UsernameStorage {
     private static String username;
 
