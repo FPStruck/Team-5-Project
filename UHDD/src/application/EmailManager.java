@@ -13,6 +13,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * This class is used for the user creation and UI
+ * @author User
+ *
+ */
 public class EmailManager {
 
     private  String smtpHost = "smtp.office365.com";
@@ -24,6 +29,15 @@ public class EmailManager {
 //    private  String smtpPassword = "xx";
 //    private  String smtpUser = "tobez103@gmail.com";
 
+    /**
+     * This is used for the user creation 
+     * @param to
+     * @param subject
+     * @param body
+     * @param image
+     * @throws MessagingException
+     * @throws IOException
+     */
     public void sendEmailWithImage(String to, String subject, String body, BufferedImage image) throws MessagingException, IOException {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", smtpHost);
@@ -75,6 +89,13 @@ public class EmailManager {
         Transport.send(message);
     }
 
+    /**
+     * This is only used in this class
+     * @param image
+     * @param format
+     * @return
+     * @throws IOException
+     */
     private byte[] convertBufferedImageToByteArray(BufferedImage image, String format) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, format, baos);
