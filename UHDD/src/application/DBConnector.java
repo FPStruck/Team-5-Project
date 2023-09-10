@@ -83,12 +83,14 @@ public class DBConnector {
 		 * @throws SQLException
 		 */
 		public void closeConnection() throws SQLException {
-			try {
+	        if (connection != null && !connection.isClosed()) {
 	            connection.close();
-			} catch (SQLException ex) {
-				
-			}
-		}
+	        }
+	    }
+
+	    public Connection getConnection() {
+	        return connection;
+	    }
 		
 		/**
 		 * This will change the login status in the main. login controller and the dashboard
@@ -341,24 +343,37 @@ public class DBConnector {
 		 * @param emergencyContactNumber
 		 * @throws SQLException
 		 */
-		public void createNewPatientExecuteQuery(String firstName, String middleName, String lastName, String gender, String address, String city, String state, String telephone, String email, String dateOfBirth, String healthInsuranceNumber, String emergencyContactNumber) throws SQLException {
-			String sql = "INSERT INTO testdb.patient_data (firstName, middleName, lastName, gender, address, city, state, telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, firstName);
-			statement.setString(2, middleName);
-			statement.setString(3, lastName);
-			statement.setString(4, gender);
-			statement.setString(5, address);
-			statement.setString(6, city);
-			statement.setString(7, state);
-			statement.setString(8, telephone);
-			statement.setString(9, email);
-			statement.setString(10, dateOfBirth);
-			statement.setString(11, healthInsuranceNumber);
-			statement.setString(12, emergencyContactNumber);
-			statement.executeUpdate();
-		}
-    
+
+		public void createNewPatientExecuteQuery(
+			    String firstName, String middleName, String lastName, String gender,
+			    String address, String city, String state, String telephone, String email,
+			    String dateOfBirth, String healthInsuranceNumber, String emergencyContactNumber,
+			    String EncryptionKey, Connection connection) throws SQLException {
+			    
+			    String sql = "INSERT INTO testdb.patient_data " +
+			                 "(firstName, middleName, lastName, gender, address, city, state, " +
+			                 "telephone, email, dateOfBirth, healthInsuranceNumber, emergencyContactNumber, EncryptionKey) " +
+			                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			    
+			    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			        statement.setString(1, firstName);
+			        statement.setString(2, middleName);
+			        statement.setString(3, lastName);
+			        statement.setString(4, gender);
+			        statement.setString(5, address);
+			        statement.setString(6, city);
+			        statement.setString(7, state);
+			        statement.setString(8, telephone);
+			        statement.setString(9, email);
+			        statement.setString(10, dateOfBirth);
+			        statement.setString(11, healthInsuranceNumber);
+			        statement.setString(12, emergencyContactNumber);
+			        statement.setString(13, EncryptionKey);
+			        
+			        statement.executeUpdate();
+			    }
+			}
+
 		/**
 		 * This is used in the patient info view
 		 * @param patientId
