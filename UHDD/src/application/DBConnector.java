@@ -19,6 +19,11 @@ import java.util.Map;
 import com.calendarfx.model.Entry;
 import com.google.zxing.Result;
 
+/**
+ * This class was created to handle all the queries to the mySQL database
+ * @author Team 5
+ *
+ */
 public class DBConnector {
 	// these objects will be used in querying the database and processing the results
 		public Connection connection; // the controllers needs to use this connection 
@@ -35,6 +40,12 @@ public class DBConnector {
 		String nextRRule;
 		Boolean nextRecurrence;		
 		
+		/**
+		 * The initialise DB connected to Azure with an encrypted password
+		 * The connection is used in the dashboard, login controller, patient directory
+		 * patient info view, encryption, credential manger and main
+		 * @throws Exception
+		 */
 		public void initialiseDB() throws Exception {
 		
 			// loads and checks the driver
@@ -67,6 +78,10 @@ public class DBConnector {
 			
 		}
 		
+		/**
+		 * This will close the connection to the database 
+		 * @throws SQLException
+		 */
 		public void closeConnection() throws SQLException {
 	        if (connection != null && !connection.isClosed()) {
 	            connection.close();
@@ -77,6 +92,12 @@ public class DBConnector {
 	        return connection;
 	    }
 		
+		/**
+		 * This will change the login status in the main. login controller and the dashboard
+		 * @param username
+		 * @param loggedIn
+		 * @throws SQLException
+		 */
 	    public void setLoggedInStatus(String username, int loggedIn) throws SQLException {
 	        String sql = "UPDATE user_details SET logged_in = ? WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -85,6 +106,12 @@ public class DBConnector {
 	        statement.executeUpdate();
 	    }
 	    
+	    /**
+	     * This will set the login time in the login controller and dashboard
+	     * @param username
+	     * @param timestamp
+	     * @throws SQLException
+	     */
 	    public void setLastLoggedInTime(String username, Timestamp timestamp) throws SQLException {
 	        String sql = "UPDATE user_details SET last_logged_in_date = ? WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -92,7 +119,12 @@ public class DBConnector {
 	        statement.setString(2, username);
 	        statement.executeUpdate();
 	    }
-	    
+	    /**
+	     * This will get the login status in the login controller and dashboard
+	     * @param username
+	     * @return
+	     * @throws SQLException
+	     */
 	    public int getLoggedInStatus(String username) throws SQLException {
 	        int loggedInStatus = -1;
 	        String sql = "SELECT logged_in FROM user_details WHERE username = ?";
@@ -107,7 +139,13 @@ public class DBConnector {
 	        }
 	        return loggedInStatus;
 	    }
-
+	    
+	    /**
+	     * This is used in the dasboard
+	     * @param username
+	     * @return
+	     * @throws SQLException
+	     */
 	    public Timestamp getLastLoggedInDate(String username) throws SQLException {
 	        Timestamp lastLoggedInDate = null;
 	        String sql = "SELECT last_logged_in_date FROM user_details WHERE username = ?";
@@ -123,7 +161,10 @@ public class DBConnector {
 	        return lastLoggedInDate;
 	    }
 
-	    
+	    /**
+	     * This is only used in this class
+	     * @throws SQLException
+	     */
 	    public void checkAndSetLoggedOutStatus() throws SQLException {
 	        String sql = "SELECT username, logged_in, last_logged_in_date FROM user_details WHERE logged_in = 1";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -174,7 +215,13 @@ public class DBConnector {
 	            updateStatement.executeUpdate();
 	        }
 	    }
-
+	    
+	    /**
+	     * This is only used in this class
+	     * @param username
+	     * @param loginTimestamp
+	     * @throws SQLException
+	     */
 	    public void updateLastLoggedInDateAndStatus(String username, Timestamp loginTimestamp) throws SQLException {
 	        String sql = "UPDATE user_details SET last_logged_in_date = ?, logged_in = ? WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -184,6 +231,11 @@ public class DBConnector {
 	        statement.executeUpdate();
 	    }
 	    
+	    /**
+	     * This is only used in this class
+	     * @param username
+	     * @throws SQLException
+	     */
 	    public void updateLastLoggedInDate(String username) throws SQLException {
 	        LocalDateTime currentDateTime = LocalDateTime.now();
 	        Timestamp loginTimestamp = Timestamp.valueOf(currentDateTime);
@@ -195,21 +247,48 @@ public class DBConnector {
 	        statement.executeUpdate();
 	    }
 	    
+	    /**
+	     * This is used in the patient directory
+	     * @param sql
+	     * @return
+	     * @throws SQLException
+	     */
 		public ResultSet executeQueryReturnResults(String sql) throws SQLException {
 	        Statement statement = connection.createStatement();
 	        return statement.executeQuery(sql);
 	    }
 
+		/**
+		 * This is used in the UI class
+		 * @param sql
+		 * @throws SQLException
+		 */
 		public void executeUpdate(String sql) throws SQLException {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate(sql);
 	    }
 		
+		/**
+		 * This is used in the UI class
+		 * @param sql
+		 * @throws SQLException
+		 */
 		public void executeQuery(String sql) throws SQLException {
 			Statement statement = connection.createStatement();
 			statement.executeQuery(sql);
 	    }
 		
+		/**
+		 * This is used in this class and the credential manager
+		 * @param username
+		 * @param passwordHash
+		 * @param params
+		 * @param email
+		 * @param role
+		 * @param dateString
+		 * @param OTPSecretKey
+		 * @throws SQLException
+		 */
 		public void createUserExecuteQuery(String username, String passwordHash, String params, String email, String role, String dateString, String OTPSecretKey)
 		  throws SQLException {
 			String sql = "INSERT INTO user_details (username, password_hash, password_params, email, role, user_creation_date, password_last_modified, OTPSecretKey) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -225,7 +304,16 @@ public class DBConnector {
 			statement.executeUpdate();
 			
 		}
-
+		
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @param doctorId
+		 * @param noteText
+		 * @param noteEnteredDate
+		 * @param scriptIncluded
+		 * @throws SQLException
+		 */
 		public void createNewNoteExecuteQuery(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded)
 		  throws SQLException {
 			String sql = "INSERT INTO testdb.patient_notes (patientId, doctorId, noteText, noteEnteredDate, scriptIncluded) VALUES (?, ?, ?, ?, ?)";
@@ -238,6 +326,23 @@ public class DBConnector {
 			statement.executeUpdate();
 			
 		}
+		
+		/**
+		 * This is used in the patient directory
+		 * @param firstName
+		 * @param middleName
+		 * @param lastName
+		 * @param gender
+		 * @param address
+		 * @param city
+		 * @param state
+		 * @param telephone
+		 * @param email
+		 * @param dateOfBirth
+		 * @param healthInsuranceNumber
+		 * @param emergencyContactNumber
+		 * @throws SQLException
+		 */
 
 		public void createNewPatientExecuteQuery(
 			    String firstName, String middleName, String lastName, String gender,
@@ -268,8 +373,17 @@ public class DBConnector {
 			        statement.executeUpdate();
 			    }
 			}
-    
 
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @param medication_name
+		 * @param prescribed_date
+		 * @param expired_date
+		 * @param noteId
+		 * @param prescribedBy
+		 * @throws SQLException
+		 */
 		public void createNewMedicationExecuteQuery(String patientId, String medication_name, String prescribed_date, String expired_date, String noteId, String prescribedBy)
 		  throws SQLException {
 			String sql = "INSERT INTO testdb.medication_data (patientId, medication_name, prescribed_date, expired_date, noteId, prescribedBy) VALUES (?, ?, ?, ?, ?, ?)";
@@ -283,7 +397,16 @@ public class DBConnector {
 			statement.executeUpdate();
 			
 		}
-
+		
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @param diagnosisName
+		 * @param diagnosisSeverity
+		 * @param diagnosedDate
+		 * @param diagnosingDrId
+		 * @throws SQLException
+		 */
 		public void createNewDiagnosisExecuteQuery(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
 			throws SQLException {
 			String sql = "INSERT INTO testdb.patient_diagnoses "
@@ -298,6 +421,12 @@ public class DBConnector {
 			statement.executeUpdate();
 		}
 		
+		/**
+		 * This is used in the patient info view
+		 * @param noteId
+		 * @param diagnosisId
+		 * @throws SQLException
+		 */
 		public void CreateNewNoteDiagnosisIdLink(String noteId, String diagnosisId) throws SQLException {
 			String sql = "INSERT INTO testdb.diagnosis_notes (diagnosisId, noteId) VALUES (?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -306,6 +435,14 @@ public class DBConnector {
 			statement.executeUpdate();
 		}
 		
+		/**
+		 * This is used in the DB connector and credential manager
+		 * @param username
+		 * @param passwordHash
+		 * @param params
+		 * @param dateString
+		 * @throws SQLException
+		 */
 		public void changePasswordExecuteQuery(String username, String passwordHash, String params, String dateString)
 				  throws SQLException {
 					String sql = "UPDATE user_details SET password_hash = ?, password_params = ?, password_last_modified = ? WHERE username = ?";
@@ -318,6 +455,14 @@ public class DBConnector {
 			
 		}
 
+		/**
+		 * This is used in the patient info view
+		 * @param diagnosisId
+		 * @param initialDetails
+		 * @param progressPlanGoal
+		 * @param expectedRemediationDate
+		 * @throws SQLException
+		 */
 		public void CreateNewProgressPlanExecuteQuery(String diagnosisId, String initialDetails, String progressPlanGoal, String expectedRemediationDate) throws SQLException{
 			String sql = "INSERT INTO testdb.progress_plan (diagnosisId, initialDetails, progressPlanGoal, expectedRemediationDate) VALUES (?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -327,7 +472,13 @@ public class DBConnector {
 			statement.setString(4, expectedRemediationDate);
 			statement.executeUpdate();
 		}
-
+		
+		/**
+		 * This is used in the patient info view
+		 * @param diagnosisId
+		 * @return
+		 * @throws SQLException
+		 */
 		public boolean verifyDiagnosisIdExists(String diagnosisId) throws SQLException {
 			String sql = "SELECT COUNT(*) FROM testdb.patient_diagnoses WHERE diagnosisId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -339,7 +490,13 @@ public class DBConnector {
 			}
 			return false;
 		}
-
+		
+		/**
+		 * This is used in the patient directory
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public boolean verifyPatientIdExists(String patientId) throws SQLException {
 			String sql = "SELECT COUNT(*) FROM testdb.patient_data WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -351,7 +508,13 @@ public class DBConnector {
 			}
 			return false;
 		}
-
+		
+		/** 
+		 * This is used in the credential manager
+		 * @param username
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnOTPSecretKeyFromUser(String username) throws SQLException {
 			String sql = "SELECT OTPSecretKey FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -360,6 +523,12 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * THis is used in this class and the crednetial manager
+		 * @param username
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromUser(String username) throws SQLException {
 			String sql = "SELECT * FROM testdb.user_details WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -368,6 +537,12 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * This is used in the login controller
+		 * @param username
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsForUserSession(String username) throws SQLException {
 			// Updated SQL query to select only id, username, and role
 			String sql = "SELECT id, username, role FROM testdb.user_details WHERE username = ?";
@@ -377,19 +552,34 @@ public class DBConnector {
 			return statement.executeQuery();
 		}
 
-		
+		/**
+		 * This is used in the dashboard and patient directoty
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromPatients() throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_data";
 			PreparedStatement statement = connection.prepareStatement(sql);
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * This is used in the dashbaord controller
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromMedication() throws SQLException {
 			String sql = "SELECT * FROM testdb.medication_data";
 			PreparedStatement statement = connection.prepareStatement(sql);
 	        return statement.executeQuery();
 	    }
 		
+		/**
+		 * This is used in this class and the patient info view
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromPatientId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.test3 WHERE ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -397,7 +587,13 @@ public class DBConnector {
 			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
-
+		
+		/**
+		 * This is used in the encrypted PDF and patient info view
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsMedicationFromPatientId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.medication_data WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -405,7 +601,13 @@ public class DBConnector {
 			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
-
+		
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsDiagnosisFromPatientId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_diagnoses WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -413,7 +615,13 @@ public class DBConnector {
 			System.out.println(sql);
 	        return statement.executeQuery();
 	    }
-
+		
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsNotesFromPatientId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_notes WHERE patientId = ? ORDER BY noteEnteredDate DESC";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -422,6 +630,12 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * This is used in the encrypted PDF, login controller, dashbaord and patient directory
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromPatientDataId(String patientId) throws SQLException {
 			String sql = "SELECT * FROM testdb.patient_data WHERE patientId = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -429,6 +643,16 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @param doctorId
+		 * @param noteText
+		 * @param noteEnteredDate
+		 * @param scriptIncluded
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryNoteIdForDiagnosis(String patientId, String doctorId, String noteText, String noteEnteredDate, String scriptIncluded) throws SQLException {
 			String sql = "SELECT noteId FROM testdb.patient_notes WHERE patientId = ? AND doctorId = ? AND noteText = ? AND noteEnteredDate = ? AND scriptIncluded = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -441,6 +665,16 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 		
+		/**
+		 * This is used in this class only
+		 * @param patientId
+		 * @param diagnosisName
+		 * @param diagnosisSeverity
+		 * @param diagnosedDate
+		 * @param diagnosingDrId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryDiagnosisId(String patientId, String diagnosisName, String diagnosisSeverity, String diagnosedDate, String diagnosingDrId)
 			throws SQLException {
 			String sql = "SELECT diagnosisId FROM testdb.patient_diagnoses WHERE patientId = ? AND diagnosisName = ? AND diagnosisSeverity = ? AND diagnosedDate = ? AND diagnosingDrId = ?";
@@ -453,6 +687,12 @@ public class DBConnector {
 			return statement.executeQuery();
 		}
 
+		/**
+		 * This is used in this class 
+		 * @param patientName
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsFromPatientName(String patientName) throws SQLException {
 			String sql = "SELECT * FROM testdb.test3 WHERE firstName like ? and lastName like ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -465,6 +705,12 @@ public class DBConnector {
 	        return statement.executeQuery();
 	    }
 
+		/**
+		 * This is used in the patient info view
+		 * @param diagnosisId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsDiagIdForProgressPlan(String diagnosisId) throws SQLException {
 				String sql = "SELECT pd.diagnosisName,\n" + //
 						"       pp.initialDetails,\n" + //
@@ -484,6 +730,12 @@ public class DBConnector {
 
 		}
 
+		/**
+		 * This is used in the patient info view
+		 * @param diagnosisId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsDiagIdForMedicationNames(String diagnosisId) throws SQLException {
 			String sql = "SELECT md.medication_name FROM medication_data md\n" + //
 					"JOIN diagnosis_notes dn ON md.noteId = dn.noteId\n" + //
@@ -495,6 +747,12 @@ public class DBConnector {
 					return statement.executeQuery();
 		}
 
+		/**
+		 * This is used in the patient info view
+		 * @param patientId
+		 * @return
+		 * @throws SQLException
+		 */
 		public ResultSet QueryReturnResultsMostRecentDiagIdForPP(String patientId) throws SQLException {
 			String sql = "SELECT pd.diagnosisId\n" + //
 					"FROM patient_diagnoses pd\n" + //
@@ -507,6 +765,21 @@ public class DBConnector {
 					return statement.executeQuery();
 		}
 		
+		/**
+		 * This is used in this class and the dashbord 
+		 * @param nextTitle
+		 * @param nextId
+		 * @param nextFullDay
+		 * @param nextStartDate
+		 * @param nextEndDate
+		 * @param nextStartTime
+		 * @param nextEndTime
+		 * @param nextZoneId
+		 * @param nextRecurring
+		 * @param nextRRule
+		 * @param nextRecurrence
+		 * @throws SQLException
+		 */
 		public void addCalendarEvent(String nextTitle, String nextId, Boolean nextFullDay, LocalDate nextStartDate, 
 				LocalDate nextEndDate, LocalTime nextStartTime,	LocalTime nextEndTime, ZoneId nextZoneId,
 				Boolean nextRecurring, String nextRRule, Boolean nextRecurrence) throws SQLException {
@@ -527,6 +800,10 @@ public class DBConnector {
 			statement.executeUpdate();
 		}
 		
+		/**
+		 * This is used in this class and the dashboard
+		 * @throws SQLException
+		 */
 		public void getCalendarEvents() throws SQLException {
 			// grabs all the rows from the doctor_calendar DB
 			String query = "SELECT * FROM testdb.doctor_calendar";

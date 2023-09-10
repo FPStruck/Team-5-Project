@@ -14,11 +14,24 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+/**
+ * This class is used for the DB connector
+ * @author User
+ *
+ */
 public class Decryptor {
     private static final String ENCRYPTION_ALGORITHM = "AES";
 
     private static final String PASSPHRASE = "PassDecryptor1234";
 
+    /**
+     * This is only used in this class
+     * @param passphrase
+     * @param salt
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
     private static byte[] deriveKey(String passphrase, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 10000;
         int keyLength = 128; // AES-128
@@ -27,6 +40,12 @@ public class Decryptor {
         return factory.generateSecret(spec).getEncoded();
     }
     
+    /**
+     * This is used for patient directory
+     * @param input
+     * @return
+     * @throws Exception
+     */
     public static String encrypt(String input) throws Exception {
         byte[] salt = new byte[16];
         // Generate a random salt
@@ -45,6 +64,17 @@ public class Decryptor {
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
     
+    /**
+     * This is used for the DB connector and the patient directory 
+     * @param encryptedInput
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws NoSuchPaddingException
+     * @throws InvalidKeyException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException
+     */
     public static String decrypt(String encryptedInput) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException  {
         byte[] salt = new byte[16];
         // Generate the same salt that was used during encryption.

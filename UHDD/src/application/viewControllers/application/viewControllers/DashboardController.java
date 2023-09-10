@@ -47,6 +47,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * This is used to control the dashboard FXML/UI
+ * @author User
+ *
+ */
 public class DashboardController {
 	private Stage stage;
 	private static Stage calendarStage;

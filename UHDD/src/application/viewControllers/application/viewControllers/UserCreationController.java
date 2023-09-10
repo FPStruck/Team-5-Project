@@ -33,6 +33,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This is used to control the user creation FXML/UI
+ * @author User
+ *
+ */
 public class UserCreationController {
 	private Stage stage;
 	private Scene scene;
@@ -110,7 +115,7 @@ public class UserCreationController {
 			// Create a new task for sending email
 			Task<Void> emailTask = new Task<Void>() {
 				@Override
-				protected Void call() throws Exception {
+				protected Void call() throws MessagingException, Exception {
 					EmailManager emailManager = new EmailManager();
 					emailManager.sendEmailWithImage(emailGrabberCreator.getText(), "UHDB MFA QR Code", "Please scan the QR code to set up MFA", qrCode);
 					return null;

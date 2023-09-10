@@ -1,4 +1,3 @@
-
 package application.viewControllers;
 
 import java.io.IOException;
@@ -20,6 +19,11 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class Nurse_PatientInfoViewController {
 	private Stage stage;
 	private Scene scene;
@@ -277,4 +281,3 @@ public class Nurse_PatientInfoViewController {
 		dashboardIVPane.setStyle("-fx-background-color:  #063847");
 	}
 }
-

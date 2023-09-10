@@ -1,4 +1,3 @@
-
 package application.viewControllers;
 
 import application.DBConnector;
@@ -20,6 +19,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
 
+/**
+ * This might be redundant 
+ * @author User
+ *
+ */
 public class PatientInformationController {
     private Stage stage;
     private Scene scene;

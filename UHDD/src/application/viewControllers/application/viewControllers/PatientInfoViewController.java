@@ -38,6 +38,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import application.UserSession;
 
+/**
+ * This is used to control the patient info view FXML/UI
+ * @author User
+ *
+ */
 public class PatientInfoViewController {
 	private static Stage calendarStage;
 	private static Parent calendarRoot;
@@ -760,7 +765,7 @@ public class PatientInfoViewController {
 		String ownerPassword = "owner";
 		String userPassword = "user";
 		String patientName = patientNew.getGivenName() + " " + patientNew.getFamilyName();
-		CreateEncryptedPdf.crecatePatientDetailsPdf(patientId, filePath, ownerPassword, userPassword, patientName);
+		CreateEncryptedPdf.createPatientDetailsPdf(patientId, filePath, ownerPassword, userPassword, patientName);
 	}
 
 	@FXML 
