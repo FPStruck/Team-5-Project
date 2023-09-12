@@ -25,10 +25,6 @@ public class EmailManager {
     private  String smtpUser = "UHDB@lh3b.onmicrosoft.com";
     private  String smtpPassword = "Nap00764";
     
-    // i use gmail instead 
-//    private  String smtpPassword = "xx";
-//    private  String smtpUser = "tobez103@gmail.com";
-
     /**
      * This is used for the user creation 
      * @param to
@@ -47,15 +43,9 @@ public class EmailManager {
         
         // alternative 
         properties.put("mail.smtp.ssl.trust", "smtp.office365.com");
-        
-//        properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.socketFactory.port", "587");
         properties.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
-//        properties.put("mail.smtp.auth", "true");
-//        properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.ssl.enable", "false");
-//        properties.put("mail.smtp.starttls.enable", "true");
-//        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override

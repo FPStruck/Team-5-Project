@@ -41,7 +41,6 @@ public class pwdResetController {
         String newPwd = txtNewPwd.getText();
         String verifyPwd = txtVerifyPwd.getText();
         String username = UserSession.getInstance().getUserName();
-        //String email = UserSession.getInstance().getEmail();
         System.out.println(username + " is the username");
         CredentialManager credentialManager = new CredentialManager();
     

@@ -43,7 +43,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #fcfcfc;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.DashboardController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="506.0" prefWidth="916.0" style="-fx-background-color: #fcfcfc;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.viewControllers.DashboardController">
 <children>
       <Pane prefHeight="506.0" prefWidth="200.0" style="-fx-background-color: #063847;">
          <children>
@@ -75,7 +75,7 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@application.css" text="Patient Information" textFill="#063847" />
+            <Button fx:id="patientInformationBTN" layoutX="60.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#switchToPatientInformation" stylesheets="@application.css" text="Patient Information" textFill="#063847" visible="false" />
             <Pane fx:id="appointmentsDBPane" layoutY="200.0" onMouseClicked="#switchToCalendar" onMouseEntered="#highlightAppointmentsPaneOnEnter" onMouseExited="#highlightAppointmentsPaneOnExit" prefHeight="40.0" prefWidth="200.0">
                <children>
                   <Text fill="#fcfcfc" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" wrappingWidth="133.0">

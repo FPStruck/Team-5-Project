@@ -57,11 +57,6 @@ public class DBConnector {
 			String url="jdbc:mysql://itc303-db01.mysql.database.azure.com:3306/testdb?useSSL=true";
 			String username = "itc303admin";
 			String password = Decryptor.decrypt("HTTjDc5keIHeQ48mt3A+Vw=="); // Hash this password using a function and unhash it when it's called for this line so its not stored in plain text (makes it harder for people to access DB)
-			
-			// connect to local database
-//			String url = "jdbc:mysql://127.0.0.1:3306/testdb";
-//			String username = "root";
-//			String password = "mysql";
 		
 			// connect to the database
 			try {
@@ -71,11 +66,8 @@ public class DBConnector {
 				connection.createStatement();
 			} catch (SQLException ex) {
 				System.out.println(ex.getMessage());
-				//labelStatus.setText("Connection failed");
-				//labelStatus.setTextFill(Color.RED);
 			} 
-			
-			
+				
 		}
 		
 		/**
@@ -343,7 +335,6 @@ public class DBConnector {
 		 * @param emergencyContactNumber
 		 * @throws SQLException
 		 */
-
 		public void createNewPatientExecuteQuery(
 			    String firstName, String middleName, String lastName, String gender,
 			    String address, String city, String state, String telephone, String email,

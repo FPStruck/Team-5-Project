@@ -8,7 +8,17 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/*
+ * This is used in the patient directory and the old patient information controllers
+ */
 public class DataEncryptorDecryptor {
+	/**
+	 * This is used in the medication, patient directory and the old patient information
+	 * @param data
+	 * @param encryptionKey
+	 * @return
+	 * @throws Exception
+	 */
     public static String encrypt(String data, String encryptionKey) throws Exception {
         SecretKeySpec keySpec = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
         Cipher cipher = Cipher.getInstance("AES");
@@ -37,6 +47,11 @@ public class DataEncryptorDecryptor {
 	        }
 	    }
 
+	/**
+	 * This is used in the patient directory and the old patient information controllers    
+	 * @return
+	 * @throws Exception
+	 */
     public static String generateAESKey() throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128); // 128-bit key size
