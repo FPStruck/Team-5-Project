@@ -126,7 +126,7 @@ public class StatusCheckerThread extends Thread {
                 try {
                     dbConnector.setLoggedInStatus(username, 0);
                     dbConnector.closeConnection();
-                    handleCloseApplication();
+                    Platform.exit();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -165,7 +165,7 @@ public class StatusCheckerThread extends Thread {
                 try {
                     dbConnector.setLoggedInStatus(username, 0);
                     dbConnector.closeConnection();
-                    handleCloseApplication();
+                    Platform.exit();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
