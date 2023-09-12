@@ -257,10 +257,6 @@ public class UI {
 
 	    //email properties
 	    Properties properties = System.getProperties();  
-//	    properties.setProperty("mail.smtp.host", host);
-//	    properties.setProperty("mail.smtp.port", String.valueOf(port));
-//	    properties.setProperty("mail.smtp.starttls.enable", "true");
-//	    properties.setProperty("mail.smtp.auth", "true");
 	    
 	    // toby's email properties
 	    properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -694,42 +690,30 @@ public class UI {
 
   
   	//Overview button actions
-	
     @FXML
     private void fetchDiagnoses() {
         System.out.println("Hopefully gets 'diagnoses' info");
     }
     
     // Other controller methods and variables
-    
-	
-	
 	@FXML
 	private void fetchHistory() {
 	    System.out.println("Get patient history");
 	}
 	
 	// Other controller methods and variables
-	
-	
-	
 	@FXML
 	private void fetchPerscription() {
 	    System.out.println("Get Patient perscription");
 	}
 	
 	// Other controller methods and variables
-	
-	
-	
 	@FXML
 	private void fetchReport() {
 	    System.out.println("Gets report");
 	}
 	
 	// Other controller methods and variables
-	
-	
 	private void loadFields(ResultSet results) throws SQLException {
 		
 		if (results.next()) {
