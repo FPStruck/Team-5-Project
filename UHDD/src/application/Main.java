@@ -1,6 +1,5 @@
 package application;
 
-
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +32,7 @@ public class Main extends Application {
 		String name = us.getUserName();
 		System.out.println("Stage is closing: " + name);
 		db.setLoggedInStatus(name, 0);
+		db.closeConnection();
 	 } 
 	
 }

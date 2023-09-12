@@ -12,6 +12,7 @@ import application.DBConnector;
 import application.LoginResult;
 import application.Patient;
 import application.PatientService;
+import application.StatusCheckerThread;
 import application.UserSession;
 import application.UsernameStorage;
 import javafx.event.ActionEvent;
@@ -166,11 +167,11 @@ public class LoginController {
         } else if (passGrabber.getText().isEmpty()) {
             actionGrabber.setText("Password cannot be empty");
             actionGrabber.setFill(Color.RED);
-        } else if (loggedInStatus == 1) {
+        } else if (loggedInStatus != 0) {
             actionGrabber.setText("Another user is already logged in with this username");
             actionGrabber.setFill(Color.RED);
             System.out.println("A user: " + username + " has attempted access from another device (all users logged out): " + formattedDateTime);
-            dbConnector.setLoggedInStatus(username, 2);
+            dbConnector.setLoggedInStatus(username, 0);
         } else { 
         	
         	if (loginSuccessful()) {
@@ -179,6 +180,8 @@ public class LoginController {
                 dbConnector.setLastLoggedInTime(username, loginTimestamp);
                 dbConnector.setLoggedInStatus(username, 1);
                 UsernameStorage.setUsername(username);
+                StatusCheckerThread statusCheckerThread = new StatusCheckerThread(username, dbConnector);
+                statusCheckerThread.start();
                 currentFXML = "/application/fxmlScenes/Dashboard.fxml";
                 CurrentFXMLInstance.initInstance(currentFXML);	//Set currentFXMLInstance to Dashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
