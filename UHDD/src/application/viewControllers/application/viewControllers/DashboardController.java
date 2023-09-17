@@ -47,6 +47,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * This is used to control the dashboard FXML/UI
+ * @author User
+ *
+ */
 public class DashboardController {
 	private Stage stage;
 	private static Stage calendarStage;
@@ -107,7 +112,6 @@ public class DashboardController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException, NullPointerException{
-//		userText.setText(UserSession.getUserName()); // #BUG this line is wont allow the calendar to open
 		Platform.runLater(() -> {
 	        try {
 	            updateNextAppointment();
@@ -136,8 +140,6 @@ public class DashboardController {
 			String givenName = rs.getString("firstName");
 			Patient patient = new Patient(id, familyName, givenName);
 			patientOL.add(patient);
-			//Commenting out to reduce noise whilst bug fixing
-			//System.out.println(patient.getId() + " " + patient.getFamilyName() + " " + patient.getGivenName());
 		}
 		patientDirectoryDBTV.setItems(patientOL);
 		dbConnector.closeConnection();
@@ -178,17 +180,10 @@ public class DashboardController {
 		dbConnector.getCalendarEvents(); // this will ensure that the next appointment is displayed 
 		
 		// get the next appointment
-		//commenting out to reduce noise whilst bug fixing 
-		//System.out.println("Find entries" + CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault()));
 		Map<LocalDate, List<Entry<?>>> entry = CalendarApp.getDoctors().findEntries(LocalDate.now(), LocalDate.MAX, ZoneId.systemDefault());
-		//System.out.println("This is the entry: " + entry);	
-		//System.out.println("This is the calendar: " + CalendarApp.getDoctors());	
 			for (java.util.Map.Entry<LocalDate, List<Entry<?>>> l : entry.entrySet()) {
-				//System.out.println("This is the list: " + l);
 				List<Entry<?>> e =  l.getValue();
-				//System.out.println("This is entry: " + e);
 				nextA = e.get(0).getTitle();
-				//System.out.println("First entry: " + nextA);
 				// this will set the next appointment text 
 				if (nextAppointment != null) { // this fixed the bug 
 					nextAppointment.setText(nextA);
@@ -207,14 +202,6 @@ public class DashboardController {
 					nextRecurring = ee.isRecurring();
 					nextRRule = ee.recurrenceRuleProperty().getValue();
 					nextRecurrence = ee.isRecurrence();
-					/*
-					 * Reduce noise whilst bug fixing
-					
-					System.out.println("Entry from loop: " + nextTitle + ", " + nextId + ", " 
-					+ nextFullDay + ", " + nextStartDate + ", " + nextEndDate + ", "
-					+ nextStartTime + ", " + nextEndTime + "' " + nextZoneId + ", "
-					+ nextRecurring + ", " + nextRRule + ", " + nextRecurrence);	
-					*/
 
 					// adds the event to the database
 					try {dbConnector.addCalendarEvent(nextTitle, nextId, nextFullDay, nextStartDate, 
@@ -251,10 +238,7 @@ public class DashboardController {
 					
 					
 				}
-			}
-		//Reduce noise whilst bug fixing
-		//System.out.println("After loop: " + nextA);	
-		//System.out.println("After loop next apppointment: " + nextAppointment);			
+			}			
 		startDate();
 		startLoggedInStatusTimer();  // (THIS LINE OF CODE MUST BE PRESENT WHEN THE PROGRAM IS BEING COMPLETED. WITHOUT THIS LINE, THE MULTI-LOGIN SYSTEM WILL NOT OPERATE)
 		dbConnector.closeConnection();

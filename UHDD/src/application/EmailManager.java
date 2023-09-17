@@ -13,19 +13,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * This class is used for the user creation and UI
+ * @author User
+ *
+ */
 public class EmailManager {
 
     private  String smtpHost = "smtp.office365.com";
     private  String smtpPort = "587";
     private  String smtpUser = "UHDB@lh3b.onmicrosoft.com";
     private  String smtpPassword = "Nap00764";
-
+    
+    /**
+     * This is used for the user creation 
+     * @param to
+     * @param subject
+     * @param body
+     * @param image
+     * @throws MessagingException
+     * @throws IOException
+     */
     public void sendEmailWithImage(String to, String subject, String body, BufferedImage image) throws MessagingException, IOException {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", smtpHost);
         properties.put("mail.smtp.port", smtpPort);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
+        
+        // alternative 
+        properties.put("mail.smtp.ssl.trust", "smtp.office365.com");
+        properties.put("mail.smtp.socketFactory.port", "587");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.SocketFactory");
+        properties.put("mail.smtp.ssl.enable", "false");
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
@@ -59,6 +79,13 @@ public class EmailManager {
         Transport.send(message);
     }
 
+    /**
+     * This is only used in this class
+     * @param image
+     * @param format
+     * @return
+     * @throws IOException
+     */
     private byte[] convertBufferedImageToByteArray(BufferedImage image, String format) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, format, baos);

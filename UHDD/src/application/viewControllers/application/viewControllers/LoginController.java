@@ -30,6 +30,11 @@ import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This is used to control the login FXML/UI
+ * @author User
+ *
+ */
 public class LoginController {
     private Stage stage;
     private Scene scene;

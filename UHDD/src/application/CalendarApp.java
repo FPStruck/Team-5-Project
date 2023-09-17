@@ -17,6 +17,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * This calendar app is used to create a javafx window for the calendar
+ * The objects that use this function are the dashboard controller, patients directory, patient info view and the db connector 
+ * This relies on the calendar fx library 
+ * @author Team 5
+ *
+ */
 public class CalendarApp extends Application {
 
     private static Stage primaryStage;
@@ -25,7 +32,12 @@ public class CalendarApp extends Application {
     static Calendar<Object> doctors = new Calendar<>("Doctor's");
     static Calendar<Object> nurses = new Calendar<>("Nurse's");
     static CalendarSource myCalendarSource = new CalendarSource("My Calendars");
-
+    
+    /**
+     * This will override the start function for the application class
+     * It will create two calendars named doctors and nurses
+     * @exception - an exception error will be displayed 
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         CalendarApp.primaryStage = primaryStage;
@@ -94,6 +106,9 @@ public class CalendarApp extends Application {
         primaryStage.show();
     }
 
+    /**
+     * This will show the calendar on the primary stage
+     */
     public static void showCalendar() {
         Platform.runLater(() -> {
             if (primaryStage.isShowing()) {
@@ -108,22 +123,41 @@ public class CalendarApp extends Application {
         });
     }
 
+    /**
+     * This will hide the calendar
+     */
     public static void hideCalendar() {
         Platform.runLater(() -> primaryStage.hide());
     }
 
+    /**
+     * This will get the doctors calendar
+     * @return - the doctors calendar object will be returned
+     */
     public static Calendar<Object> getDoctors() {
         return doctors;
     }
 
+    /**
+     * This will get the nurse calendar
+     * @return - the nurses calendar object will be returned
+     */
     public static Calendar<Object> getNurses() {
         return nurses;
     }
 
+    /**
+     * This will get the calendar source object
+     * @return - the calendar source will be returned
+     */
     public static CalendarSource getMyCalendarSource() {
         return myCalendarSource;
     }
 
+    /**
+     * This is the main
+     * @param - the args to run a custom launch
+     */
     public static void main(String[] args) {
         launch(args);
     }

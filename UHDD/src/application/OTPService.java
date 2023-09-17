@@ -15,6 +15,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Instant;
 
+/**
+ * This uses the google xing library for qrcode
+ * This is used in the user creation and credential manager
+ * @author Team 5
+ *
+ */
 public class OTPService {
 
     private static final int OTP_VALIDITY_SECONDS = 30;
@@ -30,7 +36,11 @@ public class OTPService {
         }
     }
     
-
+    /**
+     * This is used in the user creation 
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public String generateSecretKey() throws NoSuchAlgorithmException {
         // generate a random key
         byte[] secretKey = new byte[20];
@@ -46,7 +56,15 @@ public class OTPService {
         return base32Key;
 
     }
-
+    
+    /**
+     * This is used in the user creation
+     * @param secretKey
+     * @param accountName
+     * @param issuer
+     * @return
+     * @throws WriterException
+     */
     public BufferedImage generateQRCode(String secretKey, String accountName, String issuer) throws WriterException {
         String otpAuthTotpUrl = String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", issuer, accountName, secretKey, issuer);
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -54,6 +72,14 @@ public class OTPService {
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
 
+    /**
+     * This is used in the credential manager
+     * @param secretKey
+     * @param otp
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     */
     public boolean validateOTP(String secretKey, int otp) throws NoSuchAlgorithmException, InvalidKeyException {
         Base32 base32 = new Base32();
         byte[] secretKeyBytes = base32.decode(secretKey);

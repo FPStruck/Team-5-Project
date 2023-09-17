@@ -40,6 +40,11 @@ import javafx.stage.Stage;
 import application.UserSession;
 import application.DataEncryptorDecryptor;
 
+/**
+ * This is used to control the patient directory FXML/UI
+ * @author User
+ *
+ */
 public class PatientDirectoryController {
 	private static Stage calendarStage;
 	private static Parent calendarRoot;

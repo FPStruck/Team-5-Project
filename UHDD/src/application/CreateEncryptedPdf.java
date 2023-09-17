@@ -11,9 +11,24 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This will create a PDF containing the patients information and save it to the computer
+ * This object is used in the Patient Info View controller for the patients details and medication PDF
+ * @author Team 5
+ *
+ */
 public class CreateEncryptedPdf {
 	
-    public static void crecatePatientDetailsPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception {
+	/**
+	 * This will create a patient details pdf to a path file
+	 * @param patientId
+	 * @param finalPath
+	 * @param ownerPassword
+	 * @param userPassword
+	 * @param patientName
+	 * @throws Exception
+	 */
+    public static void createPatientDetailsPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception {
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
         Document document = new Document();
@@ -59,6 +74,15 @@ public class CreateEncryptedPdf {
         }
     }
 
+    /**
+     * This will create a PDF containing the patient's medications  
+     * @param patientId
+     * @param finalPath
+     * @param ownerPassword
+     * @param userPassword
+     * @param patientName
+     * @throws Exception
+     */
     public static void createMedicationPdf(String patientId, String finalPath, String ownerPassword, String userPassword, String patientName) throws Exception{
         DBConnector dbconnector = new DBConnector();
         dbconnector.initialiseDB();
@@ -91,10 +115,8 @@ public class CreateEncryptedPdf {
                 document.add(new Paragraph("Doctor Id: " + resultSet.getString("prescribedBy")));
                 document.add(new Paragraph("Date Prescribed: " + resultSet.getString("prescribed_date")));
                 document.add(new Paragraph("Expiry Date: " + resultSet.getString("expired_date")));
-                
             } 
             
-
             document.close();
             writer.close();
             dbconnector.closeConnection();

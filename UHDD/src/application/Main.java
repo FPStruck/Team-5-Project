@@ -7,8 +7,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+/**
+ * This is used in the app starter
+ * @author User
+ *
+ */
 public class Main extends Application {
 	
+	/**
+	 * This is used in the calendar app, calendar controller, patient directory, user creation
+	 * dashboard and patient info view 
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -25,6 +34,9 @@ public class Main extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * This is only used in this class
+	 */
 	@Override
 	 public void stop() throws Exception{
 		UserSession us = new UserSession();
