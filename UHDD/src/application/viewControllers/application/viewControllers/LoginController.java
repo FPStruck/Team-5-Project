@@ -147,6 +147,13 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+    
+    @FXML 
+    public void onMouseClickedCancelBtn(ActionEvent event) {
+    	Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
 
     @FXML
     protected void handleSignInAction(ActionEvent event) throws Exception {
