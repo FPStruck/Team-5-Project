@@ -88,7 +88,7 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="nextPatientBTN" layoutX="59.0" layoutY="413.0" mnemonicParsing="false" onMouseClicked="#nextPatient" style="-fx-background-color: white;" text="Next Patient" />
+            <Button fx:id="nextPatientBTN" layoutX="59.0" layoutY="413.0" mnemonicParsing="false" onMouseClicked="#nextPatient" style="-fx-background-color: white;" text="Next Patient" visible="false"/>
          </children>
       </Pane>
       <Pane layoutX="200.0" layoutY="39.0" prefHeight="467.0" prefWidth="216.0" style="-fx-background-color: #fcfcfc;">
