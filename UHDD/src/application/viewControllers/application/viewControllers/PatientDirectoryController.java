@@ -175,15 +175,26 @@ public class PatientDirectoryController {
 	}
 
 	public void NonMouseEventSwitchToPatientInfoView() throws IOException {
-		currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
-		CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
-	    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
-	    Parent root = loader.load();
-	    Map<String, Object> namespace = loader.getNamespace();
-	    stage = new Stage();
-	    scene = new Scene(root);
-	    stage.setScene(scene);
-	    stage.show();
+		if (!(currentFXML.equals("/application/fxmlScenes/PatientInfoViewOverview.fxml"))) {
+			currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+		    Parent root = loader.load();
+		    Map<String, Object> namespace = loader.getNamespace();
+		    stage = new Stage();
+		    scene = new Scene(root);
+		    stage.setScene(scene);
+		    stage.show();
+		} else {
+			currentFXML = "/application/fxmlScenes/PatientInfoViewOverview.fxml";
+			CurrentFXMLInstance.getInstance().setCurrentFXML(currentFXML);
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource(currentFXML));
+		    Parent root = loader.load();
+		    Map<String, Object> namespace = loader.getNamespace();
+		    scene = new Scene(root);
+		    stage.setScene(scene);
+		    stage.show();
+		}
 	}
 
 	public void NonMouseEventSwitchToPatientDirectory() throws IOException{
